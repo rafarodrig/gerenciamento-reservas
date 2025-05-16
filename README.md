@@ -1,66 +1,39 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Sistema de Ensalamento das Unidades I e II do Senac-Rs
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+Resumo do Projeto
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Esse projeto foi desenvolvido perante a necessidade de um método mais ágil de gerenciar a alocação das salas de aula para eventos e cursos acadêmicos oferecidos pelo Uni Senac do centro histórico de Porto Alegre. Atualmente os funcionários responsáveis pelo ensalamento se utilizam de planilhas do Excel para manter os registros das reservas de salas, estúdios e auditórios de dois prédios do Senac (unidades 1 e 2). Esse método empregado é ineficiente, podendo ser extremamente demorado e suscetível a erros. Com isso em mente, a equipe de desenvolvimento desenvolveu uma aplicação web que tem por objetivo atender as necessidades principais e oferecer outras funcionalidades que ajudarão no gerenciamento das dependências do Uni Senac.
+.
+Definição do Problema
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O problema do ensalamento foi apresentado na disciplina de projeto de desenvolvimento 1 e se tratava da ineficiência de fazer a alocação de salas de aula por planilhas do Excel (Figura 1 e 2) dos diversos eventos e cursos que acontecem diariamente nos turnos da manhã, tarde e noite nas dependências do Uni Senac. Esse método de ensalamento é especialmente demorado no início de cada período letivo, pois os funcionários responsáveis pelo ensalamento precisam cadastrar todas as aulas dos cursos de graduação, pós-graduação e da modalidade FIC (Formação Inicial e Continuada). Durante esse cadastro, os funcionários precisam consultar outras planilhas para confirmar quais salas são capazes de suprir as necessidades de quais disciplinas e resolver os conflitos de acordo. Esses e outros desafios do ensalamento atualmente implementado estão descritos abaixo:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+Falta de agilidade para achar salas disponíveis que supram os requisitos – por exemplo:  lotação, quantidade de máquinas e tipo e máquinas – dos eventos e cursos;
+Esforço repetitivo do registro das aulas das disciplinas dos cursos de graduação, pós-graduação e FIC;
+Sujeito a erros e conflitos na alocação de salas, o que pode atrasar ainda mais o trabalho dos responsáveis pelo ensalamento;
+Necessidade de consultar outras planilhas (por exemplo: planilha de salas);
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+Figura 1 – Planilha do Excel da unidade 1.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Figura 2 – Planilha do Excel da unidade 2.
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+Objetivos
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Objetivo geral
 
-## Security Vulnerabilities
+O desenvolvimento de um sistema capaz de gerenciar o ensalamento das unidades 1 e 2 da instituição de ensino UniSenac.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Objetivos específicos
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Análise dos fluxos de trabalho atuais no processo de ensalamento das unidades 1 e 2.
+Design de um sistema que elimine ou aprimore as deficiências do método de ensalamento anterior.
+Desenvolvimento de uma aplicação web de ensalamento que supra as
