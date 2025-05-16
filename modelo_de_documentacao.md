@@ -1,4 +1,4 @@
-# Documentando um Projeto Final de ADS/SPI/CD
+# Sistema de Ensalamento das Unidades I e II do Senac-Rs
 
 _Luciano Zanuz_
 
