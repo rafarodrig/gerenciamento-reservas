@@ -9,6 +9,9 @@ use App\Http\Requests\StoreReservaRequest;
 use App\Http\Requests\UpdatereservaRequest;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Inertia\Inertia;
+
+
 
 class ReservaController extends Controller
 
@@ -17,7 +20,8 @@ class ReservaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
+    {   
+        
         $request->mergeIfMissing(['unidade' => 1]);
 
         $query =  Reserva::with(["sala","turma"]);
@@ -39,7 +43,8 @@ class ReservaController extends Controller
 
         $reservas = $query->paginate(20)->appends($request->query());
         
-        return view("table.reservas", ["reservas" => $reservas,'unidade' => $request->unidade , 'url' => $request->fullUrlWithoutQuery(['unidade','page'])]);
+        return Inertia::render("Reservas/TableReservas", ["reservas" => $reservas]);
+        // return Inertia::render("Reservas/TableReservas", ["reservas" => $reservas,'unidade' => $request->unidade , 'url' => $request->fullUrlWithoutQuery(['unidade','page'])]);
     }
 
     /**

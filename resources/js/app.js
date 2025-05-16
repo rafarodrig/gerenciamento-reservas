@@ -1,7 +1,20 @@
 
+import { createInertiaApp } from '@inertiajs/react'
+import { createRoot } from 'react-dom/client'
+
+createInertiaApp({
+  resolve: name => {
+    const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true })
+    return pages[`./Pages/${name}.jsx`]
+  },
+  setup({ el, App, props }) {
+    createRoot(el).render(<App {...props} />)
+  },
+})
+
 import './jquery_import'
 
-import * as bootstrap from 'bootstrap';
+// import * as bootstrap from 'bootstrap';
 
 // import $ from 'jquery';
 // window.$ = $;
@@ -61,7 +74,6 @@ $(".inp-cadastrar").on("input", function (){
 
     }
 })
-
 
 
 // MODAL CADASTRAR/EDITAR RESERVA: CONTAINER INFORMACOES TURMA

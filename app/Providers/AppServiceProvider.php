@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Vite;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -26,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading();
         Paginator::useBootstrapFive();
         Carbon::setLocale(app()->getLocale());
+        // Vite::prefetch(concurrency: 3);
     }
 }

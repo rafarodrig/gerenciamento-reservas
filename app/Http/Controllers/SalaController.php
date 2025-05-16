@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSalaRequest;
 use App\Http\Requests\UpdateSalaRequest;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+
 class SalaController extends Controller
 {
     /**
@@ -33,7 +35,8 @@ class SalaController extends Controller
             } else {
                 $salas = Sala::where('unidade', $request->unidade)->paginate(15)->appends($request->query());
         
-                return view("table.salas", ['salas' => $salas, 'unidade' => $request->unidade , 'url' =>"/salas?" ]);
+                // return view("table.salas", ['salas' => $salas, 'unidade' => $request->unidade , 'url' =>"/salas?" ]);
+                return Inertia::render("Salas/TableSalas", ['salas' => $salas, 'unidade' => $request->unidade , 'url' =>"/salas?" ]);
             }
 
         

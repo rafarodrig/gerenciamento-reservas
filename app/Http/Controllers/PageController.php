@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sala;
 use App\Helpers\Helper;
-
+use Inertia\Inertia;
 
 class PageController extends Controller
 {
@@ -34,7 +34,9 @@ class PageController extends Controller
             'numeros' => Sala::salasOptions('numero')
         ];
 
-        return view('consultar_reservas', array_merge($pagina_dados, $this->getDatas()));
+        return Inertia::render('ConsultarReservas', array_merge($pagina_dados, $this->getDatas()));
+
+        // return view('consultar_reservas', array_merge($pagina_dados, $this->getDatas()));
     }
 
     public function gerenciarSalas(){

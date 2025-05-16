@@ -8,7 +8,6 @@
 
 <!-- BOX FILTROS -->
 <nav>
-
   <form class="row g-3 form-consulta m-auto mt-5 " id="form-consultar-reservas" method="get">
     
     <div class="mt-0 fs-3 d-flex justify-content justify-content-between">

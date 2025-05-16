@@ -1,3 +1,6 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
 
 * {
     padding: 0;
@@ -39,7 +42,7 @@
 }
 
 #container-tabela, #container-filtros{
-    visibility: hidden;
+    /* visibility: hidden; */
 }
 
 
