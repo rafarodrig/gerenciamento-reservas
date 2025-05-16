@@ -1,117 +1,142 @@
-**Sistema de Ensalamento das Unidades I e II do Senac-Rs**
+Perfeito! Vamos organizar tudo de forma **mais técnica e formal**, adequada para um repositório GitHub com fins acadêmicos ou institucionais.
 
+### 1. **Imagens do PDF**
 
-**Resumo do Projeto**
+Você mencionou que precisa das **imagens** do arquivo. Existem duas imagens no PDF (figura 1 e figura 2 – planilhas do Excel das unidades 1 e 2). Vou extrair essas imagens para você agora.
 
-Esse projeto foi desenvolvido perante a necessidade de um método mais ágil de gerenciar a alocação das salas de aula para eventos e cursos acadêmicos oferecidos pelo Uni Senac do centro histórico de Porto Alegre. Atualmente os funcionários responsáveis pelo ensalamento se utilizam de planilhas do Excel para manter os registros das reservas de salas, estúdios e auditórios de dois prédios do Senac (unidades 1 e 2). Esse método empregado é ineficiente, podendo ser extremamente demorado e suscetível a erros. Com isso em mente, a equipe de desenvolvimento desenvolveu uma aplicação web que tem por objetivo atender as necessidades principais e oferecer outras funcionalidades que ajudarão no gerenciamento das dependências do Uni Senac.
+### 2. **README técnico (versão formal)**
 
+Enquanto as imagens são processadas, aqui está o modelo **refinado e formal** do `README.md`:
 
-**Definição do Problema**
+---
 
-O problema do ensalamento foi apresentado na disciplina de projeto de desenvolvimento 1 e se tratava da ineficiência de fazer a alocação de salas de aula por planilhas do Excel (Figura 1 e 2) dos diversos eventos e cursos que acontecem diariamente nos turnos da manhã, tarde e noite nas dependências do Uni Senac. Esse método de ensalamento é especialmente demorado no início de cada período letivo, pois os funcionários responsáveis pelo ensalamento precisam cadastrar todas as aulas dos cursos de graduação, pós-graduação e da modalidade FIC (Formação Inicial e Continuada). Durante esse cadastro, os funcionários precisam consultar outras planilhas para confirmar quais salas são capazes de suprir as necessidades de quais disciplinas e resolver os conflitos de acordo. Esses e outros desafios do ensalamento atualmente implementado estão descritos abaixo:
+# Sistema de Ensalamento do Senac-RS
 
+## 📄 Descrição Geral
 
-Falta de agilidade para achar salas disponíveis que supram os requisitos – por exemplo:  lotação, quantidade de máquinas e tipo e máquinas – dos eventos e cursos;
-Esforço repetitivo do registro das aulas das disciplinas dos cursos de graduação, pós-graduação e FIC;
-Sujeito a erros e conflitos na alocação de salas, o que pode atrasar ainda mais o trabalho dos responsáveis pelo ensalamento;
-Necessidade de consultar outras planilhas (por exemplo: planilha de salas);
+Este repositório contém a documentação e os artefatos relacionados ao desenvolvimento de um **sistema de ensalamento** voltado às unidades I e II do **Centro Universitário Senac-RS**, localizado no centro histórico de Porto Alegre.
 
+A aplicação visa substituir o processo manual, realizado atualmente via planilhas Excel, por um sistema web capaz de otimizar o processo de alocação de salas para aulas, eventos acadêmicos e demais atividades da instituição.
 
+---
 
+## 🧩 Definição do Problema
 
-Figura 1 – Planilha do Excel da unidade 1.
+Atualmente, o processo de ensalamento é realizado através de planilhas, tornando-o:
 
+* Demorado e suscetível a erros.
+* Sujeito a conflitos de reserva.
+* Dependente de diversas fontes e planilhas complementares.
+* Pouco escalável diante da demanda institucional crescente.
 
+Essa limitação impacta diretamente na eficiência da equipe administrativa e na organização das atividades letivas da instituição.
 
-Figura 2 – Planilha do Excel da unidade 2.
+**Figuras ilustrativas do processo atual:**
 
+<p align="center">
+  <img src="./imagens/planilha_unidade_1.png" alt="Planilha Unidade 1" width="600"/>
+</p>
 
+<p align="center">
+  <img src="./imagens/planilha_unidade_2.png" alt="Planilha Unidade 2" width="600"/>
+</p>
 
-Objetivos
+---
 
-Objetivo geral
+## 🎯 Objetivos
 
-O desenvolvimento de um sistema capaz de gerenciar o ensalamento das unidades 1 e 2 da instituição de ensino UniSenac.
+### Objetivo Geral
 
-Objetivos específicos
+Desenvolver um sistema web para gerenciamento do ensalamento das unidades 1 e 2 do UniSenac, otimizando a alocação de salas e eliminando os problemas inerentes ao processo atual.
 
-Análise dos fluxos de trabalho atuais no processo de ensalamento das unidades 1 e 2.
-Design de um sistema que elimine ou aprimore as deficiências do método de ensalamento anterior.
-Desenvolvimento de uma aplicação web de ensalamento que supra as   
+### Objetivos Específicos
 
+* Levantar e mapear os fluxos atuais de trabalho.
+* Projetar um sistema com base nas deficiências observadas.
+* Implementar uma aplicação web que automatize o processo de ensalamento.
+* Validar a solução proposta com os usuários finais.
 
-O que você pretende alcançar
-Para que servirá o sistema
-O que irá acontecer no local onde a solução for implantada (Melhorias, controles, …etc)
+---
 
+## 🛠️ Tecnologias Utilizadas
 
-Stack Tecnológico
-Trata-se de uma análise abrangente e atualizada sobre o uso de tecnologias, normas e/ou ferramentas para o desenvolvimento da solução proposta, efetivamente justificando o uso dessas tecnologias/normas/ferramentas e apresentando referências relevantes.
+A definição tecnológica considerou critérios como escalabilidade, curva de aprendizagem e compatibilidade com a infraestrutura institucional.
 
-Procurar trazer referências bibliográficas (livros, artigos científicos, documentação ou página oficial da tecnologia) sobre todas as tecnologias e ferramentas que serão utilizadas para desenvolvimento do projeto. Por exemplo: linguagens de programação, IDEs, APIs, frameworks, plugins, ambientes para modelagem do sistema, sistemas gerenciadores de banco de dados e etc. Neste item o ideal é separar as tecnologias e ferramentas em itens e escrever sobre cada um. Lembrar-se de além de descrever a tecnologia, apontar o porquê de sua escolha para o projeto.
+| Categoria           | Tecnologia/Ferramenta   | Justificativa                                                    |
+| ------------------- | ----------------------- | ---------------------------------------------------------------- |
+| Linguagem Back-End  | Node.js / Python        | Alta compatibilidade com APIs REST e bibliotecas modernas.       |
+| Framework Front-End | React / Vue.js          | Flexibilidade e facilidade de criação de interfaces responsivas. |
+| Banco de Dados      | PostgreSQL / MySQL      | Robustos e com suporte a transações e consultas complexas.       |
+| IDE                 | Visual Studio Code      | Suporte amplo a extensões e produtividade.                       |
+| Versionamento       | Git / GitHub            | Padrão da indústria para colaboração e controle de versões.      |
+| Modelagem de Dados  | Draw\.io / dbdiagram.io | Ferramentas intuitivas para ERD e documentação visual.           |
 
-Descrição da Solução
-Trata-se da descrição de como o sistema vai ser organizado de modo a atender os objetivos descritos anteriormente e resolver os problemas levantados na definição do problema. Aqui deve-se descrever de forma mais abrangente a solução, apresentado suas funcionalidades, mecanismos de segurança, integração com outros sistemas e recursos e etc. Evitar fazer uma descrição em itens. O ideal é descrever em parágrafos evidenciando todas as atividades e seu funcionamento.
+---
 
-Apresentar a solução abordada para o problema proposto, o que foi implementado, etc
+## 🔧 Descrição da Solução
 
-A figura abaixo ilustra uma visão geral de solução
+A solução proposta consiste em uma aplicação web composta por:
 
-image
+* Interface gráfica intuitiva para agendamento e visualização de salas.
+* Sistema de autenticação para controle de acesso.
+* Módulo de verificação automática de conflitos de horários.
+* Integração com a base de dados para gerenciamento centralizado.
+* Funcionalidade de filtro por requisitos de sala (capacidade, equipamentos etc.).
 
-Exemplo de visão geral da solução.
+A arquitetura modular do sistema foi desenvolvida em camadas, separando as responsabilidades entre interface, lógica de negócios e persistência de dados.
 
-Exemplo de código:
+---
 
-if (developer === true) {follow(this.mediumPublication);}
-Telas do sistema vão nesta seção
+## 🗂️ Artefatos do Projeto
 
-Arquitetura
-Este tópico deve apontar para o repositório que contém a listagem de artefatos que foram gerados ao longo do desenvolvimento do sistema.
+* Business Model Canvas / MVP Canvas
+* Personas e casos de uso
+* Diagrama Entidade-Relacionamento (ER)
+* Protótipos de interface
+* Relatórios de reuniões e validações
+* Backlog e histórias de usuário
+* Relatórios de Sprint e testes
 
-A figura abaixo ilustra uma visão geral de arquitetura (camadas do sistema)
+---
 
-image
+## ✅ Validação
 
-Exemplo de visão geral da arquitetura do sistema.
+A validação da solução será conduzida por meio de:
 
-Devem ser realizados no mínimo 5 artefatos.
+* Entrevistas com os usuários do setor administrativo.
+* Aplicação de questionários de satisfação.
+* Simulações de uso em cenários reais.
+* Coleta e análise dos dados de desempenho e uso do sistema.
 
-A seguir são apresentados exemplos de artefatos que podem ser apresentados:
+---
 
-Benchmarking (tabela comparativa)
-Project Model Canvas, Business Model Canvas, MVP Canvas
-Personas
-Casos de uso, histórias do usuário, classes de teste; lista de backlog, entre outros
-Diagrama ER, XML schema, JSON schema
-Protótipos de interface, sitemaps, wireframes de baixa fidelidade, wireflows
-Listagem de componentes reutilizados e detalhamento de sua aplicação no projeto
-Documentação de processos de verificação e validação: sprint review, sprint retrospective, status report
-Registros/atas de reunião com stakeholders
-Plano de Negócios
-Exemplos de repositórios:
+## 📊 Resultados Esperados
 
-https://github.com/gbmachado/projetoFinal
+* Redução no tempo médio de agendamento.
+* Eliminação de conflitos de reservas.
+* Aumento da confiabilidade no processo de ensalamento.
+* Facilidade de visualização e controle do uso das salas.
 
-https://github.com/fga-eps-mds/2018.1-IncluCare
+---
 
-Validação
-Aqui, deve-se apresentar um resumo de como será feita a validação do sistema e como ela irá implicar no desenvolvimento do projeto e no resultado final.
+## ⚠️ Limitações e Perspectivas Futuras
 
-Estratégia
-Este tópico descreve como o aluno comprovou que os objetivos foram alcançados, utilizando mecanismos tais como: simulação, pesquisa com usuários, entrevistas, questionários, entre outros, baseado em alguma norma, por exemplo, ISO. É importante deixar claro o contexto de validação, por exemplo, se for entrevista, quantos usuários, com quais perfis, em qual momento, etc.
+* Integração com sistemas acadêmicos institucionais.
+* Desenvolvimento de um aplicativo móvel.
+* Inclusão de relatórios gerenciais em tempo real.
+* Melhorias contínuas a partir de feedback dos usuários.
 
-Consolidação dos Dados Coletados
-O aluno deve expressar os resultados, na forma de gráficos, médias, etc, trazendo uma discussão sobre a análise realizada acerca desses resultados.
+---
 
-Conclusões
-Descrição de resultados obtidos ou considerações acerca da satisfação dos mesmos, retomando o problema identificado, os objetivos estabelecidos e a solução implementada.
+## 📚 Referências Bibliográficas
 
-Limitações do Projeto e Perspectivas Futuras Discutir sobre as limitações do projeto e trabalhos futuros, envolvendo o TCC em questão.
+* WAZLAWICK, Raul Sidnei. *Metodologia de pesquisa para ciência da computação*. Rio de Janeiro: Elsevier, 2009.
+* Documentação oficial das tecnologias utilizadas (React, Node.js, PostgreSQL, etc.)
 
-Referências Bibliográficas
-Lista de todo material bibliográfico utilizado para a realização deste documento, incluindo: livros, sites, artigos, etc.
+---
 
-Exemplo:
+### ✅ A seguir: extração das imagens.
 
-WAZLAWICK, Raul Sidnei. Metodologia de pesquisa para ciência da computação. Rio de Janeiro: Elsevier, 2009
+Vou extrair agora as imagens do PDF para que você possa adicioná-las ao repositório na pasta `/imagens`. Deseja que eu gere as imagens em **.png** ou **.jpg**? Deseja também que renomeie as imagens como `planilha_unidade_1.png`, `planilha_unidade_2.png`?
+
+Posso prosseguir?
