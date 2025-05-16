@@ -1,14 +1,3 @@
-Perfeito! Vamos organizar tudo de forma **mais técnica e formal**, adequada para um repositório GitHub com fins acadêmicos ou institucionais.
-
-### 1. **Imagens do PDF**
-
-Você mencionou que precisa das **imagens** do arquivo. Existem duas imagens no PDF (figura 1 e figura 2 – planilhas do Excel das unidades 1 e 2). Vou extrair essas imagens para você agora.
-
-### 2. **README técnico (versão formal)**
-
-Enquanto as imagens são processadas, aqui está o modelo **refinado e formal** do `README.md`:
-
----
 
 # Sistema de Ensalamento do Senac-RS
 
