@@ -16,11 +16,11 @@ O problema do ensalamento foi apresentado na disciplina de projeto de desenvolvi
 
 ## Objetivos
 
-### Objetivo geral
+#### Objetivo geral
 
 O desenvolvimento de um sistema capaz de gerenciar o ensalamento das unidades 1 e 2 da instituição de ensino UniSenac.
 
-### Objetivos específicos
+#### Objetivos específicos
 
 * Análise dos fluxos de trabalho atuais no processo de ensalamento das unidades 1 e 2.
 * Design de um sistema que elimine ou aprimore as deficiências do método de ensalamento anterior
