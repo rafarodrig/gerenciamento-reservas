@@ -27,6 +27,7 @@ Figura 1 – Planilha do Excel da unidade 1.
 
 ![planilha unidade 2](https://github.com/user-attachments/assets/f2828388-fd45-4018-81d3-3a97807165bd)
 Figura 1 – Planilha do Excel da unidade 2.
+
 ---
 
 ## 🎯 Objetivos
