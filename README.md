@@ -51,9 +51,9 @@ A definição tecnológica considerou critérios como escalabilidade, curva de a
 
 | Categoria           | Tecnologia/Ferramenta   | Justificativa                                                    |
 | ------------------- | ----------------------- | ---------------------------------------------------------------- |
-| Linguagem Back-End  | Laravel                 | Familiaridade com a linguagem de programação php                 |
+| Linguagem Back-End  | Php                     | Familiaridade com a linguagem de programação php                 |
 | Framework Front-End | React                   | Flexibilidade e facilidade de criação de interfaces responsivas. |
-| Banco de Dados      | MySQL                  | Robustos e com suporte a transações e consultas complexas.       |
+| Banco de Dados      | MySQL                   | Robustos e com suporte a transações e consultas complexas.       |
 | IDE                 | Visual Studio Code      | Suporte amplo a extensões e produtividade.                       |
 | Versionamento       | Git / GitHub            | Padrão da indústria para colaboração e controle de versões.      |
 | Modelagem de Dados  | Draw\.io / dbdiagram.io | Ferramentas intuitivas para ERD e documentação visual.           |
