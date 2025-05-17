@@ -53,9 +53,9 @@ A definição tecnológica considerou critérios como escalabilidade, curva de a
 
 | Categoria           | Tecnologia/Ferramenta   | Justificativa                                                    |
 | ------------------- | ----------------------- | ---------------------------------------------------------------- |
-| Linguagem Back-End  | Node.js / Python        | Alta compatibilidade com APIs REST e bibliotecas modernas.       |
-| Framework Front-End | React / Vue.js          | Flexibilidade e facilidade de criação de interfaces responsivas. |
-| Banco de Dados      | PostgreSQL / MySQL      | Robustos e com suporte a transações e consultas complexas.       |
+| Linguagem Back-End  | Laravel                 | Familiaridade com a linguagem de programação php                 |
+| Framework Front-End | React                   | Flexibilidade e facilidade de criação de interfaces responsivas. |
+| Banco de Dados      | MySQL                  | Robustos e com suporte a transações e consultas complexas.       |
 | IDE                 | Visual Studio Code      | Suporte amplo a extensões e produtividade.                       |
 | Versionamento       | Git / GitHub            | Padrão da indústria para colaboração e controle de versões.      |
 | Modelagem de Dados  | Draw\.io / dbdiagram.io | Ferramentas intuitivas para ERD e documentação visual.           |
@@ -123,9 +123,3 @@ A validação da solução será conduzida por meio de:
 * Documentação oficial das tecnologias utilizadas (React, Node.js, PostgreSQL, etc.)
 
 ---
-
-### ✅ A seguir: extração das imagens.
-
-Vou extrair agora as imagens do PDF para que você possa adicioná-las ao repositório na pasta `/imagens`. Deseja que eu gere as imagens em **.png** ou **.jpg**? Deseja também que renomeie as imagens como `planilha_unidade_1.png`, `planilha_unidade_2.png`?
-
-Posso prosseguir?
