@@ -22,14 +22,11 @@ Essa limitação impacta diretamente na eficiência da equipe administrativa e n
 
 **Figuras ilustrativas do processo atual:**
 
-<p align="center">
-  <img src="./imagens/planilha_unidade_1.png" alt="Planilha Unidade 1" width="600"/>
-</p>
+![planilha unidade 1](https://github.com/user-attachments/assets/ef641b58-6ea2-492a-8df3-bea262ecc749)
+Figura 1 – Planilha do Excel da unidade 1.
 
-<p align="center">
-  <img src="./imagens/planilha_unidade_2.png" alt="Planilha Unidade 2" width="600"/>
-</p>
-
+![planilha unidade 2](https://github.com/user-attachments/assets/f2828388-fd45-4018-81d3-3a97807165bd)
+Figura 1 – Planilha do Excel da unidade 2.
 ---
 
 ## 🎯 Objetivos
