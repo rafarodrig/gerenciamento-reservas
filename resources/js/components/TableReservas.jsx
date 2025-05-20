@@ -1,14 +1,22 @@
 import { Table, Button, Alert } from 'react-bootstrap';
+import UnidadeNav from './NavUnidades';
 
 
-const ReservaTable = ({ reservas }) => {
-  if (!reservas || reservas.length === 0) {
+export default function ReservaTable({ data }) {
+
+  console.log(data)
+  let reservas = data.reservas.data
+  if (!reservas || reservas === 0) {
     return <Alert variant="warning">Nenhum resultado encontrado</Alert>;
   }
 
   return (
     <>
-      <Table striped bordered hover responsive className="align-middle tabela-consulta">
+    <br /> 
+    <UnidadeNav unidade={data.unidade} url={data.url} />
+    <br /> 
+
+      <Table hover responsive className="table table-striped align-middle tabela-consulta">
         <thead>
           <tr>
             <th>Sala</th>
@@ -22,10 +30,10 @@ const ReservaTable = ({ reservas }) => {
           </tr>
         </thead>
         <tbody>
-          {/* {reservas.map((reserva) => (
+          {reservas.map((reserva) => (
             <tr key={reserva.id}>
               <td>{`${reserva.sala.numero} - ${reserva.sala.tipo}`}</td>
-              <td>{reserva.dataFormatted}</td>
+              <td>{reserva.data}</td>
               <td>{reserva.turma.turno}</td>
               <td>{reserva.turma.tipo}</td>
               <td>{reserva.turma.nome}</td>
@@ -37,22 +45,23 @@ const ReservaTable = ({ reservas }) => {
                     variant="primary"
                     size="sm"
                     // onClick={() => handleEdit(reserva.id)}
-                  >
+                    >
                     Editar
                   </Button>
                   <Button
                     variant="danger"
                     size="sm"
                     // onClick={() => handleDelete(reserva.id)}
-                  >
+                    >
                     Deletar
                   </Button>
                 </div>
               </td>
             </tr>
-          ))} */}
+          ))}
         </tbody>
       </Table>
+    
 
       {/* Pagination Component Placeholder */}
       <div className="d-flex justify-content-center mt-3">
@@ -61,5 +70,5 @@ const ReservaTable = ({ reservas }) => {
       </div>
     </>
   );
+
 };
-export default ReservaTable;

@@ -1,45 +1,52 @@
-import NavBar from '@/components/NavBar';
-import { Head, useForm } from '@inertiajs/react';
+import { Head} from '@inertiajs/react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
+import Layout from '@/Layouts/Layout';
+import React, { useState, Suspense, useForm } from 'react';
+import axios from 'axios';
 
-// import { createRoot } from 'react-dom/client';
-// const root = createRoot(document.getElementById('container-tabela'))
-// root.render(<Image />);
-
+const TabelaReservas = React.lazy(() => import('../Components/TableReservas'));
 
 
 export default function ConsultarReserva({dataAtual,pagina_titulo,dataAtualFormatada,numeros}) {
-  
-  const { data, setData, get, processing, errors} = useForm({
+
+  const [showTabela, setShowTabela] = useState(false);
+  const [reservas, setReservas] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const { data, setData} = useState({
     turma : "",
-    numero: "",
+    sala: "",
     docente: "",
     curso: "",
     data_inicio: dataAtual,
     data_fim: "",
     reserva_tipo: "",
     reserva_status: "Ativa"
-
+    
   });
-
   
-  const buscar = (e) => {
-      e.preventDefault() 
-
-      get(route('reservas.index'), {
-            onSuccess: (data) => {
-              
-              console.log(data)
-
-            }
-        });
-    }
+  const buscar = async (e) => {
+    e.preventDefault()
+    console.log(data)
+        setLoading(true);
+        try {
+            const response = await axios.get('/reservas', {params:data});
+            setReservas(response.data);
+            setShowTabela(true);
+        } catch (error) {
+            console.error('Error fetching users', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
 return (
 <>
 
-<NavBar></NavBar>
+
 <Head title="Consultar Reservas" />
+<Layout>
+  
   <nav>
     <Form 
       className="row g-3 form-consulta m-auto mt-5"
@@ -59,9 +66,9 @@ return (
               type="text"
               id="inp-consulta-turma"
               name="turma"
-              value={data.turma}
+              // value={data.turma}
               onChange={(e) => setData('turma', e.target.value)} 
-            />
+              />
         </Col>
 
       {/* Docente */}
@@ -71,7 +78,7 @@ return (
               type="text" 
               id="inp-consulta-docente" 
               name="docente"
-              value={data.docente} 
+              // value={data.docente} 
               onChange={(e) => setData('docente', e.target.value)} 
               />
           </Col>
@@ -83,7 +90,7 @@ return (
               type="text" 
               id="inp-consulta-curso" 
               name="curso" 
-              value={data.curso} 
+              // value={data.curso} 
               onChange={(e) => setData('curso', e.target.value)} 
               />
           </Col>
@@ -95,7 +102,7 @@ return (
               type="date"
               id="inp-consulta-data-inicio"
               name="data-inicio"
-              value={data.data_inicio} 
+              // value={data.data_inicio} 
               onChange={(e) => setData('data_inicio', e.target.value)}
               />
           </Col>
@@ -108,7 +115,7 @@ return (
               id="inp-consulta-data-fim"
               name="data-fim"
               onChange={(e) => setData('data_fim', e.target.value)}
-            />
+              />
             <Form.Control.Feedback type="invalid">
               A data final não pode ser maior que a data inicial
             </Form.Control.Feedback>
@@ -121,7 +128,7 @@ return (
               id="inp-consulta-sala" 
               name="sala" defaultValue="" 
               onChange={(e) => setData('numero', e.target.value)}
-            >
+              >
               <option value="">Qualquer</option>
               {/* Dynamically inject room options here */}
               {numeros.map((numero) => <option key={numero} value={numero}>{numero}</option>)}
@@ -136,7 +143,7 @@ return (
               name="turno" 
               defaultValue="" 
               onChange={(e) => setData('turno', e.target.value)}
-            >
+              >
               <option value="">Qualquer</option>
               <option value="Manhã">Manhã</option>
               <option value="Tarde">Tarde</option>
@@ -170,7 +177,7 @@ return (
             <Form.Select
               id="inp-reserva-status"
               name="reserva_status"
-              value={data.reserva_status}
+              // value={data.reserva_status}
               onChange={(e) => setData('reserva_status', e.target.value)}
               
               >
@@ -193,6 +200,17 @@ return (
       </Row>
     </Form>
   </nav>
-  <div class="container-fluid my-4 " id="container-tabela" ></div>
+  
+<div class="container-fluid my-4 " id="container-tabela" >
+
+      {loading && <p className="mt-4">Fetching data...</p>}
+        {showTabela && (
+
+          <Suspense fallback={<div>Loading component...</div>}>
+                    <TabelaReservas data={reservas} />
+                </Suspense>
+            )}
+  </div>
+</Layout>
 </>
 )}

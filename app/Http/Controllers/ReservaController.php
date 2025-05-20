@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Inertia\Inertia;
 
-
-
 class ReservaController extends Controller
 
 {
@@ -23,17 +21,18 @@ class ReservaController extends Controller
     {   
         
         $request->mergeIfMissing(['unidade' => 1]);
+        
 
         $query =  Reserva::with(["sala","turma"]);
-        if($request->filled("data-inicio")) $query->where("data", '>=',  $request->input("data-inicio"));
-        if($request->filled("data-fim")) $query->where("data", '<=',  $request->input("data-fim"));
+        if($request->filled("data_inicio")) $query->where("data", '>=',  $request->data_inicio);
+        if($request->filled("data_fim")) $query->where("data", '<=',  $request->data_fim);
 
         $query->whereHas('turma', function (Builder $query) use ($request) {
             if($request->filled("docente")) $query->where("docente", 'LIKE', '%' . $request->docente . '%' ) ;
             if($request->filled("curso")) $query->where("curso", 'LIKE', '%' . $request->curso . '%' ) ;
             if($request->filled("turma")) $query->where("nome", 'LIKE', '%' . $request->turma . '%' ) ;
             if($request->filled("turno")) $query->where("turno", '=',  $request->turno);
-            if($request->filled("tipo-reserva")) $query->where("turma.tipo", '=',  $request->input("tipo-reserva"));
+            if($request->filled("reserva_tipo")) $query->where("turma.tipo", '=',  $request->reserva_tipo);
         });
 
         $query->whereHas('sala', function (Builder $query) use ($request) {    
@@ -42,8 +41,11 @@ class ReservaController extends Controller
         });
 
         $reservas = $query->paginate(20)->appends($request->query());
+
         
-        return Inertia::render("Reservas/TableReservas", ["reservas" => $reservas]);
+        
+        return response()->json( ["query"=>$request->query(),"reservas" => $reservas,'unidade' => $request->unidade , 'url' => $request->fullUrlWithoutQuery(['unidade','page'])]);
+        // return Inertia::render("Reservas/TableReservas", ["res" => $reservas]);
         // return Inertia::render("Reservas/TableReservas", ["reservas" => $reservas,'unidade' => $request->unidade , 'url' => $request->fullUrlWithoutQuery(['unidade','page'])]);
     }
 
