@@ -1,5 +1,7 @@
-
 import * as app from './app'
+import { reqServidor } from './utils/http';
+import * as tabela from './components/tables';
+import * as modal from './components/modals';
 
 
 //BTN CANCELAR FORM SALAS
@@ -16,7 +18,7 @@ $(document).on("click","#btn-cadastrar-sala", function(){
 //submit modal cadastrar => server
 $(document).on("submit","#form-cadastrar-sala", function (e) {
     e.preventDefault()
-    app.reqServidor("POST","/salas", $(this).serialize(), app.refreshTabela)
+    reqServidor("POST","/salas", $(this).serialize(), tabela.refreshTabela)
 }) 
 
 
@@ -25,32 +27,15 @@ $(document).on("submit","#form-cadastrar-sala", function (e) {
 //btn editar GET sala dados => server 
 $(document).on("click",".btn-editar-sala",function (e) {
     e.preventDefault() 
-    app.reqServidor("GET",$(this).attr("href"), {}, modalEditarSalaDados)
+    reqServidor("GET",$(this).attr("href"), {}, modal.editSala)
 });
 
-// server sala dados => modal editar sala
-function modalEditarSalaDados(sala){
-    if(sala.unidade == 1){
-        $("#inp-editar-unidade-1").prop("checked", true)
-    } else {
-        $("#inp-editar-unidade-2").prop("checked", true)
-    }
 
-    $("#inp-editar-numero").val(sala.numero)
-    $("#inp-editar-tipo").val(sala.tipo)
-    $("#inp-editar-maquinas-qtd").val(sala.maquinas_qtd)
-    $("#inp-editar-maquinas-tipo").val(sala.maquinas_tipo)
-    $("#inp-editar-lotacao").val(sala.lotacao)
-    $("#inp-editar-descricao").val(sala.descricao)
-    $("#form-editar-sala").attr("action","/salas/"+sala.id)
-
-    $("#modal-editar-sala").modal("show")
-}
 
 // submit modal editar => server
 $(document).on("submit","#form-editar-sala", function (e) {
     e.preventDefault()
-    app.reqServidor("PATCH",$(this).attr("action"), $(this).serialize(), app.refreshTabela)
+    reqServidor("PATCH",$(this).attr("action"), $(this).serialize(), tabela.refreshTabela)
 }) 
 
 
@@ -65,7 +50,7 @@ $(document).on("click", ".btn-deletar-sala", function(e){
 $(document).on("submit","#form-deletar-sala", function (e) {
     e.preventDefault()
     let form = $(this)
-    app.reqServidor("DELETE", form.attr("action"),form.serialize(),app.refreshTabela)
+    reqServidor("DELETE", form.attr("action"),form.serialize(), tabela.refreshTabela)
 })
 
 

@@ -2,6 +2,11 @@
 //     $("#form-consultar-reservas").submit()
 // });
 import * as app from './app'
+import {diaSemana , converterData} from './utils/dates'
+import { reqServidor } from './utils/http';
+import * as modal from './components/modals';
+import * as tabela from './components/tables';
+import * as form_modal from './components/forms';
 
 
 $(document).on('submit','#form-consultar-reservas', function (e) {
@@ -31,7 +36,7 @@ $(document).on('click','.btn-deletar-reserva', function () {
 $(document).on('submit', '#form-deletar-reserva', function (e) { 
     e.preventDefault();
     
-    app.reqServidor("DELETE",$(this).attr("action"), $(this).serialize(), app.refreshTabela)
+    reqServidor("DELETE",$(this).attr("action"), $(this).serialize(), tabela.refreshTabela)
 })
     
 // BOTAO EDITAR
@@ -39,13 +44,13 @@ $(document).on('submit', '#form-deletar-reserva', function (e) {
 $(document).on('click','.btn-editar-reserva', function () {
     let href = $(this).attr("href")
 
-    app.reqServidor("GET", href ,{}, function(reserva){
+    reqServidor("GET", href ,{}, function(reserva){
 
         $("#form-editar-reserva").attr("action", href)
-        app.mostrarSalaDados(reserva.sala)
-        app.mostrarTurmaDados(reserva.turma)
+        modal.showSala(reserva.sala)
+        modal.editTurma(reserva.turma)
 
-        app.reqServidor("GET","/turmas",{'disponiveis-troca': true, 'id-reserva':reserva.id}, app.mostrarOptionsTurmas)
+        reqServidor("GET","/turmas",{'disponiveis-troca': true, 'id-reserva':reserva.id}, modal.showOptionsTurmas)
 
         dadosReservaModalEditarReserva(reserva)
         $("#modal-editar").modal("show")
@@ -58,7 +63,8 @@ $(document).on('submit','#form-editar-reserva', function(e){
     e.preventDefault()
     
     app.logJSON($(this).serialize())
-    app.reqServidor("PATCH",$(this).attr('action'), $(this).serialize() , app.refreshTabela)
+
+    reqServidor("PATCH",$(this).attr('action'), $(this).serialize() , tabela.refreshTabela)
 
 })
     
@@ -70,17 +76,14 @@ function gerarTabelaReservas(){
 
     app.logJSON(form)
 
-    app.reqServidor("GET","/reservas", form , function(res){        
-        $("#container-tabela").css("visibility","visible")
-        $("#container-tabela").html(res)
-    })
+    reqServidor("GET","/reservas", form , tabela.showTabela)
 
 }
 
 
 function dadosReservaModalEditarReserva(reserva){
     const turma = reserva.turma
-    app.mostrarReservaDados(app.converterData(reserva.data), turma.tipo, turma.turno)
+    modal.showReserva(converterData(reserva.data), turma.tipo, turma.turno)
     $("#inp-responsavel-cadastro").val(reserva.responsavel_cadastro)
     
 }

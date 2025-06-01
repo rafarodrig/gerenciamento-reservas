@@ -23,6 +23,7 @@
                     <li class="nav-item"><x-nav-link href="/cadastrar-reservas" :active="request()->is('cadastrar-reservas')">Cadastrar Reservas</x-nav-link></li>
                     <li class="nav-item"><x-nav-link href="/gerenciar-salas" :active="request()->is('gerenciar-salas')">Gerenciar Salas</x-nav-link></li>
                 </ul>
+                
             </div>
         </div>
     </nav>
