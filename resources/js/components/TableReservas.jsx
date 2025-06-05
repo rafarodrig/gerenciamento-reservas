@@ -1,21 +1,39 @@
 import { Table, Button, Alert } from 'react-bootstrap';
-import UnidadeNav from './NavUnidades';
+import { Pagination } from 'react-bootstrap';
+import EditarReservaModal from './modals/EditarReservaModal';
+import { useState } from 'react';
 
-
-export default function ReservaTable({ data }) {
+export default function ReservaTable({ data, onPageChange }) {
 
   console.log(data)
-  let reservas = data.reservas.data
-  if (!reservas || reservas === 0) {
+  const lastPage = data.reservas.last_page
+  const currentPage = data.reservas.current_page
+  const reservas = data.reservas.data
+
+  const [showModal, setShowModal] = useState(false);
+  const [reservaSelecionada, setReservaSelecionada] = useState(null);
+  const [turmas, setTurmas] = useState([]);
+
+  const handleEdit = async (id) => {
+    try {
+      const response = await axios.get(`/reservas/${id}`);
+      console.log(response.data)
+      setReservaSelecionada(response.data);
+      setTurmas(response.data.turmas || []);
+      setShowModal(true);
+    } catch (error) {
+      console.error("Erro ao buscar reserva:", error);
+      alert("Erro ao carregar os dados da reserva.");
+    }
+  };
+
+
+  if (!reservas || reservas.length === 0) {
     return <Alert variant="warning">Nenhum resultado encontrado</Alert>;
   }
 
   return (
     <>
-    <br /> 
-    <UnidadeNav unidade={data.unidade} url={data.url} />
-    <br /> 
-
       <Table hover responsive className="table table-striped align-middle tabela-consulta">
         <thead>
           <tr>
@@ -44,7 +62,7 @@ export default function ReservaTable({ data }) {
                   <Button
                     variant="primary"
                     size="sm"
-                    // onClick={() => handleEdit(reserva.id)}
+                    onClick={() => handleEdit(reserva.id)}
                     >
                     Editar
                   </Button>
@@ -61,13 +79,24 @@ export default function ReservaTable({ data }) {
           ))}
         </tbody>
       </Table>
-    
-
-      {/* Pagination Component Placeholder */}
-      <div className="d-flex justify-content-center mt-3">
-        {/* Example: render custom pagination here */}
-        {/* You can use react-bootstrap Pagination or your own */}
-      </div>
+    <Pagination className="justify-content-center mt-3">
+        {[...Array(lastPage)].map((_, i) => (
+          <Pagination.Item
+            key={i + 1}
+            active={i + 1 === currentPage}
+            onClick={() => onPageChange(i + 1)}
+          >
+            {i + 1}
+          </Pagination.Item>
+        ))}
+      </Pagination>
+      {reservaSelecionada && (
+        <EditarReservaModal
+          show={showModal}
+          handleClose={() => setShowModal(false)}
+          reserva={reservaSelecionada}
+        />
+      )}
     </>
   );
 

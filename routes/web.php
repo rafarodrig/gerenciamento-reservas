@@ -40,9 +40,10 @@ Route::get('/gerenciar-salas', [PageController::class,'gerenciarSalas'])->name("
 Route::resource('salas',SalaController::class,[
     'except' => ['edit','create']
 ])->name("get","salas.index");
-// Route::resource('turmas',TurmaController::class,[
-//     'except' => ['edit','create']
-// ]);
+
+Route::resource('turmas',TurmaController::class,[
+    'except' => ['edit','create']
+]);
 
 Route::resource('reservas',ReservaController::class,[
     'except' => ['edit','create']

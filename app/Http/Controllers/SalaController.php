@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sala;
+use App\Models\Reserva;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSalaRequest;
 use App\Http\Requests\UpdateSalaRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+
 
 class SalaController extends Controller
 {
@@ -32,7 +34,13 @@ class SalaController extends Controller
 
                 return view("table.salas-disponiveis", ['salas' => $salas, 'unidade' => $request->unidade , 'url' => $request->fullUrlWithoutQuery(['unidade','page'])]);
 
-            } else {
+            }
+            else if($request->has('disponiveis_troca')){
+                $reserva = Reserva::find($request->id_reserva);
+
+                $salas = Sala::salasDisponiveis($request);
+            }
+            else {
                 $salas = Sala::where('unidade', $request->unidade)->paginate(15)->appends($request->query());
         
                 // return view("table.salas", ['salas' => $salas, 'unidade' => $request->unidade , 'url' =>"/salas?" ]);

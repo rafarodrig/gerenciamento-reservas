@@ -46,6 +46,7 @@ class Turma extends Model
         $turmas = DB::table('reservas as r')
         ->join('turmas as t', 'r.turma_id', '=', 't.id')
         ->join('salas as s', 'r.sala_id', '=', 's.id')
+        ->whereNot('t.id',$turma->id)
         ->where('t.tipo', $turma->tipo)
         ->where('t.turno', $turma->turno)
         ->where('r.data', $data)

@@ -20,7 +20,7 @@ class ReservaController extends Controller
     public function index(Request $request)
     {   
         
-        $request->mergeIfMissing(['unidade' => 1]);
+        // $request->mergeIfMissing(['unidade' => 1]);
         
 
         $query =  Reserva::with(["sala","turma"]);
@@ -32,7 +32,7 @@ class ReservaController extends Controller
             if($request->filled("curso")) $query->where("curso", 'LIKE', '%' . $request->curso . '%' ) ;
             if($request->filled("turma")) $query->where("nome", 'LIKE', '%' . $request->turma . '%' ) ;
             if($request->filled("turno")) $query->where("turno", '=',  $request->turno);
-            if($request->filled("reserva_tipo")) $query->where("turma.tipo", '=',  $request->reserva_tipo);
+            if($request->filled("reserva_tipo")) $query->where("tipo", '=',  $request->reserva_tipo);
         });
 
         $query->whereHas('sala', function (Builder $query) use ($request) {    
@@ -44,7 +44,7 @@ class ReservaController extends Controller
 
         
         
-        return response()->json( ["query"=>$request->query(),"reservas" => $reservas,'unidade' => $request->unidade , 'url' => $request->fullUrlWithoutQuery(['unidade','page'])]);
+        return response()->json( ["query"=>$request->query(),"reservas" => $reservas, 'url' => $request->fullUrlWithoutQuery(['page'])]);
         // return Inertia::render("Reservas/TableReservas", ["res" => $reservas]);
         // return Inertia::render("Reservas/TableReservas", ["reservas" => $reservas,'unidade' => $request->unidade , 'url' => $request->fullUrlWithoutQuery(['unidade','page'])]);
     }

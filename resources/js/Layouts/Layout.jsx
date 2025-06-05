@@ -1,13 +1,22 @@
-import NavBar from '@/components/NavBar'
-import { Link } from '@inertiajs/react'
+import { Container } from 'react-bootstrap';
+import NavBar from '@/components/NavBar';
 
 export default function Layout({ children }) {
   return (
-    <main>
+    <>
       <header>
-        <NavBar></NavBar>
+        <NavBar />
       </header>
-      {children}
-    </main>
-  )
+    {/*  (sm, md, lg, xl, xxl) */}
+      <main className="py-4">
+        <Container fluid="xxl">
+          {children}
+        </Container>
+      </main>
+
+      <footer className="text-center py-4 bg-light mt-auto">
+        <small>&copy; {new Date().getFullYear()} Meu Sistema</small>
+      </footer>
+    </>
+  );
 }

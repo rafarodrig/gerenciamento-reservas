@@ -9,6 +9,7 @@ use App\Http\Requests\StoreTurmaRequest;
 use App\Http\Requests\UpdateTurmaRequest;
 use Illuminate\Http\Request;
 
+use function Pest\Laravel\json;
 
 class TurmaController extends Controller
 {
@@ -23,11 +24,12 @@ class TurmaController extends Controller
             $turmas = Turma::turmasDisponiveisReserva($request);
             return view('option.turmas-disponiveis', ['disponiveis' => $turmas['disponiveis'], 'indisponiveis' => $turmas['indisponiveis']]);
         }
-        else if($request->has('disponiveis-troca')){
-            $reserva = Reserva::find($request->input("id-reserva"));
+        else if($request->has('disponiveis_troca')){
+            $reserva = Reserva::find($request->id_reserva);
             $turma_atual = $reserva->turma;
             $turmas = Turma::turmasDisponiveisTroca($turma_atual,$reserva->data);
-            return view('option.turmas-disponiveis-troca', ["turma_atual" => $turma_atual->id,"turmas" => $turmas]);
+            // return view('option.turmas-disponiveis-troca', ["turma_atual" => $turma_atual->id,"turmas" => $turmas]);
+            return response()->json(["turmas" => $turmas]);
         }
 
         return Turma::all();

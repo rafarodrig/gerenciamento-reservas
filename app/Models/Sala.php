@@ -34,7 +34,6 @@ class Sala extends Model
     //   return Cache::get("salasDisponiveis");
     // }
 
-    // $query = DB::table('salas as s');
     $query = Sala::where('unidade', '=', (int) $request->unidade);
 
     // Add filters dynamically
@@ -61,6 +60,10 @@ class Sala extends Model
 
     return $query->paginate(20)->appends($request->query());
 
+  }
+
+  public static function salasDisponiveisTroca(){
+    
   }
 
   public static function filtrosSalasDisponiveis(Request $request){
