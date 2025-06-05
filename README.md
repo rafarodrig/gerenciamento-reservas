@@ -1,66 +1,131 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+
+# Sistema de Ensalamento do Senac-RS
+
+## 📄 Descrição Geral
+
+Este repositório contém a documentação e os artefatos relacionados ao desenvolvimento de um **sistema de ensalamento** voltado às unidades I e II do **Centro Universitário Senac-RS**, localizado no centro histórico de Porto Alegre.
+
+A aplicação visa substituir o processo manual, realizado atualmente via planilhas Excel, por um sistema web capaz de otimizar o processo de alocação de salas para aulas, eventos acadêmicos e demais atividades da instituição.
+
+---
+
+## 🧩 Definição do Problema
+
+Atualmente, o processo de ensalamento é realizado através de planilhas, tornando-o:
+
+* Demorado e suscetível a erros.
+* Sujeito a conflitos de reserva.
+* Dependente de diversas fontes e planilhas complementares.
+* Pouco escalável diante da demanda institucional crescente.
+
+Essa limitação impacta diretamente na eficiência da equipe administrativa e na organização das atividades letivas da instituição.
+
+**Figuras ilustrativas do processo atual:**
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="./imagens/planilha_unidade_1.png" alt="Planilha Unidade 1" width="600"/>
 </p>
 
-## About Laravel
+<p align="center">
+  <img src="./imagens/planilha_unidade_2.png" alt="Planilha Unidade 2" width="600"/>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🎯 Objetivos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Objetivo Geral
 
-## Learning Laravel
+Desenvolver um sistema web para gerenciamento do ensalamento das unidades 1 e 2 do UniSenac, otimizando a alocação de salas e eliminando os problemas inerentes ao processo atual.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Objetivos Específicos
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* Levantar e mapear os fluxos atuais de trabalho.
+* Projetar um sistema com base nas deficiências observadas.
+* Implementar uma aplicação web que automatize o processo de ensalamento.
+* Validar a solução proposta com os usuários finais.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🛠️ Tecnologias Utilizadas
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+A definição tecnológica considerou critérios como escalabilidade, curva de aprendizagem e compatibilidade com a infraestrutura institucional.
 
-### Premium Partners
+| Categoria           | Tecnologia/Ferramenta   | Justificativa                                                    |
+| ------------------- | ----------------------- | ---------------------------------------------------------------- |
+| Linguagem Back-End  | Node.js / Python        | Alta compatibilidade com APIs REST e bibliotecas modernas.       |
+| Framework Front-End | React / Vue.js          | Flexibilidade e facilidade de criação de interfaces responsivas. |
+| Banco de Dados      | PostgreSQL / MySQL      | Robustos e com suporte a transações e consultas complexas.       |
+| IDE                 | Visual Studio Code      | Suporte amplo a extensões e produtividade.                       |
+| Versionamento       | Git / GitHub            | Padrão da indústria para colaboração e controle de versões.      |
+| Modelagem de Dados  | Draw\.io / dbdiagram.io | Ferramentas intuitivas para ERD e documentação visual.           |
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## 🔧 Descrição da Solução
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+A solução proposta consiste em uma aplicação web composta por:
 
-## Code of Conduct
+* Interface gráfica intuitiva para agendamento e visualização de salas.
+* Sistema de autenticação para controle de acesso.
+* Módulo de verificação automática de conflitos de horários.
+* Integração com a base de dados para gerenciamento centralizado.
+* Funcionalidade de filtro por requisitos de sala (capacidade, equipamentos etc.).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+A arquitetura modular do sistema foi desenvolvida em camadas, separando as responsabilidades entre interface, lógica de negócios e persistência de dados.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🗂️ Artefatos do Projeto
 
-## License
+* Business Model Canvas / MVP Canvas
+* Personas e casos de uso
+* Diagrama Entidade-Relacionamento (ER)
+* Protótipos de interface
+* Relatórios de reuniões e validações
+* Backlog e histórias de usuário
+* Relatórios de Sprint e testes
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## ✅ Validação
+
+A validação da solução será conduzida por meio de:
+
+* Entrevistas com os usuários do setor administrativo.
+* Aplicação de questionários de satisfação.
+* Simulações de uso em cenários reais.
+* Coleta e análise dos dados de desempenho e uso do sistema.
+
+---
+
+## 📊 Resultados Esperados
+
+* Redução no tempo médio de agendamento.
+* Eliminação de conflitos de reservas.
+* Aumento da confiabilidade no processo de ensalamento.
+* Facilidade de visualização e controle do uso das salas.
+
+---
+
+## ⚠️ Limitações e Perspectivas Futuras
+
+* Integração com sistemas acadêmicos institucionais.
+* Desenvolvimento de um aplicativo móvel.
+* Inclusão de relatórios gerenciais em tempo real.
+* Melhorias contínuas a partir de feedback dos usuários.
+
+---
+
+## 📚 Referências Bibliográficas
+
+* WAZLAWICK, Raul Sidnei. *Metodologia de pesquisa para ciência da computação*. Rio de Janeiro: Elsevier, 2009.
+* Documentação oficial das tecnologias utilizadas (React, Node.js, PostgreSQL, etc.)
+
+---
+
+### ✅ A seguir: extração das imagens.
+
+Vou extrair agora as imagens do PDF para que você possa adicioná-las ao repositório na pasta `/imagens`. Deseja que eu gere as imagens em **.png** ou **.jpg**? Deseja também que renomeie as imagens como `planilha_unidade_1.png`, `planilha_unidade_2.png`?
+
+Posso prosseguir?
