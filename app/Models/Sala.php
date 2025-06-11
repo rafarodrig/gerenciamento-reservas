@@ -59,11 +59,23 @@ class Sala extends Model
     }
 
     return $query->paginate(20)->appends($request->query());
-
+    
   }
 
-  public static function salasDisponiveisTroca(){
-    
+  public static function salasDisponiveisTroca(Sala $sala_atual, $data){
+     return Sala::leftJoin('reservas as r', function ($join) use ($data) {
+            $join->on('salas.id', '=', 'r.sala_id')
+                ->whereDate('r.data', $data);
+        })
+        ->leftJoin('turmas as t', 'r.turma_id', '=', 't.id')
+        ->select(
+            'salas.id',
+            'salas.unidade',
+            'salas.numero',
+            't.id as turma_id',
+            't.nome as turma_nome'
+        )
+        ->get();
   }
 
   public static function filtrosSalasDisponiveis(Request $request){

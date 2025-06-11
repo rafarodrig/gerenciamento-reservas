@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function OptionsSalas({ id, show }) {
+export default function OptionsSalas({ id}) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    if (!show || !id) return; // só busca se o modal estiver visível e houver id
+    if (!id) return; // só busca se o modal estiver visível e houver id
 
     async function fetchData() {
       try {
@@ -15,6 +15,8 @@ export default function OptionsSalas({ id, show }) {
             id_reserva: id,
           },
         });
+
+        console.log(response.data)
         setOptions(response.data.salas || []);
 
       } catch (error) {
@@ -24,15 +26,16 @@ export default function OptionsSalas({ id, show }) {
     }
 
     fetchData();
-  }, [id, show]);
+  }, [id]);
 
-  return (
-    <>
-      {options.map((sala) => (
-        <option key={sala.id} value={sala.id}>
-          {sala.numero} - Unidade {sala.unidade} 
-        </option>
-      ))}
-    </>
-  );
+ return (
+  <>
+    {options.map((sala) => (
+      <option key={sala.id} value={sala.id}>
+        {sala.numero} - Unidade {sala.unidade} - {' '}
+        {sala.turma_id ? sala.turma_nome : 'Disponível'}
+      </option>
+    ))}
+  </>
+);
 }

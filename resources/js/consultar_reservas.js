@@ -56,7 +56,6 @@ $(document).on('click','.btn-editar-reserva', function () {
 // SUBMIT FORM-MODAL EDITAR RESERVA
 $(document).on('submit','#form-editar-reserva', function(e){
     e.preventDefault()
-    
     app.logJSON($(this).serialize())
     app.reqServidor("PATCH",$(this).attr('action'), $(this).serialize() , app.refreshTabela)
 

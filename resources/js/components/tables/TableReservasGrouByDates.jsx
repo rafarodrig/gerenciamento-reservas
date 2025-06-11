@@ -1,8 +1,9 @@
 import { Table, Button, Alert, Pagination } from 'react-bootstrap';
-import EditarReservaModal from './modals/EditarReservaModal';
+import EditarReservaModal from '../modals/EditarReservaModalV1';
 import { useState } from 'react';
 import { converterData } from '@/dates';
 import axios from 'axios';
+import ModalEditarReservaComfirmacao from '../modals/ConfirmarEditarReservaModal';
 
 function getUniqueValues(arr, key) {
   return [...new Set(arr.map((item) => item[key]))];
@@ -15,7 +16,8 @@ export default function ReservaTable({ data, onPageChange }) {
 
   const uniqueDates = getUniqueValues(reservas, "data");
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
   const [reservaSelecionada, setReservaSelecionada] = useState(null);
   const [turmas, setTurmas] = useState([]);
 
@@ -24,7 +26,7 @@ export default function ReservaTable({ data, onPageChange }) {
       const response = await axios.get(`/reservas/${id}`);
       setReservaSelecionada(response.data);
       setTurmas(response.data.turmas || []);
-      setShowModal(true);
+      setShowModal1(true);
     } catch (error) {
       console.error("Erro ao buscar reserva:", error);
       alert("Erro ao carregar os dados da reserva.");
@@ -41,8 +43,8 @@ export default function ReservaTable({ data, onPageChange }) {
         const reservasPorData = reservas.filter((r) => r.data === dataStr);
         return (
           <div key={dataStr}>
-            <h5 className="mt-4 mb-2">Reservas do dia { converterData(dataStr)}</h5>
-            <Table hover responsive className="table table-striped align-middle tabela-consulta">
+            <h5 className="mt-3">Reservas do dia { converterData(dataStr)}</h5>
+            <Table hover responsive className="table table-striped  table-sm align-middle table-borderless tabela-consulta">
               <thead>
                 <tr>
                   <th>Sala</th>
@@ -102,11 +104,20 @@ export default function ReservaTable({ data, onPageChange }) {
       </Pagination>
 
       {reservaSelecionada && (
+        <>
         <EditarReservaModal
-          show={showModal}
-          handleClose={() => setShowModal(false)}
+          showModal1={showModal1}
+          setShow={() => setShowModal2(true)}
+          handleCloseModal1={() => setShowModal1(false)}
           reserva={reservaSelecionada}
         />
+        <ModalEditarReservaComfirmacao
+         showModal2={showModal2}
+          handleCloseModal2={() => {
+            setShowModal2(false); 
+            setShowModal1(true)}} 
+          />
+        </>
       )}
     </>
   );

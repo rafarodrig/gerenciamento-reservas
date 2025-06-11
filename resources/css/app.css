@@ -14,14 +14,14 @@
 
 
 .table{
-    vertical-align: middle;
+    /* vertical-align: middle; */
     text-align: center;
-    --bs-table-bg: none;
+    /* --bs-table-bg: none; */
 }
 
 .form-consulta, #container-tabela, #container-filtros{
     background-color: rgba(var(--bs-light-rgb), 1);
-    width: 90%;
+    /* width: 90%; */
     border: 1px solid var(--bs-border-color);
     border-radius: 12px;
 }
@@ -40,11 +40,6 @@
 .form-consulta{
     padding: 30px;
 }
-
-#container-tabela, #container-filtros{
-    /* visibility: hidden; */
-}
-
 
 /* BOTOES =========================================== */
 

@@ -38,7 +38,9 @@ class SalaController extends Controller
             else if($request->has('disponiveis_troca')){
                 $reserva = Reserva::find($request->id_reserva);
 
-                $salas = Sala::salasDisponiveis($request);
+                $salas = Sala::salasDisponiveisTroca($reserva->sala,$reserva->data);
+
+                return response()->json(["salas" => $salas]);
             }
             else {
                 $salas = Sala::where('unidade', $request->unidade)->paginate(15)->appends($request->query());

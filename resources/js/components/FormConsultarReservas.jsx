@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import {Nav, Form, Row, Col, Button } from 'react-bootstrap';
 import TituloData from '@/components/TituloData';
 
 export default function ReservaForm({ formData: initialData, onBuscar, numeros, pagina_titulo, dataAtualFormatada }) {
@@ -19,9 +19,9 @@ const handleSubmit = (e) => {
   };
     return (
 <>
-    <nav>
+    <Nav >
         <Form 
-        className="row g-3 form-consulta m-auto mt-5"
+        className="row g-3 form-consulta m-auto mt-5" 
         id="form-consultar-reservas"
         method="get"
         onSubmit={handleSubmit}>
@@ -185,6 +185,6 @@ const handleSubmit = (e) => {
             </Col>
         </Row>
         </Form>
-    </nav>
+    </Nav>
   </>);
 };

@@ -40,13 +40,9 @@ class ReservaController extends Controller
             if($request->filled("sala")) $query->where("numero", '=',  $request->sala);
         });
 
-        $reservas = $query->paginate(20)->appends($request->query());
+        $reservas = $query->orderBy("data")->paginate(20)->appends($request->query());
 
-        
-        
         return response()->json( ["query"=>$request->query(),"reservas" => $reservas, 'url' => $request->fullUrlWithoutQuery(['page'])]);
-        // return Inertia::render("Reservas/TableReservas", ["res" => $reservas]);
-        // return Inertia::render("Reservas/TableReservas", ["reservas" => $reservas,'unidade' => $request->unidade , 'url' => $request->fullUrlWithoutQuery(['unidade','page'])]);
     }
 
     /**
@@ -127,24 +123,20 @@ class ReservaController extends Controller
     public function update(UpdatereservaRequest $request, Reserva $reserva)
     {   
         
-        $tipo = $request->input("editar-reserva");
-        
-        
+        $tipo = $request->editar_reserva;
         
         $turma_nova = $request->turma;
         
         $turma = $reserva->turma_id;
         
-        $dados = ["responsavel_cadastro" => $request->input("responsavel-cadastro")];
-        $dados["turma_id"] =  $turma;
+        $dados = ["responsavel_cadastro" => $request->responsavel_cadastro];
+        $dados["turma_id"] =  $turma;   
         
-
         switch ($tipo) {
             case 'atual':
                 
                 $res = Reserva::where("turma_id",$turma_nova)->where("data",$reserva->data)->update($dados);
                 $reserva->update(["turma_id" => $turma_nova]);
-
                 break;
             case 'todos':
                 $reservas_ids = Reserva::where("turma_id",$turma)->get("id");
@@ -162,7 +154,7 @@ class ReservaController extends Controller
                 }
 
                 $msg = $res > 1 ? "$res reservas atualizadas com sucesso": "Reserva atualizada com sucesso";
-                return response()->json(["message"=> $msg],200);
+                return response()->json(["msg"=> $msg],200);
         
     }
 

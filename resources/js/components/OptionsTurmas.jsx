@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function OptionsTurmas({ id, show }) {
+export default function OptionsTurmas({ id}) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    if (!show || !id) return; // só busca se o modal estiver visível e houver id
+    if (!id) return; // só busca se o modal estiver visível e houver id
 
     async function fetchData() {
       try {
@@ -24,7 +24,7 @@ export default function OptionsTurmas({ id, show }) {
     }
 
     fetchData();
-  }, [id, show]);
+  }, [id]);
 
   return (
     <>

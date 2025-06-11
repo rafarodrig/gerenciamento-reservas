@@ -3,7 +3,8 @@ import Layout from '@/Layouts/Layout';
 import React, { useState, Suspense } from 'react';
 
 import ReservaForm from '@/components/FormConsultarReservas';
-const TabelaReservas = React.lazy(() => import('../Components/TableReservas'));
+import EditarReservaModal from '@/components/containers/EditarReservaContainer';
+const TabelaReservas = React.lazy(() => import('../components/tables/TableReservasGrouByDatesV3'));
 
 export default function ConsultarReserva({dataAtual, pagina_titulo, dataAtualFormatada, numeros}) {
 
@@ -11,6 +12,7 @@ export default function ConsultarReserva({dataAtual, pagina_titulo, dataAtualFor
   const [showTabela, setShowTabela] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [reservaSelecionada, setReservaSelecionada] = useState(null);
 
   const [formData, setFormData] = useState({
       turma: "",
@@ -34,7 +36,7 @@ export default function ConsultarReserva({dataAtual, pagina_titulo, dataAtualFor
             setCurrentPage(page);
             setShowTabela(true);
             setIsActive(true);
-            // if (customFormData) setFormData(customFormData);
+            if (customFormData) setFormData(customFormData);
         } catch (error) {
             console.error('Error ', error);
         } finally {
@@ -50,7 +52,6 @@ return (
 <>
 <Head title="Consultar Reservas" />
 <Layout>
-  
   <ReservaForm
         formData={formData}
         currentPage={currentPage}
@@ -60,16 +61,19 @@ return (
         dataAtualFormatada={dataAtualFormatada}
       />
   
-<div style={divStyle} class="container-fluid my-4 " id="container-tabela" >
+<div style={divStyle} className="container-fluid my-4 " id="container-tabela" >
   <br />
-      {/* {loading && <p className="mt-4">Fetching data...</p>} */}
         {showTabela && (
-
           <Suspense >
-                    <TabelaReservas  onPageChange={(page) => buscar(page)} data={reservas} />
-                </Suspense>
-            )}
+                <TabelaReservas  onPageChange={(page) => buscar(page)} data={reservas} setReservaSelecionada={(id) => setReservaSelecionada(id)} />
+          </Suspense>
+        )}
   </div>
+    <EditarReservaModal
+              reservaId={reservaSelecionada}
+              onResetId={() => setReservaSelecionada(null)}
+              onResult={() => buscar(currentPage,null)}
+            />
 </Layout>
 </>
 )}
