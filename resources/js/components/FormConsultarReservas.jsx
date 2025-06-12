@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Nav, Form, Row, Col, Button } from 'react-bootstrap';
 import TituloData from '@/components/TituloData';
 
-export default function ReservaForm({ formData: initialData, onBuscar, numeros, pagina_titulo, dataAtualFormatada }) {
+export default function CadastrarReservaForm({ formData: initialData, onBuscar, numeros, pagina_titulo, dataAtualFormatada }) {
 
   const [formData, setFormData] = useState(initialData);
 

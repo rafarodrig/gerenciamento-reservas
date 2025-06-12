@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect} from 'react';
 import axios from 'axios';
 import EditarReservaModal from '../modals/EditarReservaModalV2';
 import ConfirmarEditarModal from '../modals/ConfirmarEditarReservaModal';
-import AlertaModal from '../modals/AlertaModal';
 
 export default function EditarReservaContainer({ reservaId, onResetId, onResult }) {
   const [formData, setFormData] = useState(null);
@@ -10,9 +9,6 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
 
   const [showFormModal, setShowFormModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [showAlertaModal, setShowAlertaModal] = useState(false);
-  
-  const [alertaMsg, setAlertaMsg] = useState(null);
 
   // Fetch dos dados
   useEffect(() => {
@@ -47,9 +43,9 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
     axios.patch(`/reservas/${reservaId}`, formData)
     .then((res) => { 
       setShowConfirmModal(false);
-      setAlertaMsg(res.data.msg)
-      setShowAlertaModal(true);
-      onResult()
+      onResult(res.data.msg)
+      console.log(res.data.msg)
+      onResetId()
     })
   };
 
@@ -75,9 +71,7 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
         formData={formData}
         setFormData={setFormData}
       />
-      {alertaMsg && (
-        <AlertaModal show={showAlertaModal} msg={alertaMsg} onClose={ () => setShowAlertaModal(false) } onExited={onResetId}  />
-      )}
+      
     </>
   );
 }

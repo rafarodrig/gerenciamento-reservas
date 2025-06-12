@@ -16,9 +16,9 @@ Route::get('/', function () {
 
 Route::get('/consultar-reservas', [PageController::class,'consultarReservas'])->name("consultar-reservas");
 
-// Route::get('/cadastrar-reservas', [PageController::class,'cadastrarReservas']);
+Route::get('/cadastrar-reservas', [PageController::class,'cadastrarReservas'])->name("cadastrar-reservas");
 
-Route::get('/gerenciar-salas', [PageController::class,'gerenciarSalas'])->name("gerenciar-salas");
+// Route::get('/gerenciar-salas', [PageController::class,'gerenciarSalas'])->name("gerenciar-salas");
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [

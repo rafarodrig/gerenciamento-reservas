@@ -10,8 +10,7 @@ export default function EditarReservaModal({
   reserva, 
   onSubmit, 
   formData, 
-  setFormData, 
-  // onExited
+  setFormData,
 }) {
   
 
@@ -29,7 +28,6 @@ export default function EditarReservaModal({
     <Modal 
     show={show} 
     onHide={onCancel} 
-    // onExited={onExited}
     centered size="lg" animation>
       <Modal.Header closeButton className="bg-primary text-white">
         <Modal.Title>

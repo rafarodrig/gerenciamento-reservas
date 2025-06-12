@@ -25,7 +25,7 @@ class PageController extends Controller
             'numeros' => Sala::salasOptions('numero'),
         ];
 
-        return view('cadastrar_reservas', array_merge($pagina_dados, $this->getDatas()));
+        return Inertia::render('CadastrarReservas', array_merge($pagina_dados, $this->getDatas()));
     }
 
     public function consultarReservas(){

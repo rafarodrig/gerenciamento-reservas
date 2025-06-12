@@ -1,26 +1,17 @@
 import { Table, Button, Alert, Pagination, OverlayTrigger, Tooltip, Card } from 'react-bootstrap';
 import { PencilSquare, Trash, Calendar3} from 'react-bootstrap-icons';
-import { useState } from 'react';
 import { converterData } from '@/dates';
 
 function getUniqueValues(arr, key) {
   return [...new Set(arr.map((item) => item[key]))];
 }
 
-export default function ReservaTable({ data, onPageChange, setReservaSelecionada }) {
+export default function ReservaTable({ data, onPageChange, deletarReserva, editarReserva }) {
   const lastPage = data.reservas.last_page;
   const currentPage = data.reservas.current_page;
   const reservas = data.reservas.data;
 
   const uniqueDates = getUniqueValues(reservas, "data");
-
-  const handleEdit = (id) => {
-    setReservaSelecionada(id)
-  };
-
-  const handleDelete = (id) => {
-    setReservaSelecionada(id)
-  };
 
   if (!reservas || reservas.length === 0) {
     return <Alert variant="warning">Nenhum resultado encontrado</Alert>;
@@ -69,7 +60,7 @@ export default function ReservaTable({ data, onPageChange, setReservaSelecionada
                             <Button
                               variant="outline-primary"
                               size="sm"
-                              onClick={() => handleEdit(reserva.id)}
+                              onClick={() => editarReserva(reserva.id)}
                             >
                               <PencilSquare />
                             </Button>
@@ -79,7 +70,7 @@ export default function ReservaTable({ data, onPageChange, setReservaSelecionada
                             <Button
                               variant="outline-danger"
                               size="sm"
-                              onClick={() => handleDelete(reserva.id)}
+                              onClick={() => deletarReserva(reserva.id)}
                             >
                               <Trash />
                             </Button>

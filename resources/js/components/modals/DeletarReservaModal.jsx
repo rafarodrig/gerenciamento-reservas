@@ -1,67 +1,131 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
+import { PencilSquare } from 'react-bootstrap-icons';
+import axios from 'axios';
 
-function ModalDeletarReserva({ show, onHide, onSubmit }) {
-  const [opcao, setOpcao] = useState('atual');
+
+ export default function ModalDeletarReserva({ reservaId, onResetId, onResult}) {
+
+    const [showModal, setShowModal] = useState(true) 
+
+  const [formData, setFormData] = useState({
+    opcao: "atual"
+  })
 
   const handleChange = (e) => {
-    setOpcao(e.target.value);
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
+
+  const handleCancel = () =>{
+    setShowModal(false)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(opcao); // envia a opção selecionada
-    onHide(); // fecha o modal
+      console.log(formData)
+      axios.delete(`/reservas/${reservaId}`,{data: formData})
+      .then((res) => {
+          setShowModal(false)
+          onResult(res.data.msg)
+          onResetId()
+      }).catch(function (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      setShowModal(false)
+      onResult(error.response.data.message);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+    console.log(error.config);
+  });
+  
   };
 
-  return (
-    <Modal show={show} onHide={onHide} centered>
-      <Form onSubmit={handleSubmit}>
-        <Modal.Header closeButton>
-          <Modal.Title>Deletar Reserva</Modal.Title>
-        </Modal.Header>
+if (!reservaId) return null
 
+  return (
+
+    <>
+    <style>{` .radio-vermelho .form-check-input:checked {
+  background-color: red;
+  border-color: red;
+} `}</style>
+
+    <Modal show={showModal} onHide={handleCancel}
+     onExited={onResetId}
+     centered>
+      <Modal.Header closeButton className="bg-danger text-white">
+        <Modal.Title>
+          <PencilSquare className="me-2" />
+          Deletar Reserva
+        </Modal.Title>
+      </Modal.Header>
+
+      <Form onSubmit={handleSubmit}>
         <Modal.Body>
+
+            <p className="text-muted mb-3">
+            Selecione como deseja aplicar a edição desta reserva:
+            </p>
           <Form.Check
             type="radio"
-            id="radio-del-atual"
-            name="del-reservas"
+            name="opcao"
             value="atual"
-            label="Deletar registro atual"
-            checked={opcao === 'atual'}
+            label="Editar somente este registro"
+            defaultChecked
+            className="radio-vermelho mb-2"
             onChange={handleChange}
-          />
+            />
+          <Form.Text className="text-muted ms-4">
+            Altere apenas esta reserva individualmente.
+          </Form.Text>
+
           <Form.Check
             type="radio"
-            id="radio-del-todos"
-            name="del-reservas"
+            name="opcao"
             value="todos"
-            label="Deletar todos os registros"
-            checked={opcao === 'todos'}
+            label="Editar todos os registros relacionados"
+            className="radio-vermelho mt-3 mb-2"
             onChange={handleChange}
-          />
+            />
+          <Form.Text className="text-muted ms-4">
+            Todos os registros relacionados (mesma turma e sala) serão modificados.
+          </Form.Text>
+
           <Form.Check
             type="radio"
-            id="radio-del-apartir"
-            name="del-reservas"
+            name="opcao"
             value="apartir"
-            label="Deletar os registros a partir do atual"
-            checked={opcao === 'apartir'}
+            label="Editar registros a partir deste"
+            className="radio-vermelho mt-3 mb-2"
             onChange={handleChange}
-          />
+            />
+          <Form.Text className="text-muted ms-4">
+            Edita este e os futuros registros relacionados.
+          </Form.Text>
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="primary" type="submit">
-            Deletar
+        <Modal.Footer className="d-flex justify-content-between">
+          <Button variant="secondary" onClick={handleCancel}>
+             Cancelar
           </Button>
-          <Button variant="secondary" onClick={onHide}>
-            Cancelar
+          <Button variant="danger" type='submit'>
+             Deletar
           </Button>
         </Modal.Footer>
       </Form>
     </Modal>
+    </>
   );
 }
-
-export default ModalDeletarReserva;

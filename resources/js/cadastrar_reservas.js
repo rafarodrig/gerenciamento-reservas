@@ -140,7 +140,7 @@ $(document).on('change','#inp-consulta-reserva-tipo', function(){
     }
     else if(this.value == "Graduação"){
         
-        $("#inp-semanas,#inp-consulta-data-fim").prop("disabled",false)
+        $("#inp-semanas, #inp-consulta-data-fim").prop("disabled",false)
     }
     app.checkDatas()
 })

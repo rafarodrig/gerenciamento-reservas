@@ -162,21 +162,28 @@ class ReservaController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Reserva $reserva)
-    {
-        $tipo = request()->input("del-reservas");
+{
+    $opcao = request()->input('opcao');
 
-        if($tipo == "atual"){
-            $res = $reserva->delete();
-        }
-        else if ($tipo == "todos"){
-            $res = Reserva::where("turma_id",$reserva->turma_id)->delete();
-        }
-        else if ($tipo == "apartir"){
-            $res = Reserva::where("turma_id",$reserva->turma_id)
-            ->where("data",">=",$reserva->data)
-            ->delete();
-        }
-        $msg = $res > 1 ? "$res reservas deletadas com sucesso": "Reserva deletada com sucesso";
-        return response()->json(["message"=> $msg],200);
+    // Validação simples
+    if (!in_array($opcao, ['atual', 'todos', 'apartir'])) {
+        return response()->json(['msg' => 'Opção de exclusão inválida.'], 400);
     }
+
+    // Deleção conforme a opção
+    $res = match ($opcao) {
+        'atual' => $reserva->delete(),
+        'todos' => Reserva::where('turma_id', $reserva->turma_id)->delete(),
+        'apartir' => Reserva::where('turma_id', $reserva->turma_id)
+                            ->where('data', '>=', $reserva->data)
+                            ->delete(),
+    };
+
+    // Ajuste de mensagem
+    $msg = ($res && $res > 1)
+        ? "$res reservas deletadas com sucesso"
+        : "Reserva deletada com sucesso";
+
+    return response()->json(['msg' => $msg], 200);
+}
 }
