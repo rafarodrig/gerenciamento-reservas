@@ -12,6 +12,7 @@ export default function ConsultarReserva({dataAtual, pagina_titulo, dataAtualFor
 
   const [reservas, setReservas] = useState([]);
   const [isActive, setIsActive] = useState(false);
+  const [showTabela, setShowTabela] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [editarReserva, setEditarReserva] = useState(null);
   const [deletarReserva, setDeletarReserva] = useState(null);
