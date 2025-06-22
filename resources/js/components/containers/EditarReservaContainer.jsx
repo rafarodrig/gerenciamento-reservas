@@ -1,6 +1,6 @@
 import { useState, useEffect} from 'react';
 import axios from 'axios';
-import EditarReservaModal from '../modals/EditarReservaModalV2';
+import EditarReservaModal from '../modals/EditarReservaModal';
 import ConfirmarEditarModal from '../modals/ConfirmarEditarReservaModal';
 
 export default function EditarReservaContainer({ reservaId, onResetId, onResult }) {
@@ -21,7 +21,7 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
           sala: reserva.sala.id,
           editar_reserva: null
         });
-        setReservaDados(res.data);
+        setReservaDados(reserva);
         setShowFormModal(true);
       });
     }
@@ -39,12 +39,10 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
 
   // Confirmação final
   const handleConfirm = () => {
-    console.log('Enviando dados:', formData);
     axios.patch(`/reservas/${reservaId}`, formData)
     .then((res) => { 
       setShowConfirmModal(false);
       onResult(res.data.msg)
-      console.log(res.data.msg)
       onResetId()
     })
   };
@@ -71,7 +69,6 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
         formData={formData}
         setFormData={setFormData}
       />
-      
     </>
   );
 }

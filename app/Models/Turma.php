@@ -16,11 +16,10 @@ class Turma extends Model
 
     public static function turmasDisponiveisReserva(Request $request){
 
-        $tipo_turma = $request->input('tipo-reserva');
-        $turno = $request->input('turno');
-        $datas = $request->input('datas');
+        $turma_tipo = $request->reserva_tipo;
+        $turno = $request->turno;
 
-        $ids_indisponiveis = TurmaHelper::turmasIndisponiveisIds( $tipo_turma, $datas);
+        $ids_indisponiveis = TurmaHelper::turmasIndisponiveisIds( $turma_tipo, $request->datas);
 
         $disp = [];
         $indisp = [];
@@ -29,7 +28,7 @@ class Turma extends Model
 
         foreach ($turmas as $turma) {
 
-            if($turma->turno == $turno and $turma->tipo == $tipo_turma) {
+            if($turma->turno == $turno and $turma->tipo == $turma_tipo) {
                 if(in_array($turma->id,$ids_indisponiveis)){
                     $indisp[] = $turma;
                 } else {
@@ -37,7 +36,7 @@ class Turma extends Model
                 }
             }
         }
-        return ['disponiveis' => $disp,'indisponiveis' => $indisp];
+        return $disp;
     }
 
     public static function turmasDisponiveisTroca(Turma $turma, $data)

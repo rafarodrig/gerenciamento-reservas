@@ -11,7 +11,7 @@ export default function ConfirmarEditarModal({ show, onConfirm, onCancel, formDa
 
   return (
     <Modal show={show} onHide={onCancel} animation>
-      <Modal.Header closeButton className="bg-primary text-white">
+      <Modal.Header closeButton className="bg-primary text-white" data-bs-theme="dark">
         <Modal.Title>
           <PencilSquare className="me-2" />
           Editar Reserva

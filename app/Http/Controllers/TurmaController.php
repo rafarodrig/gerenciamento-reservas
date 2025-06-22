@@ -20,17 +20,17 @@ class TurmaController extends Controller
     {
         try {
             
-        if($request->has('disponiveis')){
-            $turmas = Turma::turmasDisponiveisReserva($request);
-            return view('option.turmas-disponiveis', ['disponiveis' => $turmas['disponiveis'], 'indisponiveis' => $turmas['indisponiveis']]);
-        }
-        else if($request->has('disponiveis_troca')){
-            $reserva = Reserva::find($request->id_reserva);
-            $turma_atual = $reserva->turma;
-            $turmas = Turma::turmasDisponiveisTroca($turma_atual,$reserva->data);
-            // return view('option.turmas-disponiveis-troca', ["turma_atual" => $turma_atual->id,"turmas" => $turmas]);
-            return response()->json(["turmas" => $turmas]);
-        }
+            if($request->has('disponiveis')){
+                $turmas = Turma::turmasDisponiveisReserva($request);
+                return response()->json(["turmas" => $turmas]);
+                // return view('option.turmas-disponiveis', ['disponiveis' => $turmas['disponiveis'], 'indisponiveis' => $turmas['indisponiveis']]);
+            }
+            else if($request->has('disponiveis_troca')){
+                $reserva = Reserva::find($request->id_reserva);
+                $turma_atual = $reserva->turma;
+                $turmas = Turma::turmasDisponiveisTroca($turma_atual,$reserva->data);
+                return response()->json(["turmas" => $turmas]);
+            }
 
         return Turma::all();
 
@@ -59,7 +59,7 @@ class TurmaController extends Controller
         ]);
 
         return response()->json([
-            "message" => "Turma cadastrada com sucesso",
+            "msg" => "Turma cadastrada com sucesso",
             "dados" => $request->all()
         ],200);
     }
@@ -85,7 +85,7 @@ class TurmaController extends Controller
         ]);
 
         return response()->json([
-            "message" => "Turma atualizada com sucesso",
+            "msg" => "Turma atualizada com sucesso",
             "dados" => $request->all()
         ],200);
     }
@@ -98,7 +98,7 @@ class TurmaController extends Controller
         $turma->delete();
 
         return response()->json([
-            "message" => "Turma deletada com sucesso!"
+            "msg" => "Turma deletada com sucesso!"
         ],200);
     }
 }

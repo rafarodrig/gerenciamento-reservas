@@ -28,22 +28,33 @@ class Sala extends Model
       
   }
 
-  public static function salasDisponiveis(Request $request)
-  {
-    // if($request->has("cached")){
-    //   return Cache::get("salasDisponiveis");
-    // }
+public static function salasDisponiveis(Request $request)
+{
+    // Início da query com filtro obrigatório
+    $query = Sala::where('unidade', (int) $request->unidade);
 
-    $query = Sala::where('unidade', '=', (int) $request->unidade);
+    // Filtros opcionais
+    if ($request->filled('numero')) {
+        $query->where('numero', (int) $request->numero);
+    }
 
-    // Add filters dynamically
-    if ($request->has('numero')) $query->where('numero', '=', $request->numero);
-    if ($request->has('tipo')) $query->where('tipo', '=', $request->tipo);
-    if ($request->has('maquinas-qtd')) $query->where('maquinas_qtd', '>=', (int) $request->input('maquinas-qtd'));
-    if ($request->has('maquinas-tipo')) $query->where('maquinas_tipo', 'LIKE', '%' . $request->input('maquinas-tipo') . '%');
-    if ($request->has('lotacao')) $query->where('lotacao', '>=', (int) $request->lotacao);
+    if ($request->filled('tipo')) {
+        $query->where('tipo', $request->tipo);
+    }
 
-    if ($request->has('datas')) {
+    if ($request->filled('maquinas_qtd')) {
+        $query->where('maquinas_qtd', '>=', (int) $request->maquinas_qtd);
+    }
+
+    if ($request->filled('maquinas_tipo')) {
+        $query->where('maquinas_tipo', 'LIKE', "%{$request->maquinas_tipo}%");
+    }
+
+    if ($request->filled('lotacao')) {
+        $query->where('lotacao', '>=', (int) $request->lotacao);
+    }
+
+    if ($request->filled('datas')) {
         $datas = $request->input('datas');
         $query->whereNotIn('id', function ($subquery) use ($datas, $request) {
             $subquery->select('s.id')
@@ -52,15 +63,14 @@ class Sala extends Model
                 ->join('turmas as t', 'r.turma_id', '=', 't.id')
                 ->whereIn(DB::raw('DATE(data)'), $datas);
 
-            if ($request->has('turno')) {
-                $subquery->where('t.turno', '=', $request->input('turno'));
+            if ($request->filled('turno')) {
+                $subquery->where('t.turno', $request->turno);
             }
         });
     }
 
     return $query->paginate(20)->appends($request->query());
-    
-  }
+}
 
   public static function salasDisponiveisTroca(Sala $sala_atual, $data){
      return Sala::leftJoin('reservas as r', function ($join) use ($data) {

@@ -9,7 +9,8 @@ use App\Http\Requests\StoreReservaRequest;
 use App\Http\Requests\UpdatereservaRequest;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReservaController extends Controller
 
@@ -28,9 +29,9 @@ class ReservaController extends Controller
         if($request->filled("data_fim")) $query->where("data", '<=',  $request->data_fim);
 
         $query->whereHas('turma', function (Builder $query) use ($request) {
-            if($request->filled("docente")) $query->where("docente", 'LIKE', '%' . $request->docente . '%' ) ;
-            if($request->filled("curso")) $query->where("curso", 'LIKE', '%' . $request->curso . '%' ) ;
-            if($request->filled("turma")) $query->where("nome", 'LIKE', '%' . $request->turma . '%' ) ;
+            if($request->filled("docente")) $query->where("docente", 'LIKE', "%{$request->docente}%" ) ;
+            if($request->filled("curso")) $query->where("curso", 'LIKE', "%{$request->curso}%" ) ;
+            if($request->filled("turma")) $query->where("nome", 'LIKE', "%{$request->turma}%" ) ;
             if($request->filled("turno")) $query->where("turno", '=',  $request->turno);
             if($request->filled("reserva_tipo")) $query->where("tipo", '=',  $request->reserva_tipo);
         });
@@ -42,7 +43,7 @@ class ReservaController extends Controller
 
         $reservas = $query->orderBy("data")->paginate(20)->appends($request->query());
 
-        return response()->json( ["query"=>$request->query(),"reservas" => $reservas, 'url' => $request->fullUrlWithoutQuery(['page'])]);
+        return response()->json( ["query"=>$request->query(),"reservas" => $reservas]);
     }
 
     /**
@@ -56,50 +57,71 @@ class ReservaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreReservaRequest $request)
-    {
-        $datas = $request->datas;
-        if ($request->has("turma")) {
-            $turma = $request->turma;
+
+public function store(StoreReservaRequest $request)
+{
+    DB::beginTransaction();
+
+    try {
+        $datas = $request->input('datas');
+        $salaId = $request->input('sala');
+        $responsavel = $request->input('responsavel_cadastro');
+
+        // Verifica se é uma turma existente ou cria nova
+        if ($request->filled('turma')) {
+            $turmaId = $request->input('turma');
         } else {
-
             $turma = Turma::create([
-                "nome" => $request->nome,
-                "curso"=> $request->curso,
-                "docente"=> $request->docente,
-                "lotacao"=> $request->lotacao,
-                "turno" => $request->turno,
-                "tipo" => $request->input("tipo-reserva")
-            ])->id;
+                'nome'     => $request->input('nome'),
+                'curso'    => $request->input('curso'),
+                'docente'  => $request->input('docente'),
+                'lotacao'  => $request->input('lotacao'),
+                'turno'    => $request->input('turno'),
+                'tipo'     => $request->input('reserva_tipo'),
+            ]);
+
+            $turmaId = $turma->id;
         }
 
-        $rows = [];
-
-        $sala = $request->sala;
-        $responsavel_cadastro = $request->input("responsavel-cadastro");
-
-        foreach ($datas as $data) {
-            $rows[] = 
-            [
-                "data" => $data, 
-                "sala_id" => $sala,
-                "turma_id" => $turma,
-                "responsavel_cadastro" => $responsavel_cadastro
+        // Monta os registros de reservas
+        $reservas = array_map(function ($data) use ($salaId, $turmaId, $responsavel) {
+            return [
+                'data' => $data,
+                'sala_id' => $salaId,
+                'turma_id' => $turmaId,
+                'responsavel_cadastro' => $responsavel,
             ];
-        }
+        }, $datas);
 
-        Reserva::insert($rows);
+        Reserva::insert($reservas);
 
-        $num = count($rows);
+        DB::commit();
 
-        $msg = $num > 1 ? "$num reservas cadastradas com sucesso": "Reserva cadastrada com sucesso";
+        $quantidade = count($reservas);
+        $mensagem = $quantidade > 1
+            ? "$quantidade reservas cadastradas com sucesso"
+            : "Reserva cadastrada com sucesso";
 
         return response()->json([
-            "message" => $msg,
-            "dados" => $request->all()
-        ],203);
+            'msg' => $mensagem,
+            'dados' => $request->all()
+        ], 201);
 
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        Log::error('Erro ao cadastrar reserva: ' . $e->getMessage(), [
+            'exception' => $e,
+            'dados_enviados' => $request->all()
+        ]);
+
+        return response()->json([
+            'msg' => 'Ocorreu um erro ao cadastrar a reserva.',
+            'erro' => $e->getMessage()
+        ], 500);
     }
+}
+
 
     /**
      * Display the specified resource.

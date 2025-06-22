@@ -6,7 +6,7 @@ import axios from 'axios';
 
  export default function ModalDeletarReserva({ reservaId, onResetId, onResult}) {
 
-    const [showModal, setShowModal] = useState(true) 
+  const [showModal, setShowModal] = useState(true) 
 
   const [formData, setFormData] = useState({
     opcao: "atual"
@@ -30,24 +30,8 @@ import axios from 'axios';
       .then((res) => {
           setShowModal(false)
           onResult(res.data.msg)
-          onResetId()
       }).catch(function (error) {
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      console.log(error.response.data);
-      setShowModal(false)
-      onResult(error.response.data.message);
-    } else if (error.request) {
-      // The request was made but no response was received
-      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-      // http.ClientRequest in node.js
-      console.log(error.request);
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      console.log('Error', error.message);
-    }
-    console.log(error.config);
+        console.log(error)
   });
   
   };
@@ -65,7 +49,7 @@ if (!reservaId) return null
     <Modal show={showModal} onHide={handleCancel}
      onExited={onResetId}
      centered>
-      <Modal.Header closeButton className="bg-danger text-white">
+      <Modal.Header closeButton className="bg-danger text-white" data-bs-theme="dark">
         <Modal.Title>
           <PencilSquare className="me-2" />
           Deletar Reserva

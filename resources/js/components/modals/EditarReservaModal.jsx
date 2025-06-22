@@ -1,6 +1,6 @@
 import { Modal, Button, Form, Row, Col, Card} from 'react-bootstrap';
 import { Building, People, Laptop, Calendar3, Pencil, Save, XCircle } from 'react-bootstrap-icons';
-import OptionsTurmas from '../OptionsTurmas';
+import OptionsTurmas from '../OptionsTurmasTroca';
 import OptionsSalas from '../OptionsSalas';
 import { converterData } from '@/dates';
 
@@ -13,7 +13,6 @@ export default function EditarReservaModal({
   setFormData,
 }) {
   
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -29,7 +28,7 @@ export default function EditarReservaModal({
     show={show} 
     onHide={onCancel} 
     centered size="lg" animation>
-      <Modal.Header closeButton className="bg-primary text-white">
+      <Modal.Header closeButton className="bg-primary text-white" data-bs-theme="dark">
         <Modal.Title>
           <Pencil className="me-2" />
           Editar Reserva

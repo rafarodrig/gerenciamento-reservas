@@ -1,72 +1,104 @@
-import React, { useState } from 'react';
-import { Form, Row, Col, Button, Nav } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Form, Col, Nav } from 'react-bootstrap';
 import TituloData from '@/components/TituloData';
+import BuscarButton from './BuscarButton';
+
+const DIAS_SEMANA = [
+  ['Seg', '1'],
+  ['Ter', '2'],
+  ['Qua', '3'],
+  ['Qui', '4'],
+  ['Sex', '5'],
+  ['Sáb', '6'],
+  ['Dom', '7'],
+];
 
 export default function CadastrarReservaForm({ 
-  formData: initialData, 
+  formData,
   onBuscar, 
   numeros, 
   tipos, 
   maquinasTipos, 
   pagina_titulo, 
   dataAtualFormatada, 
-  dataAtual 
+  dataAtual,
+  gerarfiltros
 }) {
+  const [isActive, setIsActive] = useState(false);
+  
+  const [disabledFields, setDisabledFields] = useState({
+    dataFim: true,
+    semanas: true,
+    diasSemana: true,
+  });
 
-  const [formData, setFormData] = useState(initialData);
-  const [dataFimState, setDataFimState] = useState(true);
-  const [semanasState, setSemanasState] = useState(true);
-  const [diasSemanaState, setDiasSemanaState] = useState(true);
+
+ const atualizarCamposDinamicos = (tipo) => {
+    const config = {
+      Avulsa: { dataFim: true, semanas: true, diasSemana: true },
+      Graduação: { dataFim: false, semanas: false, diasSemana: true },
+      'Pos-graduacao': { dataFim: true, semanas: false, diasSemana: false },
+      FIC: { dataFim: true, semanas: false, diasSemana: true },
+    };
+    setDisabledFields(config[tipo] || config['Avulsa']);
+  };
+
+const handleChange = (e) => {
+  const { name, type, value, checked } = e.target;
+
+  if (type === 'checkbox') {
+    const dias = new Set(formData.dias_semana);
+    checked ? dias.add(value) : dias.delete(value);
+
+    const novoFormData = {
+      ...formData,
+      dias_semana: Array.from(dias),
+    };
+    gerarfiltros(novoFormData);
+
+} else {
+  let updatedFormData = {
+    ...formData,
+    [name]: value,
+  };
+
+  if (name === "reserva_tipo") {
+    atualizarCamposDinamicos(value);
+    updatedFormData = {
+      ...updatedFormData,
+      data_fim: '',
+      semanas: '',
+      dias_semana: [],
+    };
+  }
+  gerarfiltros(updatedFormData);
+}
+
+setIsActive(true);
 
 
-  const inputState = (value) => {
-    setDataFimState(true)
-    setDiasSemanaState(true)
-    setSemanasState(true)
-    if(value === "Graduação"){
-       setDataFimState(false)
-       setSemanasState(false)
-      } else if (value === "Pos-graduacao" ){
-        setSemanasState(false)
-        setDiasSemanaState(false)
-    } else if (value === "FIC"){
-      setSemanasState(false)
+};
+  const handleChangeData = (e) => {
+    const {name, value} = e.target
+    let updatedDisabledFields = { ...disabledFields };
+    if (formData.reserva_tipo === "Graduação"){
+
+      if (name === 'semanas' && value !== '') {
+        updatedDisabledFields.dataFim = true;
+      } else if (name === 'data_fim' && value !== '') {
+        updatedDisabledFields.semanas = true;
+      } else {
+        updatedDisabledFields.semanas = false;
+        updatedDisabledFields.dataFim = false;
+      }
+      setDisabledFields(updatedDisabledFields)
     }
   }
 
-
-
-  const handleChange = (e) => {
-    
-    const { name, type, value, checked } = e.target;
-    
-    console.log(`name: ${name}`)
-    console.log(`type: ${type}`)
-    console.log(`value: ${value}`)
-    console.log(`checker: ${checked}`)
-
-    if(name === 'reserva_tipo'){
-      inputState(value)
-    }
-
-    if (type === 'checkbox') {
-      setFormData((formData) => {
-        const dias = new Set(formData.dias_semana);
-        checked ? dias.add(value) : dias.delete(value);
-        return { ...formData, dias_semana: Array.from(dias) };
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
-    console.log(formData)
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onBuscar(formData);
+    setIsActive(false)
+    onBuscar();
   };
 
   return (
@@ -76,11 +108,11 @@ export default function CadastrarReservaForm({
 
         {/* Data Início */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-consulta-data-inicio">De</Form.Label>
+          <Form.Label htmlFor="data_inicio">De</Form.Label>
           <Form.Control
             type="date"
             name="data_inicio"
-            id="inp-consulta-data-inicio"
+            id="data_inicio"
             value={formData.data_inicio}
             min={dataAtual}
             onChange={handleChange}
@@ -90,16 +122,16 @@ export default function CadastrarReservaForm({
 
         {/* Data Fim */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-consulta-data-fim">Até</Form.Label>
+          <Form.Label htmlFor="data_fim">Até</Form.Label>
           <Form.Control
             type="date"
             name="data_fim"
-            id="inp-consulta-data-fim"
+            id="data_fim"
             value={formData.data_fim || ""}
             min={dataAtual}
-            onChange={handleChange}
+            onChange={(e) => {handleChange(e); handleChangeData(e);}}
             required
-            disabled={dataFimState}
+            disabled={disabledFields.dataFim}
           />
           <Form.Control.Feedback type="invalid">
             A data final não pode ser maior que a inicial.
@@ -108,16 +140,16 @@ export default function CadastrarReservaForm({
 
         {/* Semanas */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-semanas">N.º de Semanas</Form.Label>
+          <Form.Label htmlFor="semanas">N.º de Semanas</Form.Label>
           <Form.Control
             type="number"
             name="semanas"
-            id="inp-semanas"
+            id="semanas"
             value={formData.semanas}
             min={1}
-            onChange={handleChange}
+            onChange={(e) => {handleChange(e); handleChangeData(e);}}
             required
-            disabled={semanasState}
+            disabled={disabledFields.semanas}
           />
         </Col>
 
@@ -125,25 +157,17 @@ export default function CadastrarReservaForm({
         <Col md={3}>
           <Form.Label>Dias da Semana</Form.Label>
           <div className="d-flex flex-wrap gap-2 align-items-center">
-            {[
-              ['Seg', '1'],
-              ['Ter', '2'],
-              ['Qua', '3'],
-              ['Qui', '4'],
-              ['Sex', '5'],
-              ['Sáb', '6'],
-              ['Dom', '0'],
-            ].map(([label, value]) => (
+            {DIAS_SEMANA.map(([label, value]) => (
               <Form.Check
                 key={value}
                 label={label}
-                id={`inp-${label.toLowerCase()}`}
+                id={`dia_${value}`}
                 name="dias_semana"
                 value={value}
                 type="checkbox"
-                checked={(formData.dias_semana).includes(value)}
+                checked={formData.dias_semana?.includes(value)}
                 onChange={handleChange}
-                disabled={diasSemanaState}
+                disabled={disabledFields.diasSemana}
               />
             ))}
           </div>
@@ -151,12 +175,12 @@ export default function CadastrarReservaForm({
 
         {/* Tipo de Reserva */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-consulta-reserva-tipo">Tipo de Reserva</Form.Label>
+          <Form.Label htmlFor="reserva_tipo">Tipo de Reserva</Form.Label>
           <Form.Select
             name="reserva_tipo"
-            id="inp-consulta-reserva-tipo"
+            id="reserva_tipo"
             value={formData.reserva_tipo || ""}
-            onChange={handleChange}
+            onChange={(e) => {handleChange(e);}}
           >
             <option value="Avulsa">Avulsa</option>
             <option value="Graduação">Graduação</option>
@@ -167,10 +191,10 @@ export default function CadastrarReservaForm({
 
         {/* Turno */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-consulta-turno">Turno</Form.Label>
+          <Form.Label htmlFor="turno">Turno</Form.Label>
           <Form.Select
             name="turno"
-            id="inp-consulta-turno"
+            id="turno"
             value={formData.turno || ""}
             onChange={handleChange}
           >
@@ -182,39 +206,56 @@ export default function CadastrarReservaForm({
 
         {/* Número da Sala */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-consulta-sala">N.º da Sala</Form.Label>
+          <Form.Label htmlFor="numero">N.º da Sala</Form.Label>
           <Form.Select
             name="numero"
-            id="inp-consulta-sala"
+            id="numero"
             value={formData.numero || ""}
             onChange={handleChange}
           >
             <option value="">Qualquer</option>
-            {numeros.map((n) => (<option key={n} value={n}>{n}</option>))}
+            {numeros.map(n => (
+              <option key={n} value={n}>{n}</option>
+            ))}
+          </Form.Select>
+        </Col>
+        {/* Unidade */}
+        <Col md={3}>
+          <Form.Label>Unidade</Form.Label>
+          <Form.Select
+            name="unidade"
+            value={formData.unidade}
+            onChange={handleChange}
+          >
+            <option value="">Todas</option>
+            <option value="1">Unidade 1</option>
+            <option value="2">Unidade 2</option>
           </Form.Select>
         </Col>
 
         {/* Tipo de Sala */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-consulta-sala-tipo">Tipo de Sala</Form.Label>
+          <Form.Label htmlFor="tipo">Tipo de Sala</Form.Label>
           <Form.Select
             name="tipo"
-            id="inp-consulta-sala-tipo"
+            id="tipo"
             value={formData.tipo || ""}
             onChange={handleChange}
           >
             <option value="">Qualquer</option>
-            {tipos.map((tipo) => (<option key={tipo} value={tipo}>{tipo}</option>))}
+            {tipos.map(tipo => (
+              <option key={tipo} value={tipo}>{tipo}</option>
+            ))}
           </Form.Select>
         </Col>
 
         {/* Lotação */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-consulta-lotacao">Lotação</Form.Label>
+          <Form.Label htmlFor="lotacao">Lotação</Form.Label>
           <Form.Control
             type="number"
             name="lotacao"
-            id="inp-consulta-lotacao"
+            id="lotacao"
             placeholder="Qualquer"
             min={1}
             value={formData.lotacao || ""}
@@ -224,11 +265,11 @@ export default function CadastrarReservaForm({
 
         {/* Nº Máquinas */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-consulta-maquinas-qtd">N.º de Máquinas</Form.Label>
+          <Form.Label htmlFor="maquinas_qtd">N.º de Máquinas</Form.Label>
           <Form.Control
             type="number"
             name="maquinas_qtd"
-            id="inp-consulta-maquinas-qtd"
+            id="maquinas_qtd"
             placeholder="Qualquer"
             min={0}
             value={formData.maquinas_qtd || ""}
@@ -238,24 +279,23 @@ export default function CadastrarReservaForm({
 
         {/* Tipo de Máquinas */}
         <Col md={3}>
-          <Form.Label htmlFor="inp-consulta-maquinas-tipo">Tipo de Máquinas</Form.Label>
+          <Form.Label htmlFor="maquinas_tipo">Tipo de Máquinas</Form.Label>
           <Form.Select
             name="maquinas_tipo"
-            id="inp-consulta-maquinas-tipo"
+            id="maquinas_tipo"
             value={formData.maquinas_tipo || ""}
             onChange={handleChange}
           >
             <option value="">Qualquer</option>
-            {maquinasTipos.map((tipo) => (<option key={tipo} value={tipo}>{tipo}</option>
+            {maquinasTipos.map(tipo => (
+              <option key={tipo} value={tipo}>{tipo}</option>
             ))}
           </Form.Select>
         </Col>
 
         {/* Botão Buscar */}
         <Col xs={12} className="d-flex align-items-center gap-2">
-          <Button type="submit" variant="primary" id="btn-buscar-sala-disponivel">
-            Buscar
-          </Button>
+          <BuscarButton isActive={isActive} />
         </Col>
       </Form>
     </Nav>

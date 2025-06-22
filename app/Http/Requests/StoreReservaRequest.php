@@ -20,16 +20,20 @@ class StoreReservaRequest extends BaseRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-            "turma" => "nullable|exists:turmas,id",
-            "sala" => "required|exists:salas,id",
-            "responsavel-cadastro" => "required|string|max:255",
-            "nome" => "exclude_if:turma,required|string|max:255",
-            "curso" => "exclude_if:turma,required|string|max:255",
-            "turno" => "exclude_if:turma,required|string|max:255",
-            "tipo-reserva" => "exclude_if:turma,required|string|max:255",
-            "lotacao" => "exclude_if:turma,required|numeric",
-        ];
-    }
+{
+    return [
+        "turma" => "nullable|exists:turmas,id",
+        "sala" => "required|exists:salas,id",
+        "responsavel_cadastro" => "required|string|max:255",
+
+        // Se turma NÃO for enviada, esses campos são obrigatórios
+        "nome" => "required_if:turma,null|string|max:255",
+        "curso" => "required_if:turma,null|string|max:255",
+        "turno" => "required_if:turma,null|string|max:255",
+        "docente" => "required_if:turma,null|string|max:255",
+        "reserva_tipo" => "required_if:turma,null|string|max:255",
+        "lotacao" => "required_if:turma,null|numeric|min:1",
+    ];
+}
+
 }

@@ -7,6 +7,7 @@ use App\Models\Reserva;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSalaRequest;
 use App\Http\Requests\UpdateSalaRequest;
+use App\Models\Turma;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -19,22 +20,13 @@ class SalaController extends Controller
      public function index(Request $request)
      {
          try {
-             
-             if ($request->has('filtros-salas-disponiveis')) {
-                $res["status"] = 200;
-                $res["dados"] = Sala::filtrosSalasDisponiveis( $request );
-                return response()->json($res,200);
-
-             } 
-
-            $request->mergeIfMissing(['unidade' => 1]);
             
             if ($request->has('disponiveis')) {
                 $salas = Sala::salasDisponiveis($request);
-
-                return view("table.salas-disponiveis", ['salas' => $salas, 'unidade' => $request->unidade , 'url' => $request->fullUrlWithoutQuery(['unidade','page'])]);
-
+                $turmas = Turma::turmasDisponiveisReserva($request);
+                return response()->json( ["query"=>$request->query(),"salas" => $salas, "turmas_disponiveis" => $turmas], );
             }
+
             else if($request->has('disponiveis_troca')){
                 $reserva = Reserva::find($request->id_reserva);
 

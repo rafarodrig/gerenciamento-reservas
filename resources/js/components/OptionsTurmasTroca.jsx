@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 export default function OptionsTurmas({ id}) {
   const [options, setOptions] = useState([]);
 
+
   useEffect(() => {
     if (!id) return; // só busca se o modal estiver visível e houver id
 

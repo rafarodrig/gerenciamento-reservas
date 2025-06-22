@@ -2,24 +2,32 @@ import { Head } from '@inertiajs/react';
 import Layout from '@/Layouts/Layout';
 import React, { useState, Suspense } from 'react';
 import AlertaModal from '@/components/modals/AlertaModal';
-import CadastrarReservaForm from '@/components/CadastrarReservaForm';
-const TabelaReservas = React.lazy(() => import('../components/tables/TableReservasGrouByDatesV3'));
+import ReservaForm from '@/components/FormConsultarReservas';
+import ModalEditarReserva from '@/components/containers/EditarReservaContainer';
+import ModalDeletarReserva from '@/components/modals/DeletarReservaModal';
 
-export default function ConsultarReserva({dataAtual, pagina_titulo, dataAtualFormatada, numeros, maquinas_tipos, tipos }) {
+const TabelaReservas = React.lazy(() => import('../../components/tables/ReservasTable'));
 
-  const [salasDisponiveis, setSalasDisponiveis] = useState([]);
-  const [showTabela, setShowTabela] = useState(false);
+export default function ConsultarReservas({dataAtual, pagina_titulo, dataAtualFormatada, numeros}) {
+
+  const [reservas, setReservas] = useState([]);
   const [isActive, setIsActive] = useState(false);
+  const [showTabela, setShowTabela] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [editarReserva, setEditarReserva] = useState(null);
+  const [deletarReserva, setDeletarReserva] = useState(null);
   const [alertaMsg, setAlertaMsg] = useState(null);
 
   const [formData, setFormData] = useState({
+      turma: "",
+      sala: "",
+      docente: "",
+      curso: "",
       data_inicio: dataAtual,
       data_fim: "",
-      semanas: "",
-      dias_semana: [] ,  
-      reserva_tipo: "Avulsa",
-      turno: "Manhã",
+      reserva_tipo: "",
+      turno:"",
+      reserva_status: "Ativa",
       unidade: "1"
     });
 
@@ -33,8 +41,8 @@ export default function ConsultarReserva({dataAtual, pagina_titulo, dataAtualFor
     const finalFormData = customFormData || formData;
 
         try {
-            const response = await axios.get('/salas', {params: { ...finalFormData, page }});
-            setSalasDisponiveis(response.data);
+            const response = await axios.get('/reservas', {params: { ...finalFormData, page }});
+            setReservas(response.data);
             setCurrentPage(page);
             setShowTabela(true);
             setIsActive(true);
@@ -50,17 +58,15 @@ export default function ConsultarReserva({dataAtual, pagina_titulo, dataAtualFor
 
 return (
 <>
-<Head title="Cadastrar Reservas" />
+<Head title="Consultar Reservas" />
 <Layout>
-  <CadastrarReservaForm
+  <ReservaForm
         formData={formData}
         currentPage={currentPage}
         numeros={numeros}
         onBuscar={(customData) => buscar(1, customData)}
         pagina_titulo={pagina_titulo}
         dataAtualFormatada={dataAtualFormatada}
-        tipos={tipos}
-        maquinasTipos={maquinas_tipos}
       />
   
 <div style={divStyle} className="container-fluid my-4 " id="container-tabela" >
@@ -69,13 +75,27 @@ return (
           <Suspense >
                 <TabelaReservas  
                 onPageChange={(page) => buscar(page)} 
-                data={salasDisponiveis} 
+                data={reservas} 
                 editarReserva={(id) => setEditarReserva(id)}
                 deletarReserva={(id) => setDeletarReserva(id)}
                   />
           </Suspense>
         )}
   </div>
+
+    <ModalEditarReserva
+      reservaId={editarReserva}
+      onResetId={() => setEditarReserva(null)}
+      onResult={handleResult}
+    />
+    
+  {deletarReserva && (
+    <ModalDeletarReserva 
+      reservaId={deletarReserva}
+      onResetId={() => setDeletarReserva(null)}
+      onResult={handleResult}
+    />
+    )}
 
     {alertaMsg && (
       <AlertaModal  msg={alertaMsg} onExited={() => setAlertaMsg(null)}  />
