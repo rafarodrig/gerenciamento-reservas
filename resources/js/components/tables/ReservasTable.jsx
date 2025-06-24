@@ -1,12 +1,13 @@
 import { Table, Button, Alert, Pagination, OverlayTrigger, Tooltip, Card } from 'react-bootstrap';
 import { PencilSquare, Trash, Calendar3} from 'react-bootstrap-icons';
 import { converterData } from '@/dates';
+import { ExclamationTriangleFill } from 'react-bootstrap-icons';
 
 function getUniqueValues(arr, key) {
   return [...new Set(arr.map((item) => item[key]))];
 }
 
-export default function ReservaTable({ data, onPageChange, deletarReserva, editarReserva }) {
+export default function ReservasTable({ data, onPageChange, deletarReserva, editarReserva }) {
   const lastPage = data.reservas.last_page;
   const currentPage = data.reservas.current_page;
   const reservas = data.reservas.data;
@@ -14,8 +15,13 @@ export default function ReservaTable({ data, onPageChange, deletarReserva, edita
   const uniqueDates = getUniqueValues(reservas, "data");
 
   if (!reservas || reservas.length === 0) {
-    return <Alert variant="warning">Nenhum resultado encontrado</Alert>;
-  }
+  return (
+    <Alert variant="warning" className="d-flex align-items-center gap-2 shadow-sm border-1 my-3">
+      <ExclamationTriangleFill className="me-2 text-warning" size={20} />
+      <div><strong>Nenhuma reserva encontrada.</strong> Verifique os filtros aplicados.</div>
+    </Alert>
+  );
+}
 
   return (
     <>
@@ -29,7 +35,7 @@ export default function ReservaTable({ data, onPageChange, deletarReserva, edita
               <strong>Reservas do dia {converterData(dataStr)}</strong>
             </Card.Header>
             <Card.Body className="p-0">
-              <Table hover responsive className="table table-borderless align-middle mb-0">
+              <Table hover responsive className="table table-borderless text-center align-middle mb-0">
                 <thead className="table-light">
                   <tr>
                     <th>Sala</th>

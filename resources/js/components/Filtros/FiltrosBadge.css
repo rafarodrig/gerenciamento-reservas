@@ -1,0 +1,54 @@
+.badge {
+  min-width: 82px;
+  border: none;
+  height: 25px;
+  transition: all 200ms ease;
+}
+
+.data-badge {
+  width: 82px;
+  text-align: left;
+  transition: width 200ms ease, opacity 200ms ease, transform 200ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.data-badge:hover {
+  width: 100px;
+}
+
+.data-badge:hover .close-badge {
+  display: block;
+}
+
+.close-badge {
+  fill: #ffffffb3;
+  display: none;
+  transition: fill 200ms ease;
+}
+
+.close-badge:hover {
+  fill: #fff;
+}
+
+/* Animação de entrada/saída com CSSTransition */
+.fade-badge-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.fade-badge-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+.fade-badge-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.fade-badge-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 200ms ease, transform 200ms ease;
+}

@@ -1,6 +1,6 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
-import { PencilSquare } from 'react-bootstrap-icons';
+import { PencilSquare, Trash } from 'react-bootstrap-icons';
 import axios from 'axios';
 
 
@@ -29,7 +29,10 @@ import axios from 'axios';
       axios.delete(`/reservas/${reservaId}`,{data: formData})
       .then((res) => {
           setShowModal(false)
-          onResult(res.data.msg)
+          onResult({
+              prevModal: false,
+              msg: res.data.msg
+            })
       }).catch(function (error) {
         console.log(error)
   });

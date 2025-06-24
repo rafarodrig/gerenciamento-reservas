@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import EditarTurmaModal from "../modals/EditarTurmaModal";
+import DeletarTurmaModal from "../modals/DeletarTurmaModal";
 import CadastrarReservaModal from "../modals/CadastrarReservaModal";
 import axios from "axios";
+import AlertaModal from "../modals/AlertaModal";
 export default function CadastrarReservaContainer({
     salaId, 
     reserva, 
@@ -11,11 +13,17 @@ export default function CadastrarReservaContainer({
 }){
     
     const [editarTurma, setEditarTurma] = useState(false)
+    const [deletarTurma, setDeletarTurma] = useState(false)
+
+
     const [showCadastrarReservaModal, setShowCadastrarReservaModal] = useState(false)
     const [formData, setFormData] = useState([]);
     const [sala, setSala] = useState(null);
     const [prevSala, setPrevSala] = useState(salaId);
     const [turmaCadastrada, setTurmaCadastrada] = useState(null);
+    const [errorMsg, setErrorMsg] = useState({});
+    const [alertaMsg, setAlertaMsg] = useState(null);
+
 
     if(prevSala !== salaId){
       setPrevSala(salaId)
@@ -28,14 +36,15 @@ export default function CadastrarReservaContainer({
         lotacao: '',
         responsavel_cadastro: '',
         turma: '',
+        datas:reserva.query.datas,
+        turno: reserva.query.turno,
+        reserva_tipo: reserva.query.reserva_tipo,
         sala: salaId,
       }));
     }
 
     useEffect(() => {
         if (salaId) {
-          console.log(reserva)
-          console.log(formData)
         axios.get(`/salas/${salaId}`)
         .then((res) => {
             const sala = res.data
@@ -64,38 +73,7 @@ export default function CadastrarReservaContainer({
     fetchTurma();
   }, [formData.turma]);
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-    
-      const payload = {
-        sala: sala.id,
-        responsavel_cadastro: formData.responsavel_cadastro,
-        turma: formData.turma || null,
-        datas: formData.datas
-      };
-    
-      if (!formData.turma) {
-        // Nova turma: incluir dados obrigatórios
-        Object.assign(payload, {
-          nome: formData.nome,
-          curso: formData.curso,
-          turno: formData.turno,
-          docente: formData.docente,
-          reserva_tipo: formData.reserva_tipo,
-          lotacao: parseInt(formData.lotacao, 10),
-        });
-      }
-      console.log(payload)
-        axios.post('/reservas', payload)
-        .then((res) => { 
-            setShowCadastrarReservaModal(false);
-            onResult(res.data.msg)
 
-        })
-        .catch((error) => {
-          if (error.response?.data?.errors) console.error('Erros de validação:', error);
-        });
-    };
 
     if(!reserva) return;
 
@@ -109,17 +87,30 @@ export default function CadastrarReservaContainer({
         turmas={reserva.turmas_disponiveis}
         formData={formData}
         setFormData={setFormData}
-        onSubmit={handleSubmit}
+        onResult={(msg)=>{ setShowCadastrarReservaModal(false); setAlertaMsg(msg); onResult()}}
         onCancel={() => {setShowCadastrarReservaModal(false); resetId() }}
         setEditarTurma={(id) => {setShowCadastrarReservaModal(false); setEditarTurma(id)}}
+        setDeletarTurma={(id) =>{setShowCadastrarReservaModal(false); setDeletarTurma(id)}}
+        // errorMsg={errorMsg}
         />
 
         <EditarTurmaModal
         turmaId={editarTurma}
         onCancel={() => {setShowCadastrarReservaModal(true); }}
-        onResult={(msg) => {setShowCadastrarReservaModal(true); fetchTurma()}}
+        onResult={(msg) => {setAlertaMsg(msg); fetchTurma()}}
         onExited={()=> setEditarTurma(null) }
         />
+
+        <DeletarTurmaModal
+        turmaId={deletarTurma}
+        onCancel={() => {setShowCadastrarReservaModal(true); }}
+        onResult={(msg) => {setAlertaMsg(msg); fetchTurma(); onResult()}}
+        onExited={()=> setDeletarTurma(null) }
+        /> 
+
+        {alertaMsg && (
+              <AlertaModal result={alertaMsg} prevModal={() => setShowCadastrarReservaModal(true)} onExited={() => {setAlertaMsg(null);}} />
+          )}
         </>
     )
 

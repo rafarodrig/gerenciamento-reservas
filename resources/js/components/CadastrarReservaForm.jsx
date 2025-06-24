@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Col, Nav } from 'react-bootstrap';
 import TituloData from '@/components/TituloData';
 import BuscarButton from './BuscarButton';
+import { dataAtual } from '@/dates';
 
 const DIAS_SEMANA = [
   ['Seg', '1'],
@@ -19,10 +20,9 @@ export default function CadastrarReservaForm({
   numeros, 
   tipos, 
   maquinasTipos, 
-  pagina_titulo, 
-  dataAtualFormatada, 
-  dataAtual,
-  gerarfiltros
+  paginaTitulo,
+  gerarfiltros,
+  setIsDisabledBtnReservar
 }) {
   const [isActive, setIsActive] = useState(false);
   
@@ -75,7 +75,7 @@ const handleChange = (e) => {
 }
 
 setIsActive(true);
-
+setIsDisabledBtnReservar(true)
 
 };
   const handleChangeData = (e) => {
@@ -98,13 +98,14 @@ setIsActive(true);
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsActive(false)
+    setIsDisabledBtnReservar(false)
     onBuscar();
   };
 
   return (
     <Nav>
-      <Form className="row g-3 form-consulta m-auto mt-5" onSubmit={handleSubmit}>
-        <TituloData titulo={pagina_titulo} data={dataAtualFormatada} />
+      <Form className="row g-3 p-4 form-consulta m-auto mt-5 shadow-sm" onSubmit={handleSubmit}>
+        <TituloData titulo={paginaTitulo} />
 
         {/* Data Início */}
         <Col md={3}>
@@ -114,7 +115,7 @@ setIsActive(true);
             name="data_inicio"
             id="data_inicio"
             value={formData.data_inicio}
-            min={dataAtual}
+            min={dataAtual("ISO")}
             onChange={handleChange}
             required
           />
@@ -128,7 +129,7 @@ setIsActive(true);
             name="data_fim"
             id="data_fim"
             value={formData.data_fim || ""}
-            min={dataAtual}
+            min={dataAtual("ISO")}
             onChange={(e) => {handleChange(e); handleChangeData(e);}}
             required
             disabled={disabledFields.dataFim}

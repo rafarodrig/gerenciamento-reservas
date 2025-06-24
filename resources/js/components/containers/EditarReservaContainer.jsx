@@ -42,7 +42,10 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
     axios.patch(`/reservas/${reservaId}`, formData)
     .then((res) => { 
       setShowConfirmModal(false);
-      onResult(res.data.msg)
+      onResult({
+              prevModal: false,
+              msg: res.data.msg
+            })
       onResetId()
     })
   };

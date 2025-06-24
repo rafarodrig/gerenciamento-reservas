@@ -1,4 +1,3 @@
-import { useEffect, useState} from 'react';
 import axios from 'axios';
 import { Modal, Button, Form, Row, Col, Card, ToggleButton } from 'react-bootstrap';
 import {
@@ -10,6 +9,7 @@ import {
   Laptop,
   Calendar3
 } from 'react-bootstrap-icons';
+import CardTurmaCadastrada from '../Card/CardTurmaCadastrada';
 import { converterData } from '@/dates'; // ajuste conforme seu projeto
 import OptionsTurmasDisponiveis from '../OptionsTurmasDisponiveis';
 
@@ -21,11 +21,41 @@ export default function CadastrarReservaModal({
   formData,
   setFormData,
   setEditarTurma,
-  onSubmit,
+  setDeletarTurma,
+  onResult,
   onCancel,
   turmaCadastrada,
 }) {
+
+    const handleSubmit = (e) => {
+    e.preventDefault();
   
+    const payload = {
+      sala: sala.id,
+      responsavel_cadastro: formData.responsavel_cadastro,
+      turma: formData.turma || null,
+      datas: formData.datas
+    };
+  
+    if (!formData.turma) {
+      // Nova turma: incluir dados obrigatórios
+      Object.assign(payload, {
+        nome: formData.nome,
+        curso: formData.curso,
+        turno: formData.turno,
+        docente: formData.docente,
+        reserva_tipo: formData.reserva_tipo,
+        lotacao: parseInt(formData.lotacao, 10),
+      });
+    }
+    axios.post('/reservas', payload)
+    .then((res) => {
+        onResult({prevModal: false, msg: res.data.msg})
+        })
+    .catch((error) => {
+      if (error.response?.data?.errors) console.error(error);
+    });
+    };
 
 
 const handleChange = (e) => {
@@ -57,7 +87,7 @@ const handleChange = (e) => {
       </Modal.Header>
 
       <Modal.Body>
-        <Form id="form-cadastrar-reserva" onSubmit={(e) => { onSubmit(e);}}>
+        <Form id="form-cadastrar-reserva" onSubmit={handleSubmit}>
           <Row className="g-4 mb-4">
             <Col md={6}>
               <Card className="shadow border-1 h-100">
@@ -147,48 +177,13 @@ const handleChange = (e) => {
 
           <Row className="mb-3">
             <Col>
-
-                {turmaCadastrada && (
-                <Card className=" shadow border-1 h-100 ">
-                    <Card.Header className="d-flex justify-content-between align-items-center bg-primary text-white">
-                    <span className='me-2'><strong>{turmaCadastrada.nome || <em className="text-muted">--</em>}</strong></span>
-                    <div className='d-inline-flex gap-2'>
-                        <Button variant="outline-light" size="sm" onClick={() => { setEditarTurma(turmaCadastrada.id)}}>
-                        <Pencil className="me-1"  /> Editar
-                        </Button>
-                        <Button variant="outline-light" size="sm" onClick={() => console.log("Excluir turma")}>
-                        <XCircle className="me-1" /> Excluir
-                        </Button>
-                    </div>
-                    </Card.Header>
-
-                    <Card.Body>
-                      <div>
-                        <Row className="mb-2">
-                            <Col md={6}>
-                            <p className="mb-1"><strong>Docente:</strong> {turmaCadastrada.docente || <em className="text-muted">--</em>}</p>
-                            </Col>
-                            <Col md={6}>
-                            <p className="mb-1"><strong>Turno:</strong> {turmaCadastrada.turno || <em className="text-muted">--</em>}</p>
-                            </Col>
-                            {/* <Col md={6}>
-                            <p className="mb-1"><strong>Tipo:</strong> {turmaCadastrada.tipo || <em className="text-muted">--</em>}</p>
-                            </Col> */}
-                        </Row>
-                        <Row className="mb-2">
-                            <Col md={6}>
-                            <p className="mb-1"><strong>Curso:</strong> {turmaCadastrada.curso || <em className="text-muted">--</em>}</p>
-                            </Col>
-                            <Col md={6}>
-                            <p className="mb-1"><strong>Lotação:</strong> {turmaCadastrada.lotacao || <em className="text-muted">--</em>}</p>
-                            </Col>
-                        </Row>
-                        </div>  
-                    </Card.Body>
-                </Card>
-                )}
-              
+                <CardTurmaCadastrada 
+                  setDeletarTurma={(id)=> setDeletarTurma(id)} 
+                  setEditarTurma={(id)=> setEditarTurma(id)} 
+                  turmaCadastrada={turmaCadastrada}
+                />
             </Col>
+            
             <Col>
               <Form.Group className="form-floating mb-2">
                 <Form.Control

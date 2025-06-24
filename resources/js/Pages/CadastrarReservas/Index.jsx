@@ -1,27 +1,31 @@
 import { Head } from '@inertiajs/react';
+import { CSSTransition } from 'react-transition-group';
 import Layout from '@/Layouts/Layout';
 import "./Index.css"
-import React, { useState, Suspense, useEffect, use } from 'react';
-import AlertaModal from '@/components/modals/AlertaModal';
+import React, { useState, useRef } from 'react';
 import CadastrarReservaForm from '@/components/CadastrarReservaForm';
 import FiltrosBadge from '@/components/Filtros/Filtros';
 import { filtrosSalasDisponiveis } from '@/components/Filtros/geradoresDatas';
-import CadastrarReservaContainer from '@/components/containers/CadastrarReservaContainer';
-const TabelaSalasDisponiveis = React.lazy(() => import('../../components/tables/SalasDisponiveisTable'));
+import CadastrarReservaContainer from '@/components/Containers/CadastrarReservaContainer';
+import TableSalasDisponiveis from '@/components/tables/SalasDisponiveisTable';
+import { dataAtual } from '@/dates';
+import FiltrosContainer from '@/components/Filtros/FiltrosContainer';
 
-export default function CadastrarReserva({dataAtual, pagina_titulo, dataAtualFormatada, numeros, maquinas_tipos, tipos }) {
-
-  const [salasDisponiveis, setSalasDisponiveis] = useState([]);
-  const [showTabela, setShowTabela] = useState(false);
+export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
+  const dataAtualISO = dataAtual("ISO")
+  const title = "Cadastrar Reserva"
+  const tabelaRef = useRef(null);
+  
+  const [salasDisponiveis, setSalasDisponiveis] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [alertaMsg, setAlertaMsg] = useState(null);
   const [filtrosBadge, setFiltrosBadge] = useState(null);
   const [cadastrarReserva, setCadastrarReserva] = useState(null);
   const [reserva, setReserva] = useState(null);
+  const [isDisabledBtnReservar,setIsDisabledBtnReservar] = useState(false);
 
   const [formData, setFormData] = useState({
-      data_inicio: dataAtual,
+      data_inicio: dataAtualISO,
       data_fim: "",
       semanas: "",
       dias_semana: [] ,  
@@ -31,58 +35,46 @@ export default function CadastrarReserva({dataAtual, pagina_titulo, dataAtualFor
       numero: "",
       maquinas_qtd:"",
       disponiveis: true,
-      datas: [dataAtual]
+      datas: [dataAtualISO]
     });
 
-    const handleResult = (msg) => {
-      setAlertaMsg(msg)
-      buscar(currentPage, null);
-    }
 
-    useEffect(() => {
-    getFiltros(formData);
-  }, []);
-
-
-  const buscar = async (page = 1, customFormData = null) => {
+  const buscar = async (page, customFormData = null) => {
     
     const finalFormData = customFormData || formData;
+
+    if(!page) setIsActive(false);
 
         try {
             const response = await axios.get('/salas', {params: { ...finalFormData, page }});
             const dados = response.data
             setSalasDisponiveis(dados);
-            console.log(dados)
             setCurrentPage(page);
             setReserva({
               query: dados.query,
               turmas_disponiveis: dados.turmas_disponiveis 
             })
-            setShowTabela(true);
             setIsActive(true);
-            if (customFormData) setFormData(customFormData);
+
         } catch (error) {
             console.error('Error ', error);
         } 
     };
 
   const handleRemoverData = (newObjFiltros) => {
-      setFormData(prev => ({
-        ...prev,
+      let updatedFormData = {
+        ...formData,
         datas: newObjFiltros.datas
-      }));
+        };
+      setFormData(updatedFormData)
       setFiltrosBadge(newObjFiltros)
+      setIsDisabledBtnReservar(false)
+      buscar(null, updatedFormData)
   };
-
-  const divStyle = {
-      visibility: isActive ? "visible" : "hidden"
-    }
   
   const getFiltros = (formData) => {
     const objFiltros = filtrosSalasDisponiveis(formData);
-
     setFiltrosBadge(objFiltros);
-
     // Atualiza o formData incluindo as datas de objFiltros
     setFormData({
       ...formData,
@@ -90,57 +82,53 @@ export default function CadastrarReserva({dataAtual, pagina_titulo, dataAtualFor
     });
   };
 
+  return (
+    <>
+      <Head title={title} />
 
-return (
-<>
-<Head title="Cadastrar Reservas" />
-<Layout>
-  <CadastrarReservaForm
-        formData={formData}
-        currentPage={currentPage}
-        numeros={numeros}
-        onBuscar={() => buscar(1, formData)}
-        pagina_titulo={pagina_titulo}
-        dataAtualFormatada={dataAtualFormatada}
-        tipos={tipos}
-        maquinasTipos={maquinas_tipos}
-        gerarfiltros={getFiltros}
-      />
+      <Layout>
+        <CadastrarReservaForm
+              formData={formData}
+              currentPage={currentPage}
+              numeros={numeros}
+              onBuscar={() => buscar(null, formData)}
+              paginaTitulo={title}
+              tipos={tipos}
+              maquinasTipos={maquinas_tipos}
+              gerarfiltros={getFiltros}
+              setIsDisabledBtnReservar={setIsDisabledBtnReservar}
+            />
 
-  <div className="container-fluid mt-4" id="container-filtros">
-    <div className='collapse d-inline-flex flex-wrap' id='tabDatas'>
-      {filtrosBadge && (
-        <FiltrosBadge objFiltros={filtrosBadge} onRemoverData={handleRemoverData}/>
-      )}
-    </div>
-  </div>
-  
-  <div style={divStyle} className="container-fluid my-4 " id="container-tabela" >
-    <br />
-      {showTabela && (
-        <Suspense >
-          <TabelaSalasDisponiveis  
-          onPageChange={(page) => buscar(page)} 
-          data={salasDisponiveis} 
-          onReservar={(id) => setCadastrarReserva(id)}
-          />
-        </Suspense>
-      )}
-    </div>
+          <FiltrosContainer>
+            <FiltrosBadge formData={formData} objFiltros={filtrosBadge} onRemoverData={handleRemoverData}/>
+          </FiltrosContainer>
+        
+          {/* <div  className="container-fluid my-4 shadow-sm" id="container-tabela"> */}
+            <CSSTransition
+              in={isActive}
+              timeout={400}
+              classNames="fade-table"
+              nodeRef={tabelaRef}
+              unmountOnExit
+            >
+              <div ref={tabelaRef} className="container-fluid my-4 shadow-sm" id="container-tabela">
+                <TableSalasDisponiveis
+                  onPageChange={(page) => buscar(page)}
+                  data={salasDisponiveis}
+                  onReservar={(id) => setCadastrarReserva(id)}
+                  isDisabledBtnReservar={isDisabledBtnReservar}
+                />
+              </div>
+            </CSSTransition>      
+          {/* </div> */}
 
-      {/* {cadastrarReserva && ( */}
-        <CadastrarReservaContainer
-        salaId={cadastrarReserva} 
-        reserva={reserva} 
-        onResult={handleResult} 
-        resetId={() => setCadastrarReserva(null)}
-        />
-      {/* )} */}
-
-    {alertaMsg && (
-      <AlertaModal msg={alertaMsg} onExited={() => setAlertaMsg(null)} />
-    )}
-
-</Layout>
-</>
-)}
+            <CadastrarReservaContainer
+              salaId={cadastrarReserva} 
+              reserva={reserva} 
+              onResult={() => buscar(page=currentPage, null)} 
+              resetId={() => setCadastrarReserva(null)}
+            />
+      </Layout>
+    </>
+  )
+}

@@ -73,7 +73,8 @@ export function filtrosSalasDisponiveis(formData) {
 
   if (formData.reserva_tipo) filtros['reserva_tipo'] = formData.reserva_tipo;
   if (formData.turno) filtros['turno'] = formData.turno;
-  if (formData.numero) filtros['numero'] = formData.numero;
+  if (formData.numero) filtros['numero'] = `Sala ${formData.numero}` ;
+  if (formData.unidade) filtros['unidade'] = `Unidade ${formData.unidade}`;
   if (formData.tipo) filtros['tipo'] = formData.tipo;
   if (formData.maquinas_qtd)
     filtros['maquinas_qtd'] = `${formData.maquinas_qtd} maquinas`;

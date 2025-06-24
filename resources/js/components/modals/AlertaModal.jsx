@@ -2,28 +2,36 @@ import { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 export default function AlertaModal({ 
-  msg, 
-  onExited 
+  result, 
+  onExited,
+  prevModal 
 }) {
   const [showAlertaModal, setShowAlertaModal] = useState(true);
 
-  if(!msg) return null;
-  
+  const handleClose = () => {
+    
+    setShowAlertaModal(false)
+    if(result.prevModal){
+      prevModal()
+    }
+  }
+
+  if(!result) return null;
   return (
     <>
       <Modal 
       show={showAlertaModal} 
-      onHide={() => setShowAlertaModal(false)} 
+      onHide={handleClose} 
       onExited={onExited}  
       centered>
         <Modal.Header>
           <Modal.Title>Alerta</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>{msg}</p>
+          <p className='my-2'>{result?.msg}</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={() => setShowAlertaModal(false)} >
+          <Button variant="primary" onClick={handleClose} >
             Fechar
           </Button>
         </Modal.Footer>

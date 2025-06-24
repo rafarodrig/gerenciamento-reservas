@@ -1,48 +1,67 @@
-import React from 'react';
+import React, { useRef, useMemo } from 'react';
+import { Row, Col, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { converterData, diaSemana } from '@/dates';
+import { filtrosSalasDisponiveis } from './geradoresDatas';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import CloseButton from './CloseButton';
-import { Row, Col, Badge } from 'react-bootstrap';
-import { DateTime } from 'luxon';
+import "./FiltrosBadge.css"
 
-export default function FiltrosBadge({ objFiltros, onRemoverData }) {
-  const {datas, filtros} = objFiltros
-  const converterData = (data) => {
-    return DateTime
-    .fromISO(data, { zone: 'utc' })
-    .setLocale('pt-BR')
-    .toFormat('dd/MM/yyyy');
+export default function FiltrosBadge({ formData, objFiltros, onRemoverData }) {
+  const filtrosAtivos = objFiltros || filtrosSalasDisponiveis(formData);
+  const { datas = [], filtros = {} } = filtrosAtivos;
+
+  const refsMap = useRef({});
+
+  // Garante que cada data tenha seu próprio ref
+  const refs = useMemo(() => {
+    datas.forEach((data) => {
+      if (!refsMap.current[data]) {
+        refsMap.current[data] = React.createRef();
+      }
+    });
+    return refsMap.current;
+  }, [datas]);
+
+  const handleRemoverData = (dataRemovida) => {
+    const novasDatas = datas.filter((d) => d !== dataRemovida);
+    onRemoverData({ ...filtrosAtivos, datas: novasDatas });
   };
 
-  const handlerRemoverData = (data) => {
-    const newDatas = datas.filter(d => d !== data)
-    objFiltros.datas = newDatas
-    onRemoverData(objFiltros)
-  }
+  if (Object.keys(filtros).length === 0 && datas.length === 0) return null;
 
   return (
-    <div >
-      <Row className="g-2 ">
-        {Object.entries(filtros).map(([key, value]) => (
-          <Col key={key}  className="data-badge-div d-flex">
-            {/* <Form.Control type="hidden" name={key} value={value} form="form-badge-filtros" /> */}
-            <Badge bg="primary" className="filtros">
-              {value}
-            </Badge>
-          </Col>
-        ))}
+    <Row className="g-2">
+      {Object.entries(filtros).map(([chave, valor]) => (
+        <Col key={chave} xs="auto" className="d-flex data-badge-div align-items-center">
+          <Badge bg="primary" className="filtros text-white px-2 py-1 shadow-sm">
+            {valor}
+          </Badge>
+        </Col>
+      ))}
 
-        {datas.map((data, index) => (
-          <Col key={index}  className="d-flex data-badge-div ">
-            {/* <Form.Control type="hidden" name="datas[]" value={data} form="form-badge-filtros" /> */}
-             <Badge bg="primary" className="data-badge d-flex align-items-center">
-              <span>{converterData(data)}</span>
-              <CloseButton
-                onClick={() =>{ handlerRemoverData(data)}}
-              />
-            </Badge>
-          </Col>
+      <TransitionGroup component={null}>
+        {datas.map((data) => (
+          <CSSTransition
+            key={data}
+            timeout={300}
+            classNames="fade-badge"
+            nodeRef={refs[data]}
+          >
+            <Col ref={refs[data]} xs="auto" className="d-flex data-badge-div align-items-center">
+            <OverlayTrigger overlay={<Tooltip >{diaSemana(data)}</Tooltip>}>
+              <Badge bg="primary" className="data-badge px-2 py-1 shadow-sm">
+                <span className="flex-grow-1">{converterData(data)}</span>
+                <CloseButton
+                  onClick={() => handleRemoverData(data)}
+                  className="close-badge"
+                  ariaLabel={`Remover data ${converterData(data)}`}
+                  />
+              </Badge>
+              </OverlayTrigger>
+            </Col>
+          </CSSTransition>
         ))}
-      </Row>
-    </div>
+      </TransitionGroup>
+    </Row>
   );
 }
-

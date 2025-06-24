@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import {Nav, Form, Row, Col, Button } from 'react-bootstrap';
 import TituloData from '@/components/TituloData';
 
-export default function CadastrarReservaForm({ formData: initialData, onBuscar, numeros, pagina_titulo, dataAtualFormatada }) {
-
-  const [formData, setFormData] = useState(initialData);
+export default function CadastrarReservaForm({ formData, setFormData, onBuscar, numeros, paginaTitulo,}) {
 
   const handleChange = (e) => {
     setFormData({
@@ -15,17 +13,17 @@ export default function CadastrarReservaForm({ formData: initialData, onBuscar, 
 
 const handleSubmit = (e) => {
     e.preventDefault();
-    onBuscar(formData); // envia para o pai
+    onBuscar(null,formData); // envia para o pai
   };
     return (
 <>
     <Nav >
         <Form 
-        className="row g-3 form-consulta m-auto mt-5" 
+        className="row g-3 p-4 form-consulta m-auto mt-5 shadow-sm" 
         id="form-consultar-reservas"
         method="get"
         onSubmit={handleSubmit}>
-        <TituloData titulo={pagina_titulo} data={dataAtualFormatada} />
+        <TituloData titulo={paginaTitulo} />
         
         {/* FILTRO turma */}
         <Row className="g-3">

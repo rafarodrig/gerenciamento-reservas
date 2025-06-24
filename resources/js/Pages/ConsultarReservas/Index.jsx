@@ -1,15 +1,19 @@
 import { Head } from '@inertiajs/react';
 import Layout from '@/Layouts/Layout';
-import React, { useState, Suspense } from 'react';
+import React, { useState, useRef } from 'react';
 import AlertaModal from '@/components/modals/AlertaModal';
-import ReservaForm from '@/components/FormConsultarReservas';
-import ModalEditarReserva from '@/components/containers/EditarReservaContainer';
+import ReservaForm from '@/components/ConsultarReservasForm';
+import ModalEditarReserva from '@/components/Containers/EditarReservaContainer';
 import ModalDeletarReserva from '@/components/modals/DeletarReservaModal';
+import { dataAtual } from '@/dates';
+import TabelaReservas from '@/components/tables/ReservasTable';
+import { CSSTransition } from 'react-transition-group';
 
-const TabelaReservas = React.lazy(() => import('../../components/tables/ReservasTable'));
+export default function ConsultarReservas({ numeros }) {
 
-export default function ConsultarReservas({dataAtual, pagina_titulo, dataAtualFormatada, numeros}) {
-
+  const title = "Consultar Reserva"
+  
+  const tabelaRef = useRef(null);
   const [reservas, setReservas] = useState([]);
   const [isActive, setIsActive] = useState(false);
   const [showTabela, setShowTabela] = useState(false);
@@ -23,7 +27,7 @@ export default function ConsultarReservas({dataAtual, pagina_titulo, dataAtualFo
       sala: "",
       docente: "",
       curso: "",
-      data_inicio: dataAtual,
+      data_inicio: dataAtual("ISO"),
       data_fim: "",
       reserva_tipo: "",
       turno:"",
@@ -36,9 +40,11 @@ export default function ConsultarReservas({dataAtual, pagina_titulo, dataAtualFo
       buscar(currentPage,null);
     }
 
-  const buscar = async (page = 1, customFormData = null) => {
+  const buscar = async (page, customFormData = null) => {
     
     const finalFormData = customFormData || formData;
+
+        if(!page) setIsActive(false);
 
         try {
             const response = await axios.get('/reservas', {params: { ...finalFormData, page }});
@@ -51,37 +57,37 @@ export default function ConsultarReservas({dataAtual, pagina_titulo, dataAtualFo
             console.error('Error ', error);
         } 
     };
-
-  const divStyle = {
-        visibility: isActive ? "visible" : "hidden"
-    }
-
+    
 return (
 <>
-<Head title="Consultar Reservas" />
+<Head title={title} />
 <Layout>
   <ReservaForm
         formData={formData}
         currentPage={currentPage}
         numeros={numeros}
-        onBuscar={(customData) => buscar(1, customData)}
-        pagina_titulo={pagina_titulo}
-        dataAtualFormatada={dataAtualFormatada}
+        onBuscar={(customData) => buscar(null, customData)}
+        paginaTitulo={title}
+        setFormData={(formData) => setFormData(formData)}
       />
   
-<div style={divStyle} className="container-fluid my-4 " id="container-tabela" >
-  <br />
-        {showTabela && (
-          <Suspense >
-                <TabelaReservas  
-                onPageChange={(page) => buscar(page)} 
-                data={reservas} 
-                editarReserva={(id) => setEditarReserva(id)}
-                deletarReserva={(id) => setDeletarReserva(id)}
-                  />
-          </Suspense>
-        )}
-  </div>
+  
+    <CSSTransition
+      in={isActive}
+      timeout={400}
+      classNames="fade-table"
+      nodeRef={tabelaRef}
+      unmountOnExit
+    >
+      <div ref={tabelaRef} className="container-fluid my-4 shadow-sm" id="container-tabela">
+        <TabelaReservas  
+        onPageChange={(page) => buscar(page)} 
+        data={reservas} 
+        editarReserva={(id) => setEditarReserva(id)}
+        deletarReserva={(id) => setDeletarReserva(id)}
+        />
+      </div>
+    </CSSTransition>
 
     <ModalEditarReserva
       reservaId={editarReserva}
@@ -98,7 +104,7 @@ return (
     )}
 
     {alertaMsg && (
-      <AlertaModal  msg={alertaMsg} onExited={() => setAlertaMsg(null)}  />
+      <AlertaModal  result={alertaMsg} onExited={() => setAlertaMsg(null)}  />
       )}
 
 </Layout>

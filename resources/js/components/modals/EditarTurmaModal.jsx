@@ -50,7 +50,10 @@ export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult
     axios.patch(`/turmas/${turmaId}`, formData)
     .then((res) => { 
       setShowModal(false);
-      onResult(res.data.msg)
+      onResult({
+            prevModal: true,
+            msg: res.data.msg})
+
     })
   };
 

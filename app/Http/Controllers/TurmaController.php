@@ -9,8 +9,6 @@ use App\Http\Requests\StoreTurmaRequest;
 use App\Http\Requests\UpdateTurmaRequest;
 use Illuminate\Http\Request;
 
-use function Pest\Laravel\json;
-
 class TurmaController extends Controller
 {
     /**
