@@ -18,7 +18,7 @@ O problema do ensalamento foi apresentado na disciplina de projeto de desenvolvi
 **Figura 1 – Planilha do Excel da unidade 1.**
 
 ![planilha unidade 2](https://github.com/user-attachments/assets/f2828388-fd45-4018-81d3-3a97807165bd)
-**Figura 1 – Planilha do Excel da unidade 2.**
+<p align="center"><strong>Figura 1 – Planilha do Excel da unidade 2.</strong></p>
 
 ## Objetivos
 
@@ -114,7 +114,7 @@ Foi utilizado para gerenciar o código-fonte do projeto de forma segura e colabo
 
 ---
 
-## 6. Servidor Local - XAMPP (Apache + MySQL + PHP)
+### 6. Servidor Local - XAMPP (Apache + MySQL + PHP)
 
 **Descrição:**  
 XAMPP é um pacote que inclui Apache, MySQL e PHP, fornecendo um ambiente de desenvolvimento completo e portátil.
