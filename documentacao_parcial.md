@@ -13,10 +13,12 @@ O problema do ensalamento foi apresentado na disciplina de projeto de desenvolvi
 - Necessidade de consultar outras planilhas (por exemplo: planilha de salas);
 
 ![planilha unidade 1](https://github.com/user-attachments/assets/ef641b58-6ea2-492a-8df3-bea262ecc749)
-Figura 1 – Planilha do Excel da unidade 1.
+
+<p align="center"><strong>Figura 1 – Planilha do Excel da unidade 1.</strong></p>
+**Figura 1 – Planilha do Excel da unidade 1.**
 
 ![planilha unidade 2](https://github.com/user-attachments/assets/f2828388-fd45-4018-81d3-3a97807165bd)
-Figura 1 – Planilha do Excel da unidade 2.
+**Figura 1 – Planilha do Excel da unidade 2.**
 
 ## Objetivos
 
@@ -167,12 +169,14 @@ Abaixo, apresenta-se uma visão geral da arquitetura e fluxo da solução implem
 Além disso, diversas telas foram implementadas para viabilizar as funcionalidades descritas:
 
 - **Tela de Cadastro de Reserva**  
-  ![Tela de Cadastro de Reservas]()
+
+![Tela de Cadastro de Reservas](https://github.com/user-attachments/assets/f898943b-80cc-4efc-b05e-29dd7391ac57)
 
   Permite registrar uma nova reserva e, simultaneamente, cadastrar ou selecionar a turma associada à reserva.
 
 - **Tela de Consulta de Reservas**  
-  ![Tela de Cosulta de Reservas]()
+
+![Tela de Cosulta de Reservas](https://github.com/user-attachments/assets/4f4c860b-8b51-4ee4-bc81-b23ca6d97160)
 
   Exibe uma tabela filtrável e editável com todas as reservas registradas, separadas por data, turno e unidade.
 
