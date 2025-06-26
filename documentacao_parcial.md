@@ -12,10 +12,13 @@ O problema do ensalamento foi apresentado na disciplina de projeto de desenvolvi
 - Esforço repetitivo do registro das aulas das disciplinas dos cursos de graduação, pós-graduação e FIC;
 - Necessidade de consultar outras planilhas (por exemplo: planilha de salas);
 
+**Figuras ilustrativas do processo atual:**
+
 ![planilha unidade 1](https://github.com/user-attachments/assets/ef641b58-6ea2-492a-8df3-bea262ecc749)
 
 <p align="center"><strong>Figura 1 – Planilha do Excel da unidade 1.</strong></p>
-**Figura 1 – Planilha do Excel da unidade 1.**
+
+
 
 ![planilha unidade 2](https://github.com/user-attachments/assets/f2828388-fd45-4018-81d3-3a97807165bd)
 <p align="center"><strong>Figura 1 – Planilha do Excel da unidade 2.</strong></p>
