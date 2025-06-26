@@ -32,8 +32,8 @@ export default function FiltrosBadge({ formData, objFiltros, onRemoverData }) {
   return (
     <Row className="g-2">
       {Object.entries(filtros).map(([chave, valor]) => (
-        <Col key={chave} xs="auto" className="d-flex data-badge-div align-items-center">
-          <Badge bg="primary" className="filtros text-white px-2 py-1 shadow-sm">
+        <Col key={chave} xs="auto" className="d-flex">
+          <Badge bg="primary" className='d-flex align-items-center justify-content-center shadow-sm' >
             {valor}
           </Badge>
         </Col>
@@ -49,7 +49,7 @@ export default function FiltrosBadge({ formData, objFiltros, onRemoverData }) {
           >
             <Col ref={refs[data]} xs="auto" className="d-flex data-badge-div align-items-center">
             <OverlayTrigger overlay={<Tooltip >{diaSemana(data)}</Tooltip>}>
-              <Badge bg="primary" className="data-badge px-2 py-1 shadow-sm">
+              <Badge bg="primary" className="data-badge shadow-sm">
                 <span className="flex-grow-1">{converterData(data)}</span>
                 <CloseButton
                   onClick={() => handleRemoverData(data)}

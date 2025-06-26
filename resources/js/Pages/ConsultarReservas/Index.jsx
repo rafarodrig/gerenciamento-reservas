@@ -16,7 +16,6 @@ export default function ConsultarReservas({ numeros }) {
   const tabelaRef = useRef(null);
   const [reservas, setReservas] = useState([]);
   const [isActive, setIsActive] = useState(false);
-  const [showTabela, setShowTabela] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [editarReserva, setEditarReserva] = useState(null);
   const [deletarReserva, setDeletarReserva] = useState(null);
@@ -37,22 +36,20 @@ export default function ConsultarReservas({ numeros }) {
 
     const handleResult = (msg) => {
       setAlertaMsg(msg)
-      buscar(currentPage,null);
+      buscar(currentPage,true);
     }
 
-  const buscar = async (page, customFormData = null) => {
+  const buscar = async (page, animation, customFormData = null) => {
     
     const finalFormData = customFormData || formData;
 
-        if(!page) setIsActive(false);
+        if(animation) setIsActive(false);
 
         try {
             const response = await axios.get('/reservas', {params: { ...finalFormData, page }});
             setReservas(response.data);
             setCurrentPage(page);
-            setShowTabela(true);
             setIsActive(true);
-            if (customFormData) setFormData(customFormData);
         } catch (error) {
             console.error('Error ', error);
         } 
@@ -64,11 +61,10 @@ return (
 <Layout>
   <ReservaForm
         formData={formData}
-        currentPage={currentPage}
-        numeros={numeros}
-        onBuscar={(customData) => buscar(null, customData)}
-        paginaTitulo={title}
         setFormData={(formData) => setFormData(formData)}
+        numeros={numeros}
+        onBuscar={() => buscar(null, true, formData)}
+        paginaTitulo={title}
       />
   
   
@@ -79,9 +75,9 @@ return (
       nodeRef={tabelaRef}
       unmountOnExit
     >
-      <div ref={tabelaRef} className="container-fluid my-4 shadow-sm" id="container-tabela">
+      <div ref={tabelaRef} className="container-fluid rounded-4 my-4 shadow-sm" id="container-tabela">
         <TabelaReservas  
-        onPageChange={(page) => buscar(page)} 
+        onPageChange={(page) => buscar(page, false)} 
         data={reservas} 
         editarReserva={(id) => setEditarReserva(id)}
         deletarReserva={(id) => setDeletarReserva(id)}

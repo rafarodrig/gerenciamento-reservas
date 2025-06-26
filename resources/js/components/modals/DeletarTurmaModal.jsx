@@ -45,7 +45,10 @@ export default function DeletarTurmaModal({ turmaId, onCancel, onExited, onResul
       })
       .catch(err => {
         console.error("Erro ao deletar turma:", err);
-        onResult("Erro ao deletar turma");
+        onResult({
+          prevModal: true,
+          msg: "Erro ao deletar turma"
+        });
       });
   };
 

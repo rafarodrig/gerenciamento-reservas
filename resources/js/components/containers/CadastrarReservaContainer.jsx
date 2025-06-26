@@ -54,14 +54,14 @@ export default function CadastrarReservaContainer({
         }
     }, [salaId]);
 
-    const fetchTurma = async () => {
-      if (!formData.turma) {
+    const fetchTurma = async (turma) => {
+      if (!turma) {
         setTurmaCadastrada(null);
         return;
       }
 
       try {
-        const res = await axios.get(`/turmas/${formData.turma}`);
+        const res = await axios.get(`/turmas/${turma}`);
         setTurmaCadastrada(res.data);
       } catch (error) {
         console.error("Erro ao buscar turma cadastrada:", error);
@@ -70,7 +70,7 @@ export default function CadastrarReservaContainer({
     };
 
     useEffect(() => {
-    fetchTurma();
+    fetchTurma(formData.turma);
   }, [formData.turma]);
 
 
@@ -87,8 +87,8 @@ export default function CadastrarReservaContainer({
         turmas={reserva.turmas_disponiveis}
         formData={formData}
         setFormData={setFormData}
-        onResult={(msg)=>{ setShowCadastrarReservaModal(false); setAlertaMsg(msg); onResult()}}
-        onCancel={() => {setShowCadastrarReservaModal(false); resetId() }}
+        onResult={(msg)=>{ setShowCadastrarReservaModal(false); setAlertaMsg(msg); onResult(false); resetId();}}
+        onCancel={() => {setShowCadastrarReservaModal(false); resetId(); }}
         setEditarTurma={(id) => {setShowCadastrarReservaModal(false); setEditarTurma(id)}}
         setDeletarTurma={(id) =>{setShowCadastrarReservaModal(false); setDeletarTurma(id)}}
         // errorMsg={errorMsg}
@@ -97,14 +97,14 @@ export default function CadastrarReservaContainer({
         <EditarTurmaModal
         turmaId={editarTurma}
         onCancel={() => {setShowCadastrarReservaModal(true); }}
-        onResult={(msg) => {setAlertaMsg(msg); fetchTurma()}}
-        onExited={()=> setEditarTurma(null) }
+        onResult={(msg) => {setAlertaMsg(msg); fetchTurma(editarTurma)}}
+        onExited={()=> setEditarTurma(null)}
         />
 
         <DeletarTurmaModal
         turmaId={deletarTurma}
         onCancel={() => {setShowCadastrarReservaModal(true); }}
-        onResult={(msg) => {setAlertaMsg(msg); fetchTurma(); onResult()}}
+        onResult={(msg) => {setAlertaMsg(msg); setFormData((prev) => ({...prev, turma: ""})); onResult(false)}}
         onExited={()=> setDeletarTurma(null) }
         /> 
 

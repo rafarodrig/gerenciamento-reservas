@@ -1,8 +1,19 @@
 import { Modal, Button, Form, Row, Col, Card} from 'react-bootstrap';
-import { Building, People, Laptop, Calendar3, Pencil, Save, XCircle } from 'react-bootstrap-icons';
+import {
+  Building,
+  Users,
+  LaptopMinimal,
+  UserRound,
+  Clock,
+  BookOpen,
+  SquarePen,
+  Calendar,
+} from 'lucide-react';
 import OptionsTurmas from '../OptionsTurmasTroca';
 import OptionsSalas from '../OptionsSalas';
-import { converterData } from '@/dates';
+import { converterData, diaSemana } from '@/dates';
+import CardTurmaCadastrada from '../Card/CardTurmaCadastrada';
+
 
 export default function EditarReservaModal({ 
   show, 
@@ -22,6 +33,8 @@ export default function EditarReservaModal({
 
   if (!reserva) return null;
 
+  console.log(reserva)
+
   return (
       <>
     <Modal 
@@ -30,48 +43,56 @@ export default function EditarReservaModal({
     centered size="lg" animation>
       <Modal.Header closeButton className="bg-primary text-white" data-bs-theme="dark">
         <Modal.Title>
-          <Pencil className="me-2" />
+          <SquarePen className="me-2" />
           Editar Reserva
         </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
             <Row className="g-3 mb-4">
-              <Col md={6}>
-                <Card className="shadow-sm h-100">
+              <Col md={12}>
+                <Card className="shadow h-100 rounded-4">
                   <Card.Body>
-                    <Card.Title className="mb-3">
-                      <Building className="me-2" /> Sala
-                    </Card.Title>
-                    <p><strong>Número:</strong> {reserva.sala.numero} - {reserva.sala.tipo}</p>
-                    <p><strong>Unidade:</strong> {reserva.sala.unidade}</p>
-                    <p><People className="me-1" /> {reserva.sala.lotacao} pessoas</p>
-                    <p><Laptop className="me-1" /> {reserva.sala.maquinas_qtd} máquinas</p>
+                    <span className="text-secondary">Reserva</span>
+                    <Card.Title className="mb-3"><Calendar className="me-2" />{converterData(reserva.data)} ({diaSemana(reserva.data)}) </Card.Title>
+                    <p className='fs-5'><Clock className="me-2" />{reserva.turma.turno}</p>
+                    <p></p>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={6}>
+                <Card className="shadow h-100 rounded-4">
+                  <Card.Body>
+                    <span className="text-secondary">Sala</span>
+                    <Card.Title className="mb-3">{reserva.sala.numero} - {reserva.sala.tipo}</Card.Title>
+                    <p><Building size={18} className="me-2" /> {reserva.sala.unidade} unidade</p>
+                    <p><Users size={18} className="me-2" /> {reserva.sala.lotacao} pessoas</p>
+                    <p><LaptopMinimal size={18} className="me-2" /> {reserva.sala.maquinas_qtd} máquinas</p>
                   </Card.Body>
                 </Card>
               </Col>
 
               <Col md={6}>
-                <Card className="shadow-sm h-100">
+                <Card className="shadow h-100 rounded-4">
                   <Card.Body>
-                    <Card.Title className="mb-3">
-                      <Calendar3 className="me-2" /> Reserva
-                    </Card.Title>
-                    <p><strong>Data:</strong> {converterData(reserva.data)}</p>
-                    <p><strong>Turno:</strong> {reserva.turma.turno}</p>
-                    <p><strong>Tipo:</strong> {reserva.turma.tipo}</p>
+                    <span className="text-secondary ">Turma</span>
+                    <Card.Title className="mb-3">{reserva.turma.nome}</Card.Title>
+                    <p><UserRound size={18} className="me-2" /> {reserva.turma.docente}</p>
+                    <p><BookOpen size={18} className="me-2" />{reserva.turma.tipo}</p>
+                    <p><Users size={18} className="me-2" /> {reserva.turma.lotacao} alunos</p>
                   </Card.Body>
                 </Card>
               </Col>
             </Row>
 
             <Form id="form-editar-reserva">
-              <Form.Group className="mb-3 form-floating">
+              <Form.Group className="mb-3 form-floating ">
                 <Form.Control
                   type="text"
                   id="inp-responsavel-cadastro"
                   name="responsavel_cadastro"
                   placeholder="Responsável Cadastro"
+                  className='shadow rounded-3'
                   value={formData.responsavel_cadastro}
                   onChange={handleChange}
                   autoComplete="off"
@@ -81,7 +102,12 @@ export default function EditarReservaModal({
               </Form.Group>
 
               <Row className="g-3">
-                <Col md={6}>
+                {/* <CardTurmaCadastrada 
+                turmaCadastrada={reserva.turma_id} 
+                setEditarTurma 
+                setDeletarTurma
+                /> */}
+                {/* <Col md={6}>
                   <Form.Group className="form-floating">
                     <Form.Select
                       id="sala-cadastrada"
@@ -97,9 +123,9 @@ export default function EditarReservaModal({
                     </Form.Select>
                     <Form.Label htmlFor="sala-cadastrada">Sala</Form.Label>
                   </Form.Group>
-                </Col>
+                </Col> */}
 
-                <Col md={6}>
+                {/* <Col md={6}>
                   <Form.Group className="form-floating">
                     <Form.Select
                       id="turma-cadastrada"
@@ -113,17 +139,19 @@ export default function EditarReservaModal({
                     </Form.Select>
                     <Form.Label htmlFor="turma-cadastrada">Turma</Form.Label>
                   </Form.Group>
-                </Col>
+                </Col> */}
               </Row>
             </Form>
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={onCancel}>
-          <XCircle className="me-1" /> Cancelar
+        <Button variant="secondary" className='shadow rounded-3' onClick={onCancel}>
+          {/* <XCircle className="me-1" />  */}
+          Cancelar
         </Button>
-        <Button variant="primary" onClick={onSubmit}>
-          <Save className="me-1" /> Salvar Alterações
+        <Button variant="primary" className='shadow rounded-3' onClick={onSubmit}>
+          {/* <Save className="me-1" />  */}
+          Salvar Alterações
         </Button>
       </Modal.Footer>
     </Modal>

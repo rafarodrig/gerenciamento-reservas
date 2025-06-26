@@ -1,3 +1,8 @@
+body{
+    min-height: 2100px;
+    overflow: auto;
+}
+
 #tabDatas{
     justify-content: center;
     overflow: hidden;
@@ -10,10 +15,11 @@
     height: 0px;
 }
 
-.data-badge-div{
+
+/* .data-badge-div{ */
     /* width: 110px;
     justify-content: center;
     align-items: center; */
-}
+/* } */
 
 

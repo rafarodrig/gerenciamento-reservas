@@ -28,8 +28,13 @@ export function diaSemana(data) {
     dateTime = DateTime.fromISO(data);
   }
 
-  return dateTime.setLocale('pt-BR').toFormat('cccc'); // ex: Segunda-feira
+  const diaSemana = dateTime.setLocale('pt-BR').toFormat('cccc'); // ex: Segunda-feira
+
+  return diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+
 }
+
+
 
 
 export function diaSemanaAtual(){

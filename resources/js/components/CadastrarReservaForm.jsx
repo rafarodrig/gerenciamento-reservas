@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Form, Col, Nav } from 'react-bootstrap';
 import TituloData from '@/components/TituloData';
 import BuscarButton from './BuscarButton';
@@ -21,7 +21,7 @@ export default function CadastrarReservaForm({
   tipos, 
   maquinasTipos, 
   paginaTitulo,
-  gerarfiltros,
+  setFormData,
   setIsDisabledBtnReservar
 }) {
   const [isActive, setIsActive] = useState(false);
@@ -54,7 +54,7 @@ const handleChange = (e) => {
       ...formData,
       dias_semana: Array.from(dias),
     };
-    gerarfiltros(novoFormData);
+    setFormData(novoFormData);
 
 } else {
   let updatedFormData = {
@@ -71,7 +71,7 @@ const handleChange = (e) => {
       dias_semana: [],
     };
   }
-  gerarfiltros(updatedFormData);
+  setFormData(updatedFormData);
 }
 
 setIsActive(true);
@@ -104,7 +104,7 @@ setIsDisabledBtnReservar(true)
 
   return (
     <Nav>
-      <Form className="row g-3 p-4 form-consulta m-auto mt-5 shadow-sm" onSubmit={handleSubmit}>
+      <Form className="row g-3  p-4 form-consulta rounded-4 m-auto mt-5 shadow-sm" onSubmit={handleSubmit}>
         <TituloData titulo={paginaTitulo} />
 
         {/* Data Início */}

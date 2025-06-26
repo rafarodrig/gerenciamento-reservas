@@ -1,12 +1,12 @@
 .badge {
-  min-width: 82px;
+  min-width: 80px;
   border: none;
   height: 25px;
   transition: all 200ms ease;
 }
 
 .data-badge {
-  width: 82px;
+  width: 80px;
   text-align: left;
   transition: width 200ms ease, opacity 200ms ease, transform 200ms ease;
   display: inline-flex;

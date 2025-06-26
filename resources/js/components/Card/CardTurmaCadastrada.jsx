@@ -7,7 +7,6 @@ import { Pencil, Trash } from 'react-bootstrap-icons';
 export default function CardTurmaCadastrada({turmaCadastrada, setEditarTurma, setDeletarTurma}){
     const cardRef = useRef(null);
     return (
-
         <CSSTransition
         in={!!turmaCadastrada}
         timeout={300}

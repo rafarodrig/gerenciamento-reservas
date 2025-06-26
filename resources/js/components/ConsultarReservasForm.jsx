@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
 import {Nav, Form, Row, Col, Button } from 'react-bootstrap';
 import TituloData from '@/components/TituloData';
 
-export default function CadastrarReservaForm({ formData, setFormData, onBuscar, numeros, paginaTitulo,}) {
-
+export default function ConsultarReservaForm({ 
+    formData, 
+    setFormData, 
+    onBuscar, 
+    numeros, 
+    paginaTitulo
+}) {
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -13,13 +17,13 @@ export default function CadastrarReservaForm({ formData, setFormData, onBuscar, 
 
 const handleSubmit = (e) => {
     e.preventDefault();
-    onBuscar(null,formData); // envia para o pai
-  };
+    onBuscar(); 
+};
     return (
-<>
+    <>
     <Nav >
         <Form 
-        className="row g-3 p-4 form-consulta m-auto mt-5 shadow-sm" 
+        className="row g-3 p-4 form-consulta rounded-4 m-auto mt-5 shadow-sm" 
         id="form-consultar-reservas"
         method="get"
         onSubmit={handleSubmit}>
@@ -184,5 +188,6 @@ const handleSubmit = (e) => {
         </Row>
         </Form>
     </Nav>
-  </>);
+  </>
+  );
 };

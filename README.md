@@ -1,4 +1,3 @@
-
 # Sistema de Ensalamento do Senac-RS
 
 ## 📄 Descrição Geral
@@ -13,10 +12,10 @@ A aplicação visa substituir o processo manual, realizado atualmente via planil
 
 Atualmente, o processo de ensalamento é realizado através de planilhas, tornando-o:
 
-* Demorado e suscetível a erros.
-* Sujeito a conflitos de reserva.
-* Dependente de diversas fontes e planilhas complementares.
-* Pouco escalável diante da demanda institucional crescente.
+-   Demorado e suscetível a erros.
+-   Sujeito a conflitos de reserva.
+-   Dependente de diversas fontes e planilhas complementares.
+-   Pouco escalável diante da demanda institucional crescente.
 
 Essa limitação impacta diretamente na eficiência da equipe administrativa e na organização das atividades letivas da instituição.
 
@@ -40,10 +39,10 @@ Desenvolver um sistema web para gerenciamento do ensalamento das unidades 1 e 2 
 
 ### Objetivos Específicos
 
-* Levantar e mapear os fluxos atuais de trabalho.
-* Projetar um sistema com base nas deficiências observadas.
-* Implementar uma aplicação web que automatize o processo de ensalamento.
-* Validar a solução proposta com os usuários finais.
+-   Levantar e mapear os fluxos atuais de trabalho.
+-   Projetar um sistema com base nas deficiências observadas.
+-   Implementar uma aplicação web que automatize o processo de ensalamento.
+-   Validar a solução proposta com os usuários finais.
 
 ---
 
@@ -66,11 +65,11 @@ A definição tecnológica considerou critérios como escalabilidade, curva de a
 
 A solução proposta consiste em uma aplicação web composta por:
 
-* Interface gráfica intuitiva para agendamento e visualização de salas.
-* Sistema de autenticação para controle de acesso.
-* Módulo de verificação automática de conflitos de horários.
-* Integração com a base de dados para gerenciamento centralizado.
-* Funcionalidade de filtro por requisitos de sala (capacidade, equipamentos etc.).
+-   Interface gráfica intuitiva para agendamento e visualização de salas.
+-   Sistema de autenticação para controle de acesso.
+-   Módulo de verificação automática de conflitos de horários.
+-   Integração com a base de dados para gerenciamento centralizado.
+-   Funcionalidade de filtro por requisitos de sala (capacidade, equipamentos etc.).
 
 A arquitetura modular do sistema foi desenvolvida em camadas, separando as responsabilidades entre interface, lógica de negócios e persistência de dados.
 
@@ -78,13 +77,13 @@ A arquitetura modular do sistema foi desenvolvida em camadas, separando as respo
 
 ## 🗂️ Artefatos do Projeto
 
-* Business Model Canvas / MVP Canvas
-* Personas e casos de uso
-* Diagrama Entidade-Relacionamento (ER)
-* Protótipos de interface
-* Relatórios de reuniões e validações
-* Backlog e histórias de usuário
-* Relatórios de Sprint e testes
+-   Business Model Canvas / MVP Canvas
+-   Personas e casos de uso
+-   Diagrama Entidade-Relacionamento (ER)
+-   Protótipos de interface
+-   Relatórios de reuniões e validações
+-   Backlog e histórias de usuário
+-   Relatórios de Sprint e testes
 
 ---
 
@@ -92,40 +91,25 @@ A arquitetura modular do sistema foi desenvolvida em camadas, separando as respo
 
 A validação da solução será conduzida por meio de:
 
-* Entrevistas com os usuários do setor administrativo.
-* Aplicação de questionários de satisfação.
-* Simulações de uso em cenários reais.
-* Coleta e análise dos dados de desempenho e uso do sistema.
+-   Entrevistas com os usuários do setor administrativo.
+-   Aplicação de questionários de satisfação.
+-   Simulações de uso em cenários reais.
+-   Coleta e análise dos dados de desempenho e uso do sistema.
 
 ---
 
 ## 📊 Resultados Esperados
 
-* Redução no tempo médio de agendamento.
-* Eliminação de conflitos de reservas.
-* Aumento da confiabilidade no processo de ensalamento.
-* Facilidade de visualização e controle do uso das salas.
+-   Redução no tempo médio de agendamento.
+-   Eliminação de conflitos de reservas.
+-   Aumento da confiabilidade no processo de ensalamento.
+-   Facilidade de visualização e controle do uso das salas.
 
 ---
 
 ## ⚠️ Limitações e Perspectivas Futuras
 
-* Integração com sistemas acadêmicos institucionais.
-* Desenvolvimento de um aplicativo móvel.
-* Inclusão de relatórios gerenciais em tempo real.
-* Melhorias contínuas a partir de feedback dos usuários.
-
----
-
-## 📚 Referências Bibliográficas
-
-* WAZLAWICK, Raul Sidnei. *Metodologia de pesquisa para ciência da computação*. Rio de Janeiro: Elsevier, 2009.
-* Documentação oficial das tecnologias utilizadas (React, Node.js, PostgreSQL, etc.)
-
----
-
-### ✅ A seguir: extração das imagens.
-
-Vou extrair agora as imagens do PDF para que você possa adicioná-las ao repositório na pasta `/imagens`. Deseja que eu gere as imagens em **.png** ou **.jpg**? Deseja também que renomeie as imagens como `planilha_unidade_1.png`, `planilha_unidade_2.png`?
-
-Posso prosseguir?
+-   Integração com sistemas acadêmicos institucionais.
+-   Desenvolvimento de um aplicativo móvel.
+-   Inclusão de relatórios gerenciais em tempo real.
+-   Melhorias contínuas a partir de feedback dos usuários.

@@ -1,1 +1,54 @@
+
+$modal-content-border-radius: 1rem;
+// $btn-border-radius: 0.5rem;
+
+
+
 @import 'bootstrap/scss/bootstrap';
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* border: 1px solid black; */
+}
+
+body.modal-open {
+  padding-right: 0 !important;
+}
+
+/* ----------------BOX DE FILTROS-------------- */
+.form-consulta,
+#container-tabela,
+#container-filtros {
+  background-image: linear-gradient(
+    135deg,
+    rgba(var(--bs-light-rgb), 1),
+    rgba(var(--bs-light-rgb), 0.9)
+  );
+  border: 1px solid var(--bs-border-color);
+}
+
+    
+/* animação de entrada da tabela */
+.fade-table-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.fade-table-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 400ms ease;
+}
+.fade-table-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-table-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 400ms ease;
+}
+
+
+

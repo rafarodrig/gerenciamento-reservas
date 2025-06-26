@@ -78,8 +78,8 @@ const handleChange = (e) => {
   if (!sala || !reserva) return null;
 
   return (
-    <Modal show={show} onHide={onCancel} centered size="lg" animation>
-      <Modal.Header closeButton className="bg-primary text-white" data-bs-theme="dark">
+    <Modal show={show} className='modal-custom' onHide={onCancel} centered size="lg" animation>
+      <Modal.Header closeButton className="bg-primary  text-white" data-bs-theme="dark">
         <Modal.Title>
           <Pencil className="me-2" />
           Cadastrar Reserva
@@ -87,7 +87,7 @@ const handleChange = (e) => {
       </Modal.Header>
 
       <Modal.Body>
-        <Form id="form-cadastrar-reserva" onSubmit={handleSubmit}>
+        <Form id="form-cadastrar-reserva"  onSubmit={handleSubmit}>
           <Row className="g-4 mb-4">
             <Col md={6}>
               <Card className="shadow border-1 h-100">

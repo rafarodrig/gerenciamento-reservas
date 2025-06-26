@@ -39,11 +39,11 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
     });
 
 
-  const buscar = async (page, customFormData = null) => {
+  const buscar = async (page, animation, customFormData = null) => {
     
     const finalFormData = customFormData || formData;
 
-    if(!page) setIsActive(false);
+    if(animation) setIsActive(false)
 
         try {
             const response = await axios.get('/salas', {params: { ...finalFormData, page }});
@@ -69,7 +69,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
       setFormData(updatedFormData)
       setFiltrosBadge(newObjFiltros)
       setIsDisabledBtnReservar(false)
-      buscar(null, updatedFormData)
+      buscar(null, true, updatedFormData)
   };
   
   const getFiltros = (formData) => {
@@ -85,49 +85,47 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
   return (
     <>
       <Head title={title} />
-
       <Layout>
         <CadastrarReservaForm
               formData={formData}
-              currentPage={currentPage}
+              setFormData={getFiltros}
               numeros={numeros}
-              onBuscar={() => buscar(null, formData)}
+              onBuscar={() => buscar(null, true, formData)}
               paginaTitulo={title}
               tipos={tipos}
               maquinasTipos={maquinas_tipos}
-              gerarfiltros={getFiltros}
               setIsDisabledBtnReservar={setIsDisabledBtnReservar}
-            />
+        />
 
-          <FiltrosContainer>
-            <FiltrosBadge formData={formData} objFiltros={filtrosBadge} onRemoverData={handleRemoverData}/>
-          </FiltrosContainer>
-        
-          {/* <div  className="container-fluid my-4 shadow-sm" id="container-tabela"> */}
-            <CSSTransition
-              in={isActive}
-              timeout={400}
-              classNames="fade-table"
-              nodeRef={tabelaRef}
-              unmountOnExit
-            >
-              <div ref={tabelaRef} className="container-fluid my-4 shadow-sm" id="container-tabela">
-                <TableSalasDisponiveis
-                  onPageChange={(page) => buscar(page)}
-                  data={salasDisponiveis}
-                  onReservar={(id) => setCadastrarReserva(id)}
-                  isDisabledBtnReservar={isDisabledBtnReservar}
-                />
-              </div>
-            </CSSTransition>      
-          {/* </div> */}
-
-            <CadastrarReservaContainer
-              salaId={cadastrarReserva} 
-              reserva={reserva} 
-              onResult={() => buscar(page=currentPage, null)} 
-              resetId={() => setCadastrarReserva(null)}
+        {/* Filtros Aplicados */}
+        <FiltrosContainer>
+          <FiltrosBadge formData={formData} objFiltros={filtrosBadge} onRemoverData={handleRemoverData}/>
+        </FiltrosContainer>
+      
+        {/* Tabela Salas Disponiveis */}
+        <CSSTransition
+          in={isActive}
+          timeout={400}
+          classNames="fade-table"
+          nodeRef={tabelaRef}
+          unmountOnExit
+        >
+          <div ref={tabelaRef} className="container-fluid rounded-4 my-4 shadow-sm"  id="container-tabela">
+            <TableSalasDisponiveis
+              onPageChange={(page) => buscar(page,false)}
+              data={salasDisponiveis}
+              onReservar={(id) => setCadastrarReserva(id)}
+              isDisabledBtnReservar={isDisabledBtnReservar}
             />
+          </div>
+        </CSSTransition>      
+
+        <CadastrarReservaContainer
+          salaId={cadastrarReserva} 
+          reserva={reserva} 
+          onResult={(animation) => buscar(currentPage, animation)} 
+          resetId={() => setCadastrarReserva(null)}
+        />
       </Layout>
     </>
   )
