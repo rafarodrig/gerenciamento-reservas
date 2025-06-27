@@ -238,7 +238,7 @@ Foi realizada uma análise comparativa entre sistemas semelhantes utilizados em 
 #### 📌 Business Model Canvas
 Modelo de negócio da aplicação, evidenciando segmentos de usuários, propostas de valor, canais de comunicação, estrutura de custos e fontes de receita.
 
-📁 Local: `/artefatos/business-model-canvas.png`
+📁 Local: [`/artefatos/business-model-canvas.png`](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/blob/main/business-model-canvas.png)
 
 ---
 
