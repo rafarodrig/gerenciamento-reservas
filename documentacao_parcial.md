@@ -284,7 +284,7 @@ O feedback será coletado por meio de **observações diretas**, **entrevistas i
 
 A validação terá impacto direto no desenvolvimento do projeto, pois **permitirá refinar as funcionalidades com base em dados reais de uso**, contribuindo para um sistema mais eficaz e alinhado com as expectativas institucionais. Além disso, esse processo garante maior aceitação por parte dos usuários e aumenta as chances de adoção definitiva do sistema após a fase de testes.
 
-# Estratégia
+## Estratégia
 
 Para comprovar que os objetivos do projeto foram efetivamente alcançados, foi adotada uma estratégia baseada na **validação empírica com usuários reais** da aplicação. A metodologia utilizada envolveu **testes controlados com funcionários do Uni Senac** que atuam diretamente na alocação de salas, utilizando o sistema para realizar atividades reais de ensalamento.
 
@@ -300,7 +300,7 @@ As entrevistas e formulários foram aplicados **após uma semana de uso do siste
 
 ---
 
-# Consolidação dos Dados Coletados
+## Consolidação dos Dados Coletados
 
 Os dados obtidos foram analisados de forma qualitativa e quantitativa. A seguir, alguns dos resultados consolidados:
 
@@ -322,7 +322,7 @@ Esses dados indicam uma recepção positiva da aplicação por parte dos usuári
 
 ---
 
-# Conclusões
+## Conclusões
 
 Os resultados obtidos ao longo da validação demonstram que os **objetivos estabelecidos foram atingidos**. O sistema implementado substitui de forma eficaz o uso de planilhas manuais, reduzindo o tempo de execução de tarefas repetitivas, diminuindo os erros na alocação de salas e oferecendo uma visão centralizada e organizada do processo de ensalamento.
 
@@ -332,7 +332,7 @@ O projeto, portanto, cumpre seu propósito de modernizar e otimizar a gestão da
 
 ---
 
-# Limitações do Projeto e Perspectivas Futuras
+## Limitações do Projeto e Perspectivas Futuras
 
 Apesar dos resultados positivos, o projeto apresenta algumas **limitações**, tais como:
 
