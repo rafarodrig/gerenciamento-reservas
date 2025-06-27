@@ -14,14 +14,16 @@ O problema do ensalamento foi apresentado na disciplina de projeto de desenvolvi
 
 **Figuras ilustrativas do processo atual:**
 
+\
 ![planilha unidade 1](https://github.com/user-attachments/assets/ef641b58-6ea2-492a-8df3-bea262ecc749)
 
 <p align="center"><strong>Figura 1 – Planilha do Excel da unidade 1.</strong></p>
 
-
-
+\
+\
 ![planilha unidade 2](https://github.com/user-attachments/assets/f2828388-fd45-4018-81d3-3a97807165bd)
 <p align="center"><strong>Figura 1 – Planilha do Excel da unidade 2.</strong></p>
+
 
 ## Objetivos
 
@@ -88,7 +90,7 @@ O React foi utilizado para criar uma interface dinâmica e responsiva, possibili
 
 ---
 
-## 4. Framework de Estilo - Bootstrap
+### 4. Framework de Estilo - Bootstrap
 
 **Descrição:**  
 Bootstrap é um framework CSS de código aberto, amplamente utilizado para o desenvolvimento de interfaces responsivas e compatíveis com múltiplos dispositivos. Ele fornece uma ampla variedade de componentes pré-estilizados, como botões, formulários, tabelas, modais e sistema de grid, além de integração com JavaScript para interações dinâmicas.
@@ -103,6 +105,7 @@ O uso do Bootstrap na aplicação permite o desenvolvimento rápido de uma inter
 - [https://getbootstrap.com](https://getbootstrap.com)  
 - [https://react-bootstrap.github.io](https://react-bootstrap.github.io)
 
+---
 
 ### 5. Ambiente de Desenvolvimento - Visual Studio Code
 
@@ -163,7 +166,7 @@ Esses gerenciadores foram fundamentais para instalar e manter bibliotecas e fram
 - [https://getcomposer.org](https://getcomposer.org)
 - [https://www.npmjs.com](https://www.npmjs.com)
 
----
+
 
 ## Descrição da Solução
 
@@ -213,6 +216,56 @@ Essa solução visa automatizar por completo o processo de ensalamento, reduzind
 O processo começa com o usuário realizando interações, como cliques e preenchimento de formulários, que são captadas pela aplicação React. Essa aplicação, por sua vez, envia requisições HTTP para o servidor.
 Ao receber uma requisição, o servidor encaminha primeiramente aos roteadores, que são responsáveis por identificar qual funcionalidade deve ser executada com base na rota e no método HTTP utilizado. Em seguida, os dados da requisição são direcionados aos controladores. Os controladores executam a lógica de negócio, validam as informações, e, se necessário, solicitam dados aos modelos.
 Os modelos fazem a ponte com o banco de dados, realizando consultas, inserções, atualizações ou exclusões conforme solicitado. Após a operação no banco, os dados retornam aos controladores, que organizam a resposta final. Essa resposta é então enviada de volta ao front-end React, que atualiza a interface com base nas novas informações, gerando uma nova visualização para o usuário.
+
+
+## Artefatos Desenvolvidos
+
+O desenvolvimento deste sistema gerou uma série de artefatos documentais e visuais que apoiam e demonstram o processo completo de análise, modelagem, construção e validação da solução. Todos esses artefatos estão organizados e disponíveis no repositório a seguir:
+
+👉 [Repositório de Artefatos do Projeto](https://github.com/usuario/repositorio-projeto)
+
+
+
+### Principais Artefatos
+
+#### 📊 Benchmarking
+Foi realizada uma análise comparativa entre sistemas semelhantes utilizados em outras instituições de ensino, avaliando critérios como usabilidade, funcionalidades e tecnologias utilizadas.
+
+📁 Local: `/artefatos/benchmarking.pdf`
+
+---
+
+#### 📌 Business Model Canvas
+Modelo de negócio da aplicação, evidenciando segmentos de usuários, propostas de valor, canais de comunicação, estrutura de custos e fontes de receita.
+
+📁 Local: `/artefatos/business-model-canvas.png`
+
+---
+
+#### 🧑‍🎓 Personas
+Criação de perfis fictícios que representam os usuários do sistema (ex.: coordenador de curso, auxiliar administrativo, docente), com foco em suas dores e necessidades em relação ao processo de ensalamento.
+
+📁 Local: `/artefatos/personas.pdf`
+
+---
+
+#### 🧩 Casos de Uso e Histórias do Usuário
+Representações formais e narrativas das funcionalidades do sistema, destacando as interações esperadas do usuário com o sistema.
+
+📁 Local: `/artefatos/casos-de-uso.md`  
+📁 Local: `/artefatos/historias-usuario.md`
+
+---
+
+#### 🗂️ Protótipos de Interface
+Wireframes e protótipos de baixa fidelidade que guiaram a construção visual da aplicação, com foco em usabilidade e organização das telas principais (cadastro, consulta e gerenciamento).
+
+📁 Local: `/artefatos/prototipos-wireframes.pdf`
+
+---
+
+Você pode consultar o repositório completo com todos os documentos e imagens acessando o link mencionado no início desta seção.
+
 
 
 ## Validação
