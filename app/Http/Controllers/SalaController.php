@@ -35,10 +35,35 @@ class SalaController extends Controller
                 return response()->json(["salas" => $salas]);
             }
             else {
-                $salas = Sala::where('unidade', $request->unidade)->paginate(15)->appends($request->query());
+                // Se tem filtro de unidade, filtra por unidade
+                if ($request->has('unidade') && $request->unidade !== 'todas') {
+                    $salas = Sala::where('unidade', $request->unidade)
+                                 ->orderBy('unidade', 'asc')
+                                 ->orderBy('numero', 'asc')
+                                 ->paginate(15)
+                                 ->appends($request->query());
+                } else {
+                    // Se não tem filtro ou é 'todas', retorna todas as salas
+                    $salas = Sala::orderBy('unidade', 'asc')
+                                 ->orderBy('numero', 'asc')
+                                 ->paginate(15)
+                                 ->appends($request->query());
+                }
         
-                // return view("table.salas", ['salas' => $salas, 'unidade' => $request->unidade , 'url' =>"/salas?" ]);
-                return Inertia::render("Salas/TableSalas", ['salas' => $salas, 'unidade' => $request->unidade , 'url' =>"/salas?" ]);
+                // Se for uma requisição AJAX/API, retorna JSON
+                if ($request->expectsJson() || $request->header('Accept') === 'application/json') {
+                    return response()->json([
+                        'salas' => $salas,
+                        'unidade' => $request->unidade ?? 'todas'
+                    ]);
+                }
+        
+                // Caso contrário, retorna a view Inertia
+                return Inertia::render("Salas/TableSalas", [
+                    'salas' => $salas, 
+                    'unidade' => $request->unidade ?? 'todas', 
+                    'url' => "/salas?"
+                ]);
             }
 
         
