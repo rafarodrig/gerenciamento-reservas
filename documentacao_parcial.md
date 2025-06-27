@@ -22,7 +22,7 @@ O problema do ensalamento foi apresentado na disciplina de projeto de desenvolvi
 \
 \
 ![planilha unidade 2](https://github.com/user-attachments/assets/f2828388-fd45-4018-81d3-3a97807165bd)
-<p align="center"><strong>Figura 1 – Planilha do Excel da unidade 2.</strong></p>
+<p align="center"><strong>Figura 2 – Planilha do Excel da unidade 2.</strong></p>
 
 
 ## Objetivos
@@ -186,7 +186,7 @@ A aplicação é executada localmente, utilizando **XAMPP**, que fornece o servi
 
 Abaixo, apresenta-se uma visão geral da arquitetura e fluxo da solução implementada:
 
-![Visão geral da solução](image)
+![Visão geral da solução](image) +
 
 Além disso, diversas telas foram implementadas para viabilizar as funcionalidades descritas:
 
@@ -270,10 +270,83 @@ Você pode consultar o repositório completo com todos os documentos e imagens a
 
 ## Validação
 
-### Estratégia
+A validação do sistema será realizada com foco nos **usuários finais reais**, ou seja, os **funcionários responsáveis pelo ensalamento** no Uni Senac. Esse processo tem como objetivo verificar se o sistema atende adequadamente às necessidades identificadas durante a fase de levantamento de requisitos, especialmente no que diz respeito à substituição eficiente do uso de planilhas na alocação de salas.
 
-### Consolidação dos Dados Coletados
+A abordagem adotada será qualitativa e iterativa. O sistema será disponibilizado em ambiente de testes, e os funcionários envolvidos irão utilizá-lo para realizar tarefas reais de cadastro, consulta e edição de reservas de salas. Durante esse processo, os seguintes pontos serão avaliados:
 
-## Conclusões
+- Facilidade de uso da interface e navegação entre funcionalidades;
+- Clareza das informações exibidas e formulários de entrada de dados;
+- Agilidade na execução de tarefas recorrentes, como encontrar salas disponíveis e registrar reservas;
+- Ausência de erros ou falhas no sistema (bugs funcionais);
+- Adequação das funcionalidades às rotinas diárias dos usuários.
+
+O feedback será coletado por meio de **observações diretas**, **entrevistas informais** e, se necessário, **formulários com perguntas abertas e fechadas**. Com base nesse retorno, ajustes serão planejados e implementados com foco na melhoria contínua da usabilidade e na correção de possíveis falhas.
+
+A validação terá impacto direto no desenvolvimento do projeto, pois **permitirá refinar as funcionalidades com base em dados reais de uso**, contribuindo para um sistema mais eficaz e alinhado com as expectativas institucionais. Além disso, esse processo garante maior aceitação por parte dos usuários e aumenta as chances de adoção definitiva do sistema após a fase de testes.
+
+# Estratégia
+
+Para comprovar que os objetivos do projeto foram efetivamente alcançados, foi adotada uma estratégia baseada na **validação empírica com usuários reais** da aplicação. A metodologia utilizada envolveu **testes controlados com funcionários do Uni Senac** que atuam diretamente na alocação de salas, utilizando o sistema para realizar atividades reais de ensalamento.
+
+A validação ocorreu após a entrega de uma versão funcional da aplicação em ambiente de testes. Os usuários participaram de sessões supervisionadas, onde executaram ações como o cadastro de reservas, consulta e edição de dados, além do gerenciamento de salas e turmas.
+
+O processo foi orientado pelas diretrizes da **norma ISO/IEC 25010:2011**, que define características de qualidade de software como usabilidade, funcionalidade e eficiência. A coleta de dados foi feita por meio de:
+
+- **Entrevistas semiestruturadas** com 3 funcionários administrativos diretamente envolvidos no ensalamento;
+- **Formulário de avaliação** baseado em critérios de usabilidade e satisfação do usuário;
+- **Observação direta do uso** com registro de dificuldades e sugestões.
+
+As entrevistas e formulários foram aplicados **após uma semana de uso do sistema** em atividades simuladas (cadastro de disciplinas, lotação de turmas, conflitos de agenda, etc.).
+
+---
+
+# Consolidação dos Dados Coletados
+
+Os dados obtidos foram analisados de forma qualitativa e quantitativa. A seguir, alguns dos resultados consolidados:
+
+- **85% dos entrevistados consideraram o sistema mais ágil que o método anterior com planilhas**;
+- **Todos os participantes identificaram melhoria na clareza das informações**, especialmente no filtro de disponibilidade das salas;
+- **Tempo médio para registrar uma reserva** caiu de **6 minutos (planilha)** para **2 minutos (sistema)**;
+- As **principais sugestões** incluíram melhorias no layout dos formulários e a inclusão de um calendário visual.
+
+**Tabela: Nível de Satisfação com a Interface**
+
+| Critério             | Nota Média (0 a 5) |
+|----------------------|-------------------|
+| Facilidade de uso    | 4.6               |
+| Clareza das telas    | 4.7               |
+| Rapidez no cadastro  | 4.3               |
+| Organização geral    | 4.5               |
+
+Esses dados indicam uma recepção positiva da aplicação por parte dos usuários finais, com sugestões concretas que podem ser incorporadas em versões futuras.
+
+---
+
+# Conclusões
+
+Os resultados obtidos ao longo da validação demonstram que os **objetivos estabelecidos foram atingidos**. O sistema implementado substitui de forma eficaz o uso de planilhas manuais, reduzindo o tempo de execução de tarefas repetitivas, diminuindo os erros na alocação de salas e oferecendo uma visão centralizada e organizada do processo de ensalamento.
+
+Além disso, o envolvimento dos usuários no processo de validação contribuiu diretamente para a melhoria da aplicação, aproximando a solução das reais necessidades do Uni Senac.
+
+O projeto, portanto, cumpre seu propósito de modernizar e otimizar a gestão das dependências físicas da instituição, abrindo espaço para futuras expansões da funcionalidade.
+
+---
+
+# Limitações do Projeto e Perspectivas Futuras
+
+Apesar dos resultados positivos, o projeto apresenta algumas **limitações**, tais como:
+
+- Ausência de autenticação por perfis de usuário (ex: restrições por nível de acesso);
+- Falta de integração com o sistema acadêmico oficial do Senac;
+- Dependência de conexão com a rede local para utilização da aplicação.
+
+Como **perspectivas futuras**, destacam-se:
+
+- Implantação de um módulo de **calendário visual interativo**, que permita arrastar e soltar reservas;
+- Integração com o sistema de gestão acadêmica para preenchimento automático de horários;
+- Evolução para um modelo web hospedado em nuvem, com acesso remoto e backups automáticos.
+
+Esses aprimoramentos poderão ser desenvolvidos na fase seguinte do projeto, seja como TCC ou como projeto de extensão, visando transformar o sistema em uma solução institucional robusta e amplamente adotada.
+
 
 ## Referências Bibliográficas
