@@ -233,12 +233,6 @@ Documento visual que descreve o Produto Mínimo Viável (MVP) do sistema, inclui
 
 ---
 
-#### 🧑‍🎓 Personas
-Criação de perfis fictícios que representam os usuários do sistema (ex.: coordenador de curso, auxiliar administrativo, docente), com foco em suas dores e necessidades em relação ao processo de ensalamento.
-
-📁 Local: `/artefatos/personas.pdf`
-
----
 
 #### 🧩 Casos de Uso e Histórias do Usuário
 Representações formais e narrativas das funcionalidades do sistema, destacando as interações esperadas do usuário com o sistema.
