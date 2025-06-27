@@ -225,19 +225,11 @@ O desenvolvimento deste sistema gerou uma série de artefatos documentais e visu
 👉 [Repositório de Artefatos do Projeto](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/tree/main)
 
 
-### Principais Artefatos
 
-#### 📊 Benchmarking
-Foi realizada uma análise comparativa entre sistemas semelhantes utilizados em outras instituições de ensino, avaliando critérios como usabilidade, funcionalidades e tecnologias utilizadas.
-
-📁 Local: `/artefatos/benchmarking.pdf`
-
----
-
-#### 📌 Business Model Canvas
+#### 📌 Canvas MVP
 Modelo de negócio da aplicação, evidenciando segmentos de usuários, propostas de valor, canais de comunicação, estrutura de custos e fontes de receita.
 
-📁 Local: [`/artefatos/business-model-canvas.png`](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/blob/main/business-model-canvas.png)
+📁 Local: [`/artefatos/canvas-mvp.png`](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/blob/main/canvas-mvp.png)
 
 ---
 
@@ -263,9 +255,6 @@ Wireframes e protótipos de baixa fidelidade que guiaram a construção visual d
 
 ---
 
-Você pode consultar o repositório completo com todos os documentos e imagens acessando o link mencionado no início desta seção.
-
-
 
 ## Validação
 
@@ -283,7 +272,7 @@ O feedback será coletado por meio de **observações diretas**, **entrevistas i
 
 A validação terá impacto direto no desenvolvimento do projeto, pois **permitirá refinar as funcionalidades com base em dados reais de uso**, contribuindo para um sistema mais eficaz e alinhado com as expectativas institucionais. Além disso, esse processo garante maior aceitação por parte dos usuários e aumenta as chances de adoção definitiva do sistema após a fase de testes.
 
-# Estratégia
+# Estratégia (simulação)
 
 Para comprovar que os objetivos do projeto foram efetivamente alcançados, foi adotada uma estratégia baseada na **validação empírica com usuários reais** da aplicação. A metodologia utilizada envolveu **testes controlados com funcionários do Uni Senac** que atuam diretamente na alocação de salas, utilizando o sistema para realizar atividades reais de ensalamento.
 
@@ -299,7 +288,7 @@ As entrevistas e formulários foram aplicados **após uma semana de uso do siste
 
 ---
 
-# Consolidação dos Dados Coletados
+# Consolidação dos Dados Coletados (simulação)
 
 Os dados obtidos foram analisados de forma qualitativa e quantitativa. A seguir, alguns dos resultados consolidados:
 
