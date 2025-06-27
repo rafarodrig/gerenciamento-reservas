@@ -260,7 +260,7 @@ Representações formais e narrativas das funcionalidades do sistema, destacando
 #### 🗂️ Protótipos de Interface
 Wireframes e protótipos de baixa fidelidade que guiaram a construção visual da aplicação, com foco em usabilidade e organização das telas principais (cadastro, consulta e gerenciamento).
 
-📁 Local: `/artefatos/prototipos-wireframes.pdf`
+📁 Local: [`/artefatos/prototipos-wireframes.pdf`](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/blob/main/prototipos-wireframes.pdf)
 
 ---
 
