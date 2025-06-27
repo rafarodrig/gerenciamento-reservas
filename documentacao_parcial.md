@@ -227,7 +227,7 @@ O desenvolvimento deste sistema gerou uma série de artefatos documentais e visu
 
 
 #### 📌 Canvas MVP
-Modelo de negócio da aplicação, evidenciando segmentos de usuários, propostas de valor, canais de comunicação, estrutura de custos e fontes de receita.
+Documento visual que descreve o Produto Mínimo Viável (MVP) do sistema, incluindo os segmentos de clientes, problemas a serem resolvidos, propostas de valor, principais funcionalidades, métricas-chave e diferenciais competitivos.
 
 📁 Local: [`/artefatos/canvas-mvp.png`](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/blob/main/canvas-mvp.png)
 
