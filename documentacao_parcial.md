@@ -192,6 +192,13 @@ Essa solução visa automatizar por completo o processo de ensalamento, reduzind
 
 ## Arquitetura
 
+![Arquitetura do Sistema](https://github.com/user-attachments/assets/bdfa6961-11f4-4378-8d86-b949d8d877f5)
+
+O processo começa com o usuário realizando interações, como cliques e preenchimento de formulários, que são captadas pela aplicação React. Essa aplicação, por sua vez, envia requisições HTTP para o servidor.
+Ao receber uma requisição, o servidor encaminha primeiramente aos roteadores, que são responsáveis por identificar qual funcionalidade deve ser executada com base na rota e no método HTTP utilizado. Em seguida, os dados da requisição são direcionados aos controladores. Os controladores executam a lógica de negócio, validam as informações, e, se necessário, solicitam dados aos modelos.
+Os modelos fazem a ponte com o banco de dados, realizando consultas, inserções, atualizações ou exclusões conforme solicitado. Após a operação no banco, os dados retornam aos controladores, que organizam a resposta final. Essa resposta é então enviada de volta ao front-end React, que atualiza a interface com base nas novas informações, gerando uma nova visualização para o usuário.
+
+
 ## Validação
 
 ### Estratégia
