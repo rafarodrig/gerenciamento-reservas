@@ -253,8 +253,6 @@ Wireframes e protótipos de baixa fidelidade que guiaram a construção visual d
 
 📁 Local: [`/artefatos/prototipos-wireframes.pdf`](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/blob/main/prototipos-wireframes.pdf)
 
----
-
 
 ## Validação
 
@@ -286,7 +284,6 @@ O processo foi orientado pelas diretrizes da **norma ISO/IEC 25010:2011**, que d
 
 As entrevistas e formulários foram aplicados **após uma semana de uso do sistema** em atividades simuladas (cadastro de disciplinas, lotação de turmas, conflitos de agenda, etc.).
 
----
 
 ## Consolidação dos Dados Coletados (simulação)
 
@@ -308,7 +305,6 @@ Os dados obtidos foram analisados de forma qualitativa e quantitativa. A seguir,
 
 Esses dados indicam uma recepção positiva da aplicação por parte dos usuários finais, com sugestões concretas que podem ser incorporadas em versões futuras.
 
----
 
 ## Conclusões
 
@@ -318,7 +314,6 @@ Além disso, o envolvimento dos usuários no processo de validação contribuiu 
 
 O projeto, portanto, cumpre seu propósito de modernizar e otimizar a gestão das dependências físicas da instituição, abrindo espaço para futuras expansões da funcionalidade.
 
----
 
 ## Limitações do Projeto e Perspectivas Futuras
 
