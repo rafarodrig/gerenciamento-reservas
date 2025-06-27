@@ -170,7 +170,7 @@ Esses gerenciadores foram fundamentais para instalar e manter bibliotecas e fram
 
 ## Descrição da Solução
 
-A solução proposta para enfrentar o problema de ineficiência na alocação de salas do Uni Senac – Centro Histórico de Porto Alegre consiste no desenvolvimento de uma **aplicação web**, executada localmente na rede interna da instituição. A aplicação foi projetada para substituir o uso de planilhas do Excel por uma interface intuitiva, segura e dinâmica, que centraliza todas as funcionalidades necessárias para o gerenciamento de espaços físicos, como salas, estúdios e auditórios.
+A solução proposta para enfrentar o problema de ineficiência na alocação de salas do Uni Senac consiste no desenvolvimento de uma **aplicação web**, executada localmente na rede interna da instituição. Essa abordagem de implantação local foi escolhida por alinhar-se à infraestrutura de TI existente, atendendo a um requisito do projeto e evitando custos adicionais com serviços de hospedagem externos. A aplicação foi projetada para substituir o uso de planilhas do Excel por uma interface intuitiva, segura e dinâmica, que centraliza todas as funcionalidades necessárias para o gerenciamento básico de espaços físicos, como salas, estúdios e auditórios.
 
 A aplicação organiza as informações de forma estruturada e acessível por meio de diferentes interfaces, voltadas especificamente para o cadastro, consulta e manutenção das reservas. Um dos principais módulos é a **página de cadastro de reservas**, que permite aos usuários registrar reservas de salas para eventos, cursos de graduação, pós-graduação e formações FIC. Essa funcionalidade foi projetada para ser flexível, contemplando diferentes turnos e exigências específicas (como capacidade da sala, número de computadores, tipo de equipamento, etc.). Além disso, este módulo integra opções para cadastrar, editar e excluir **turmas**, facilitando o controle dos cursos e suas necessidades específicas.
 
@@ -180,7 +180,7 @@ Outro componente fundamental da aplicação é a **página de gerenciamento de s
 
 Do ponto de vista técnico, a aplicação foi desenvolvida com **Laravel** no backend, garantindo robustez, segurança e organização do código com base no padrão MVC. O **frontend** foi construído com **React.js**, possibilitando uma interface moderna, reativa e de fácil navegação. A comunicação entre frontend e backend é feita por meio de **APIs RESTful**, permitindo escalabilidade e manutenção simplificada.
 
-Para garantir a integridade e a segurança dos dados, a aplicação conta com mecanismos como **validação de dados no backend e frontend**, proteção contra CSRF, autenticação de usuários (com níveis de permissão, se necessário) e auditoria básica das alterações. O uso do **MySQL** como sistema de banco de dados relacional garante consistência e desempenho adequado para o volume esperado de dados.
+Para garantir a integridade e a segurança dos dados, a aplicação conta com mecanismos como **validação de dados no backend e frontend**, proteção contra CSRF. O uso do **MySQL** como sistema de banco de dados relacional garante consistência e desempenho adequado para o volume esperado de dados.
 
 A aplicação é executada localmente, utilizando **XAMPP**, que fornece o servidor Apache, PHP e MySQL de forma integrada, o que facilita o desenvolvimento, implantação e manutenção dentro do ambiente interno da instituição.
 
@@ -203,11 +203,11 @@ Além disso, diversas telas foram implementadas para viabilizar as funcionalidad
   Exibe uma tabela filtrável e editável com todas as reservas registradas, separadas por data, turno e unidade.
 
 - **Tela de Gerenciamento de Salas**  
-  ![Tela de Cosulta de Reservas]()
+  ![Tela de  Gerenciamento de Salas]()
 
   Interface para cadastrar, editar e excluir informações das salas, incluindo atributos como capacidade, tipo e localização.
 
-Essa solução visa automatizar por completo o processo de ensalamento, reduzindo o tempo gasto com tarefas manuais, minimizando erros humanos e proporcionando uma visualização clara da ocupação dos espaços acadêmicos do Senac. Dessa forma, atende de maneira eficaz aos requisitos apresentados pelos usuários finais e às necessidades da instituição.
+Essa solução visa automatizar certas rotinas do processo de ensalamento, reduzindo o tempo gasto com tarefas manuais, minimizando erros humanos e proporcionando uma visualização clara da ocupação dos espaços acadêmicos do Senac. Dessa forma, atende de maneira eficaz aos requisitos apresentados pelos usuários finais e às necessidades da instituição.
 
 ## Arquitetura
 
@@ -284,7 +284,7 @@ O feedback será coletado por meio de **observações diretas**, **entrevistas i
 
 A validação terá impacto direto no desenvolvimento do projeto, pois **permitirá refinar as funcionalidades com base em dados reais de uso**, contribuindo para um sistema mais eficaz e alinhado com as expectativas institucionais. Além disso, esse processo garante maior aceitação por parte dos usuários e aumenta as chances de adoção definitiva do sistema após a fase de testes.
 
-## Estratégia
+# Estratégia
 
 Para comprovar que os objetivos do projeto foram efetivamente alcançados, foi adotada uma estratégia baseada na **validação empírica com usuários reais** da aplicação. A metodologia utilizada envolveu **testes controlados com funcionários do Uni Senac** que atuam diretamente na alocação de salas, utilizando o sistema para realizar atividades reais de ensalamento.
 
@@ -300,7 +300,7 @@ As entrevistas e formulários foram aplicados **após uma semana de uso do siste
 
 ---
 
-## Consolidação dos Dados Coletados
+# Consolidação dos Dados Coletados
 
 Os dados obtidos foram analisados de forma qualitativa e quantitativa. A seguir, alguns dos resultados consolidados:
 
@@ -322,7 +322,7 @@ Esses dados indicam uma recepção positiva da aplicação por parte dos usuári
 
 ---
 
-## Conclusões
+# Conclusões
 
 Os resultados obtidos ao longo da validação demonstram que os **objetivos estabelecidos foram atingidos**. O sistema implementado substitui de forma eficaz o uso de planilhas manuais, reduzindo o tempo de execução de tarefas repetitivas, diminuindo os erros na alocação de salas e oferecendo uma visão centralizada e organizada do processo de ensalamento.
 
@@ -332,7 +332,7 @@ O projeto, portanto, cumpre seu propósito de modernizar e otimizar a gestão da
 
 ---
 
-## Limitações do Projeto e Perspectivas Futuras
+# Limitações do Projeto e Perspectivas Futuras
 
 Apesar dos resultados positivos, o projeto apresenta algumas **limitações**, tais como:
 
