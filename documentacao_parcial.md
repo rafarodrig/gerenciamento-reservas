@@ -88,7 +88,23 @@ O React foi utilizado para criar uma interface dinâmica e responsiva, possibili
 
 ---
 
-### 4. Ambiente de Desenvolvimento - Visual Studio Code
+## 4. Framework de Estilo - Bootstrap
+
+**Descrição:**  
+Bootstrap é um framework CSS de código aberto, amplamente utilizado para o desenvolvimento de interfaces responsivas e compatíveis com múltiplos dispositivos. Ele fornece uma ampla variedade de componentes pré-estilizados, como botões, formulários, tabelas, modais e sistema de grid, além de integração com JavaScript para interações dinâmicas.
+
+
+**Justificativa:**  
+O uso do Bootstrap na aplicação permite o desenvolvimento rápido de uma interface visualmente organizada, responsiva e com experiência de usuário consistente. Foi utilizado especialmente em conjunto com React (via React-Bootstrap) para a criação de formulários, modais de confirmação, organização de cards de reserva e layout de páginas. Isso contribuiu para a padronização visual da aplicação e maior produtividade no desenvolvimento da interface.
+
+
+**Referência:**  
+- Otto, M., & Thornton, J. (2023). *Bootstrap Documentation*.  
+- [https://getbootstrap.com](https://getbootstrap.com)  
+- [https://react-bootstrap.github.io](https://react-bootstrap.github.io)
+
+
+### 5. Ambiente de Desenvolvimento - Visual Studio Code
 
 **Descrição:**  
 O Visual Studio Code é um editor de código-fonte leve, com suporte a depuração, controle de versão e uma vasta gama de extensões.
@@ -102,7 +118,7 @@ Sua integração com GitHub, terminal embutido, IntelliSense e suporte a múltip
 
 ---
 
-### 5. Controle de Versão - GitHub
+### 6. Controle de Versão - GitHub
 
 **Descrição:**  
 GitHub é uma plataforma de hospedagem de código baseada em Git, com recursos de colaboração, versionamento e integração contínua.
@@ -117,7 +133,7 @@ Foi utilizado para gerenciar o código-fonte do projeto de forma segura e colabo
 
 ---
 
-### 6. Servidor Local - XAMPP (Apache + MySQL + PHP)
+### 7. Servidor Local - XAMPP (Apache + MySQL + PHP)
 
 **Descrição:**  
 XAMPP é um pacote que inclui Apache, MySQL e PHP, fornecendo um ambiente de desenvolvimento completo e portátil.
@@ -132,7 +148,7 @@ Utilizado no ambiente local para simular o servidor de produção e facilitar os
 
 ---
 
-### 7. Gerenciadores de Pacotes - Composer & NPM
+### 8. Gerenciadores de Pacotes - Composer & NPM
 
 **Descrição:**
 
