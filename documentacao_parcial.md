@@ -251,8 +251,8 @@ Criação de perfis fictícios que representam os usuários do sistema (ex.: coo
 #### 🧩 Casos de Uso e Histórias do Usuário
 Representações formais e narrativas das funcionalidades do sistema, destacando as interações esperadas do usuário com o sistema.
 
-📁 Local: `/artefatos/casos-de-uso.md`  
-📁 Local: `/artefatos/historias-usuario.md`
+📁 Local: [`/artefatos/casos-de-uso.md`](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/blob/main/casos-de-uso.md)  
+📁 Local: [`/artefatos/historias-usuario.md`](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/blob/main/historias-do-usuario.md)
 
 ---
 
