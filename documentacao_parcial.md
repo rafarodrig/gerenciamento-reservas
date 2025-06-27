@@ -222,8 +222,7 @@ Os modelos fazem a ponte com o banco de dados, realizando consultas, inserções
 
 O desenvolvimento deste sistema gerou uma série de artefatos documentais e visuais que apoiam e demonstram o processo completo de análise, modelagem, construção e validação da solução. Todos esses artefatos estão organizados e disponíveis no repositório a seguir:
 
-👉 [Repositório de Artefatos do Projeto](https://github.com/usuario/repositorio-projeto)
-
+👉 [Repositório de Artefatos do Projeto](https://github.com/rafarodrig/gerenciamento-reservas-artefatos/tree/main)
 
 
 ### Principais Artefatos
