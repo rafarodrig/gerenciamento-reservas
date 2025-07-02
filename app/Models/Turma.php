@@ -14,30 +14,7 @@ class Turma extends Model
     public $timestamps = false;
     protected $guarded = ["id"];
 
-    public static function turmasDisponiveisReserva(Request $request){
 
-        $turma_tipo = $request->reserva_tipo;
-        $turno = $request->turno;
-
-        $ids_indisponiveis = TurmaHelper::turmasIndisponiveisIds( $turma_tipo, $request->datas);
-
-        $disp = [];
-        $indisp = [];
-
-        $turmas = Turma::get();
-
-        foreach ($turmas as $turma) {
-
-            if($turma->turno == $turno and $turma->tipo == $turma_tipo) {
-                if(in_array($turma->id,$ids_indisponiveis)){
-                    $indisp[] = $turma;
-                } else {
-                    $disp[] = $turma;
-                }
-            }
-        }
-        return $disp;
-    }
 
     public static function turmasDisponiveisTroca(Turma $turma, $data)
     {    

@@ -3,6 +3,7 @@ import axios from 'axios';
 import EditarReservaModal from '../modals/EditarReservaModal';
 import ConfirmarEditarModal from '../modals/ConfirmarEditarReservaModal';
 
+
 export default function EditarReservaContainer({ reservaId, onResetId, onResult }) {
   const [formData, setFormData] = useState(null);
   const [reservaDados, setReservaDados] = useState(null);
@@ -27,6 +28,9 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
     }
   }, [reservaId]);
 
+
+
+
   // Ação ao clicar em "Salvar" no primeiro modal
   const handleSubmit = () => {
     setFormData((formData) => ({
@@ -45,7 +49,7 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
       onResult({
               prevModal: false,
               msg: res.data.msg
-            })
+})
       onResetId()
     })
   };
@@ -72,6 +76,10 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
         formData={formData}
         setFormData={setFormData}
       />
+
+
+
+
     </>
   );
 }

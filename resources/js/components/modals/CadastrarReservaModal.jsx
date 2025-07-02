@@ -1,17 +1,21 @@
 import axios from 'axios';
 import { Modal, Button, Form, Row, Col, Card, ToggleButton } from 'react-bootstrap';
 import {
-  Pencil,
   Save,
   XCircle,
-  Building,
-  People,
-  Laptop,
-  Calendar3
 } from 'react-bootstrap-icons';
 import CardTurmaCadastrada from '../Card/CardTurmaCadastrada';
 import { converterData } from '@/dates'; // ajuste conforme seu projeto
 import OptionsTurmasDisponiveis from '../OptionsTurmasDisponiveis';
+import { 
+  Building, 
+  LaptopMinimal, 
+  Users, 
+  SquarePen, 
+  BookOpen,
+  Clock 
+} from 'lucide-react';
+
 
 export default function CadastrarReservaModal({
   show,
@@ -50,11 +54,11 @@ export default function CadastrarReservaModal({
     }
     axios.post('/reservas', payload)
     .then((res) => {
-        onResult({prevModal: false, msg: res.data.msg})
-        })
+      onResult({ show: true, type: "success", message: res.data.message });
+    })
     .catch((error) => {
-      if (error.response?.data?.errors) console.error(error);
-    });
+      if (error.response?.data?.errors) onResult({ show: true, type: "danger", message: error });
+      });
     };
 
 
@@ -79,9 +83,9 @@ const handleChange = (e) => {
 
   return (
     <Modal show={show} className='modal-custom' onHide={onCancel} centered size="lg" animation>
-      <Modal.Header closeButton className="bg-primary  text-white" data-bs-theme="dark">
+      <Modal.Header closeButton>
         <Modal.Title>
-          <Pencil className="me-2" />
+          <SquarePen size={28} className="me-2" />
           Cadastrar Reserva
         </Modal.Title>
       </Modal.Header>
@@ -90,28 +94,26 @@ const handleChange = (e) => {
         <Form id="form-cadastrar-reserva"  onSubmit={handleSubmit}>
           <Row className="g-4 mb-4">
             <Col md={6}>
-              <Card className="shadow border-1 h-100">
-                <Card.Body>
-                  <Card.Title className="mb-3">
-                    <Building className="me-2" /> Sala
-                  </Card.Title>
-                  <p><strong>Número:</strong> {sala.numero} - {sala.tipo}</p>
-                  <p><strong>Unidade:</strong> {sala.unidade}</p>
-                  <p><People className="me-1" /> {sala.lotacao} pessoas</p>
-                  <p><Laptop className="me-1" /> {sala.maquinas_qtd} máquinas</p>
-                </Card.Body>
-              </Card>
-            </Col>
+                <Card className="shadow h-100 rounded-4" >
+                  <Card.Body>
+                    <span className="text-secondary">Sala</span>
+                    <Card.Title className="mb-3 fs-">{sala.numero} - {sala.tipo}</Card.Title>
+                    <p className='d-flex align-items-center mb-2'><Building size={18} className="me-2" /> {sala.unidade} unidade</p>
+                    <p className='d-flex align-items-center mb-2'><Users size={18} className="me-2" /> {sala.lotacao} pessoas</p>
+                    <p className='d-flex align-items-center mb-2'><LaptopMinimal size={18} className="me-2" /> {sala.maquinas_qtd} máquinas</p>
+                  </Card.Body>
+                </Card>
+              </Col>
 
             <Col md={6}>
-              <Card className="shadow border-1 h-100">
+              <Card className="shadow h-100 rounded-4">
                 <Card.Body>
+                  <span className="text-secondary ">Reserva</span>
                   <Card.Title className="mb-3">
-                    <Calendar3 className="me-2" /> Reserva
+                    {converterData(reserva.data_inicio)}
                   </Card.Title>
-                  <p><strong>Data:</strong> {converterData(reserva.data_inicio)}</p>
-                  <p><strong>Turno:</strong> {reserva.turno}</p>
-                  <p><strong>Tipo:</strong> {reserva.reserva_tipo}</p>
+                  <p className='d-flex align-items-center mb-2'><Clock size={18} className="me-2" />{reserva.turno}</p>
+                  <p className='d-flex align-items-center mb-2'><BookOpen size={18} className="me-2" />{reserva.reserva_tipo}</p>
                 </Card.Body>
               </Card>
             </Col>

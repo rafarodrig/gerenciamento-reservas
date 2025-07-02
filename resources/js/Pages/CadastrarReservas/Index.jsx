@@ -17,12 +17,13 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
   const tabelaRef = useRef(null);
   
   const [salasDisponiveis, setSalasDisponiveis] = useState(null);
+  const [turmasDisponiveis, setTurmasDisponiveis] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filtrosBadge, setFiltrosBadge] = useState(null);
   const [cadastrarReserva, setCadastrarReserva] = useState(null);
   const [reserva, setReserva] = useState(null);
-  const [isDisabledBtnReservar,setIsDisabledBtnReservar] = useState(false);
+  const [isDisabledBtnReservar, setIsDisabledBtnReservar] = useState(false);
 
   const [formData, setFormData] = useState({
       data_inicio: dataAtualISO,
@@ -39,27 +40,51 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
     });
 
 
-  const buscar = async (page, animation, customFormData = null) => {
-    
-    const finalFormData = customFormData || formData;
+const fetchSalasDisponiveis = async (customFormData = null, page = null) => {
+  const finalFormData = { ...(customFormData || formData) };
+  const response = await axios.get('/salas/disponiveis', { params: { ...finalFormData, page } });
+  return response.data;
+};
 
-    if(animation) setIsActive(false)
+const fetchTurmasDisponiveis = async (customFormData = null) => {
+  const finalFormData = { ...(customFormData || formData) };
 
-        try {
-            const response = await axios.get('/salas', {params: { ...finalFormData, page }});
-            const dados = response.data
-            setSalasDisponiveis(dados);
-            setCurrentPage(page);
-            setReserva({
-              query: dados.query,
-              turmas_disponiveis: dados.turmas_disponiveis 
-            })
-            setIsActive(true);
+  try {
+    const response = await axios.get('/turmas/disponiveis', { params: finalFormData });
+    console.log("🔍 Chamando turmas");
+    setTurmasDisponiveis(response.data.turmas);
+  } catch (error) {
+    console.error('Erro ao buscar turmas disponíveis:', error);
+  }
+};
 
-        } catch (error) {
-            console.error('Error ', error);
-        } 
-    };
+const buscar = async (page = null, animation = true, customFormData = null) => {
+  console.log("🔍 Chamando buscar");
+  const finalFormData = { ...(customFormData || formData) };
+
+  if (animation) setIsActive(false);
+
+  try {
+    const salasData = await fetchSalasDisponiveis(finalFormData, page);
+
+    if (!page) {
+      fetchTurmasDisponiveis(finalFormData);
+    } 
+
+    setSalasDisponiveis(salasData);
+    setCurrentPage(page);
+    setReserva({
+      turno: finalFormData.turno,
+      data_inicio: finalFormData.data_inicio,
+      datas: finalFormData.datas,
+      reserva_tipo: finalFormData.reserva_tipo,
+    });
+  } catch (error) {
+    console.error('Erro ao buscar salas disponíveis:', error);
+  } finally {
+    if (animation) setIsActive(true);
+  }
+};
 
   const handleRemoverData = (newObjFiltros) => {
       let updatedFormData = {
@@ -121,6 +146,8 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
         </CSSTransition>      
 
         <CadastrarReservaContainer
+          fetchTurmasDisponiveis={fetchTurmasDisponiveis}
+          turmasDisponiveis={turmasDisponiveis}
           salaId={cadastrarReserva} 
           reserva={reserva} 
           onResult={(animation) => buscar(currentPage, animation)} 

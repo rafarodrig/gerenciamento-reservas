@@ -1,7 +1,7 @@
 export default function OptionsTurmasDisponiveis({ turmas }) {
 
-  if(!turmas) return;
-
+  if(!turmas) return null;
+  console.log("Turmas Options");
   return (
     <>
       {turmas.map((turma) => (

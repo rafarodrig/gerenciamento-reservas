@@ -1,8 +1,4 @@
-/* Prevenção de scroll horizontal global */
-html, body {
-    overflow-x: hidden;
-    max-width: 100%;
-}
+
 
 /* Estilos para a página Gerenciar Salas */
 
@@ -73,11 +69,6 @@ html, body {
     margin: 0 0.25rem;
 }
 
-.modal-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-    padding: 1.5rem;
-}
 
 .form-section {
     border: 1px solid #e9ecef;
@@ -101,13 +92,6 @@ html, body {
     margin: 0.5rem 0;
 }
 
-.alert-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1050;
-    min-width: 300px;
-}
 
 .loading-overlay {
     position: absolute;
@@ -163,15 +147,15 @@ html, body {
     margin-bottom: 0.5rem;
 }
 
-/* Animações para modais */
-.modal.fade .modal-dialog {
-    transition: transform 0.3s ease-out;
-    transform: translate(0, -50px);
-}
+// /* Animações para modais */
+// .modal.fade .modal-dialog {
+//     transition: transform 0.3s ease-out;
+//     transform: translate(0, -50px);
+// }
 
-.modal.show .modal-dialog {
-    transform: none;
-}
+// .modal.show .modal-dialog {
+//     transform: none;
+// }
 
 /* Responsividade */
 @media (max-width: 768px) {
@@ -454,52 +438,6 @@ html, body {
     color: #721c24;
 }
 
-/* Estilos para paginação */
-.pagination {
-    margin-bottom: 0;
-}
-
-.pagination .page-link {
-    color: #495057;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    margin: 0 0.125rem;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-}
-
-.pagination .page-link:hover {
-    color: #0056b3;
-    background-color: #e9ecef;
-    border-color: #adb5bd;
-    transform: translateY(-1px);
-}
-
-.pagination .page-item.active .page-link {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: white;
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
-}
-
-.pagination .page-item.disabled .page-link {
-    color: #6c757d;
-    background-color: #fff;
-    border-color: #dee2e6;
-    cursor: not-allowed;
-}
-
-.pagination .page-item.disabled .page-link:hover {
-    transform: none;
-}
-
-/* Informações de paginação */
-.pagination-info {
-    color: #6c757d;
-    font-size: 0.875rem;
-    margin-bottom: 0.5rem;
-}
 
 /* Estilos específicos para colunas da tabela */
 .tabela-consulta th:nth-child(1),

@@ -1,4 +1,4 @@
-import { Modal, Button, Form, Row, Col, Card} from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, Card } from 'react-bootstrap';
 import {
   Building,
   Users,
@@ -7,12 +7,8 @@ import {
   Clock,
   BookOpen,
   SquarePen,
-  Calendar,
 } from 'lucide-react';
-import OptionsTurmas from '../OptionsTurmasTroca';
-import OptionsSalas from '../OptionsSalas';
 import { converterData, diaSemana } from '@/dates';
-import CardTurmaCadastrada from '../Card/CardTurmaCadastrada';
 
 
 export default function EditarReservaModal({ 
@@ -41,7 +37,7 @@ export default function EditarReservaModal({
     show={show} 
     onHide={onCancel} 
     centered size="lg" animation>
-      <Modal.Header closeButton className="bg-primary text-white" data-bs-theme="dark">
+      <Modal.Header closeButton className='pb-1' >
         <Modal.Title>
           <SquarePen className="me-2" />
           Editar Reserva
@@ -49,99 +45,97 @@ export default function EditarReservaModal({
       </Modal.Header>
 
       <Modal.Body>
-            <Row className="g-3 mb-4">
-              <Col md={12}>
-                <Card className="shadow h-100 rounded-4">
-                  <Card.Body>
-                    <span className="text-secondary">Reserva</span>
-                    <Card.Title className="mb-3"><Calendar className="me-2" />{converterData(reserva.data)} ({diaSemana(reserva.data)}) </Card.Title>
-                    <p className='fs-5'><Clock className="me-2" />{reserva.turma.turno}</p>
-                    <p></p>
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col md={6}>
-                <Card className="shadow h-100 rounded-4">
-                  <Card.Body>
-                    <span className="text-secondary">Sala</span>
-                    <Card.Title className="mb-3">{reserva.sala.numero} - {reserva.sala.tipo}</Card.Title>
-                    <p><Building size={18} className="me-2" /> {reserva.sala.unidade} unidade</p>
-                    <p><Users size={18} className="me-2" /> {reserva.sala.lotacao} pessoas</p>
-                    <p><LaptopMinimal size={18} className="me-2" /> {reserva.sala.maquinas_qtd} máquinas</p>
-                  </Card.Body>
-                </Card>
-              </Col>
+    
 
-              <Col md={6}>
-                <Card className="shadow h-100 rounded-4">
-                  <Card.Body>
-                    <span className="text-secondary ">Turma</span>
-                    <Card.Title className="mb-3">{reserva.turma.nome}</Card.Title>
-                    <p><UserRound size={18} className="me-2" /> {reserva.turma.docente}</p>
-                    <p><BookOpen size={18} className="me-2" />{reserva.turma.tipo}</p>
-                    <p><Users size={18} className="me-2" /> {reserva.turma.lotacao} alunos</p>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
+<Row className="">
+  <Col >
+    <span className="mx-2 fw-semibold text-uppercase small text-muted">Reserva</span>
+    <Card className="shadow-sm  rounded-4">
+      <Card.Body>
+        <Card.Title className="mb-3">
+          {converterData(reserva.data)} ({diaSemana(reserva.data)})
+        </Card.Title>
+        <p className="d-flex mb-0 align-items-center">
+          <Clock size={18} className="me-2" />
+          {reserva.turma.turno}
+        </p>
+      </Card.Body>
+    </Card>
+  </Col>
+</Row>
+<Row className=" row-cols-md-2 g-3 ">
+  <Col>
+    <span className="mx-2 fw-semibold text-uppercase small text-muted">Sala </span>
+    <Card className="shadow-sm h-100 rounded-4">
+      <Card.Body>
+        <div>
+          <Card.Title className="d-flex align-items-center justify-content-between mb-3">
+            <span>{reserva.sala.numero} - {reserva.sala.tipo}</span>
+            <Button variant="outline-primary" className="btn-sm">
+              Trocar Sala
+            </Button>
+          </Card.Title>
+          <p className="d-flex align-items-center mb-2">
+            <Building size={18} className="me-2" /> {reserva.sala.unidade} unidade
+          </p>
+          <p className="d-flex align-items-center mb-2">
+            <Users size={18} className="me-2" /> {reserva.sala.lotacao} pessoas
+          </p>
+          <p className="d-flex align-items-center mb-0">
+            <LaptopMinimal size={18} className="me-2" /> {reserva.sala.maquinas_qtd} máquinas
+          </p>
+        </div>
+      </Card.Body>
+    </Card>
+  </Col>
 
-            <Form id="form-editar-reserva">
-              <Form.Group className="mb-3 form-floating ">
-                <Form.Control
-                  type="text"
-                  id="inp-responsavel-cadastro"
-                  name="responsavel_cadastro"
-                  placeholder="Responsável Cadastro"
-                  className='shadow rounded-3'
-                  value={formData.responsavel_cadastro}
-                  onChange={handleChange}
-                  autoComplete="off"
-                  required
-                />
-                <Form.Label htmlFor="inp-responsavel-cadastro">Responsável pelo Cadastro</Form.Label>
-              </Form.Group>
+  <Col  >
+    <span className=" mx-2 fw-semibold text-uppercase small text-muted">Turma</span>
+    <Card className="shadow-sm h-100 rounded-4">
+      <Card.Body >
+        <div>
+          <Card.Title className="d-flex align-items-center justify-content-between mb-3">
+            <span>{reserva.turma.nome}</span>
+            <Button variant="outline-primary" className="btn-sm">
+               Editar Turma
+            </Button>
+          </Card.Title>
+          <p className="d-flex align-items-center mb-2">
+            <UserRound size={18} className="me-2" /> {reserva.turma.docente}
+          </p>
+          <p className="d-flex align-items-center mb-2">
+            <BookOpen size={18} className="me-2" /> {reserva.turma.tipo}
+          </p>
+          <p className="d-flex align-items-center mb-0">
+            <Users size={18} className="me-2" /> {reserva.turma.lotacao} alunos
+          </p>
+        </div>
+      </Card.Body>
+    </Card>
+  </Col>
 
-              <Row className="g-3">
-                {/* <CardTurmaCadastrada 
-                turmaCadastrada={reserva.turma_id} 
-                setEditarTurma 
-                setDeletarTurma
-                /> */}
-                {/* <Col md={6}>
-                  <Form.Group className="form-floating">
-                    <Form.Select
-                      id="sala-cadastrada"
-                      name="sala"
-                      onChange={handleChange}
-                      value={formData.sala}
-                      required
-                    >
-                      <option value={formData.sala.id}>
-                        {reserva.sala.numero} - Unidade {reserva.sala.unidade}
-                      </option>
-                      <OptionsSalas id={reserva.id}  />
-                    </Form.Select>
-                    <Form.Label htmlFor="sala-cadastrada">Sala</Form.Label>
-                  </Form.Group>
-                </Col> */}
+</Row>
 
-                {/* <Col md={6}>
-                  <Form.Group className="form-floating">
-                    <Form.Select
-                      id="turma-cadastrada"
-                      name="turma"
-                      onChange={handleChange}
-                      value={formData.turma}
-                      required
-                    >
-                      <option value={reserva.turma.id}>{reserva.turma.nome}</option>
-                      <OptionsTurmas id={reserva.id} />
-                    </Form.Select>
-                    <Form.Label htmlFor="turma-cadastrada">Turma</Form.Label>
-                  </Form.Group>
-                </Col> */}
-              </Row>
-            </Form>
+  <Col md={12}>
+    <Form id="form-editar-reserva">
+      <Form.Group className="form-floating">
+        <Form.Control
+          type="text"
+          id="inp-responsavel-cadastro"
+          name="responsavel_cadastro"
+          placeholder="Responsável Cadastro"
+          className="shadow-sm rounded-3"
+          value={formData.responsavel_cadastro}
+          onChange={handleChange}
+          autoComplete="off"
+          required
+        />
+        <Form.Label htmlFor="inp-responsavel-cadastro">Responsável pelo Cadastro</Form.Label>
+      </Form.Group>
+    </Form>
+  </Col>
+
+
       </Modal.Body>
 
       <Modal.Footer>

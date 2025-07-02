@@ -1,13 +1,13 @@
 import { Head } from '@inertiajs/react';
 import Layout from '@/Layouts/Layout';
-import React, { useState, useRef } from 'react';
-import AlertaModal from '@/components/modals/AlertaModal';
+import React, { useState, useRef, useEffect } from 'react';
 import ReservaForm from '@/components/ConsultarReservasForm';
 import ModalEditarReserva from '@/components/Containers/EditarReservaContainer';
 import ModalDeletarReserva from '@/components/modals/DeletarReservaModal';
 import { dataAtual } from '@/dates';
 import TabelaReservas from '@/components/tables/ReservasTable';
 import { CSSTransition } from 'react-transition-group';
+import { Alert } from 'react-bootstrap';
 
 export default function ConsultarReservas({ numeros }) {
 
@@ -19,7 +19,9 @@ export default function ConsultarReservas({ numeros }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [editarReserva, setEditarReserva] = useState(null);
   const [deletarReserva, setDeletarReserva] = useState(null);
-  const [alertaMsg, setAlertaMsg] = useState(null);
+
+  const [alert, setAlert] = useState('')
+  const alertDivRef = useRef(null);
 
   const [formData, setFormData] = useState({
       turma: "",
@@ -35,9 +37,18 @@ export default function ConsultarReservas({ numeros }) {
     });
 
     const handleResult = (msg) => {
-      setAlertaMsg(msg)
+      setAlert(msg)
       buscar(currentPage,true);
     }
+
+    useEffect(() => {
+      if (alert.show) {
+        const timer = setTimeout(() => {
+          setAlert((prev) => ({...prev, show: false })); // Trigger fade-out after 3 seconds
+        }, 3000);
+        return () => clearTimeout(timer);
+      }
+    }, [alert]);
 
   const buscar = async (page, animation, customFormData = null) => {
     
@@ -91,17 +102,30 @@ return (
       onResult={handleResult}
     />
     
-  {deletarReserva && (
+ 
     <ModalDeletarReserva 
       reservaId={deletarReserva}
       onResetId={() => setDeletarReserva(null)}
       onResult={handleResult}
     />
-    )}
 
-    {alertaMsg && (
-      <AlertaModal  result={alertaMsg} onExited={() => setAlertaMsg(null)}  />
-      )}
+      <CSSTransition
+        in={!!alert.show}
+        timeout={400}
+        classNames="fade-alert"
+        nodeRef={alertDivRef}
+        unmountOnExit
+        >
+        <div  ref={alertDivRef} className="alert-container">
+            <Alert
+            variant={alert?.type || "light"}
+            dismissible
+            onClose={() => setAlert((prev) => ({...prev, show: false }))}
+            >
+            {alert?.message}
+            </Alert>
+        </div>
+      </CSSTransition>
 
 </Layout>
 </>

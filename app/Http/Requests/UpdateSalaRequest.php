@@ -26,8 +26,8 @@ class UpdateSalaRequest extends FormRequest
             "tipo" => ["required","min:3","max:255"],
             "unidade"=> ["required","numeric"],
             "lotacao"=> ["required","numeric"],
-            "maquinas-qtd"=> ["required","numeric"],
-            "maquinas-tipo"=> ["required","max:80"],
+            "maquinas_qtd"=> ["required","numeric"],
+            "maquinas_tipo"=> ["nullable","max:80"],
             "descricao" => ["nullable","max:255"]
         ];
     }
@@ -36,8 +36,8 @@ class UpdateSalaRequest extends FormRequest
         return [
             'descricao' => 'descrição',
             'lotacao' => 'lotação',
-            'maquinas-tipo' => 'Tipo de máquinas',
-            'maquinas-qtd' => 'N.º de máquinas',
+            'maquinas_tipo' => 'Tipo de máquinas',
+            'maquinas_qtd' => 'N.º de máquinas',
         ];
     }
 

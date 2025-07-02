@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { XCircle, Trash} from 'react-bootstrap-icons';
+import { ExclamationTriangle, Trash } from "react-bootstrap-icons";
 import axios from 'axios';
 
-export default function DeletarTurmaModal({ turmaId, onCancel, onExited, onResult }) {
+export default function DeletarTurmaModal({ 
+  turmaId, 
+  onCancel, 
+  onExited, 
+  onResult,
+  loading=false 
+}) {
   const [turma, setTurma] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -20,8 +26,7 @@ export default function DeletarTurmaModal({ turmaId, onCancel, onExited, onResul
         }
       })
       .catch(err => {
-        console.error("Erro ao carregar turma:", err);
-        onResult("Erro ao carregar dados da turma");
+        onResult({ show: true, type: "danger", message: ("Erro ao carregar turma: ", err) });
         onCancel();
       });
 
@@ -33,55 +38,60 @@ export default function DeletarTurmaModal({ turmaId, onCancel, onExited, onResul
     onCancel();
   };
 
-  const handleDelete = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     axios.delete(`/turmas/${turmaId}`)
-      .then(res => {
-        setShowModal(false);
-        onResult({
-          prevModal: true,
-          msg: res.data.msg
-        });
+      .then(response => {
+        onResult({ show: true, type: "success", message: response.data.message });
       })
       .catch(err => {
-        console.error("Erro ao deletar turma:", err);
-        onResult({
-          prevModal: true,
-          msg: "Erro ao deletar turma"
-        });
+        onResult({ show: true, type: "danger", message: "Erro ao deletar turma: " + err });
+        onCancel();
+      })
+      .finally(() =>{
+        setShowModal(false);
       });
   };
 
   if (!turmaId || !turma) return null;
 
   return (
-    <Modal 
-      show={showModal} 
-      onHide={handleCancel} 
-      onExited={onExited} 
-      centered
-    >
-      <Modal.Header closeButton className="bg-danger text-white">
-        <Modal.Title>
-          <Trash className="me-2" />
-          Deletar Turma
-        </Modal.Title>
-      </Modal.Header>
-
-      <form onSubmit={handleDelete}>
-        <Modal.Body>
-          <p className='my-2 '>Tem certeza que deseja deletar a turma <strong>{turma.nome}</strong>?</p>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancel}>
-            Cancelar
-          </Button>
-          <Button type="submit" variant="danger">
-            Deletar
-          </Button>
-        </Modal.Footer>
-      </form>
-    </Modal>
+      <Modal show={showModal}  onHide={handleCancel} onExited={onExited}  centered>
+          <Modal.Header  closeButton>
+              <Modal.Title className="text-danger">
+                  <ExclamationTriangle className="me-2" />
+                  Confirmar Exclusão
+              </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+              <div className="text-center">
+                  <Trash className="text-danger" style={{fontSize: '3rem'}} />
+                  <p className="mt-3 mb-2">Tem certeza que deseja deletar a turma <strong>{turma.nome}</strong>?</p>
+                  <p className="text-muted">Esta ação não pode ser desfeita.</p>
+              </div>
+          </Modal.Body>
+          <Modal.Footer>
+              <Button variant="secondary" onClick={handleCancel}>
+                  Cancelar
+              </Button>
+              <Button 
+                  variant="danger" 
+                  onClick={handleSubmit}
+                  disabled={loading}
+              >
+                  {loading ? (
+                      <>
+                          <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                          Deletando...
+                      </>
+                  ) : (
+                      <>
+                          <Trash className="me-2" />
+                          Deletar
+                      </>
+                  )}
+              </Button>
+          </Modal.Footer>
+      </Modal>
   );
 }

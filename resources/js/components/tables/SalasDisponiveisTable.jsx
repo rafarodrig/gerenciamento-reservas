@@ -1,13 +1,30 @@
 import { Table, Button, Alert, Pagination, Card } from 'react-bootstrap';
 import { DoorOpen } from 'react-bootstrap-icons';
 import { ExclamationTriangleFill } from 'react-bootstrap-icons';
+import PaginationControlls from '../PaginationControlls';
 
 
 export default function SalasDisponiveisTable({ data, onReservar, onPageChange, isDisabledBtnReservar }) {
-  if (!data) return;
+  if (!data) return null;
+  console.log("Tabela Salas");
   const salas = data?.salas.data;
-  const currentPage = data?.salas.current_page;
-  const lastPage = data?.salas.last_page;
+  const salasResponse = data?.salas;
+  let paginationData = null;
+
+  if (salasResponse.data && Array.isArray(salasResponse.data)) {
+      // Resposta paginada do Laravel
+      paginationData = {
+          current_page: salasResponse.current_page,
+          last_page: salasResponse.last_page,
+          per_page: salasResponse.per_page,
+          total: salasResponse.total,
+          from: salasResponse.from,
+          to: salasResponse.to,
+          prev_page_url: salasResponse.prev_page_url,
+          next_page_url: salasResponse.next_page_url
+      };
+  }
+
 
   if (!salas || salas.length === 0) {
    return (
@@ -61,18 +78,9 @@ export default function SalasDisponiveisTable({ data, onReservar, onPageChange, 
           </Table>
         </Card.Body>
       </Card>
-
-      <Pagination className="justify-content-center mt-4">
-        {[...Array(lastPage)].map((_, i) => (
-          <Pagination.Item
-            key={i + 1}
-            active={i + 1 === currentPage}
-            onClick={() => onPageChange(i + 1)}
-          >
-            {i + 1}
-          </Pagination.Item>
-        ))}
-      </Pagination>
+      
+      <PaginationControlls paginationData={paginationData} handlePageChange={onPageChange}/>
+      
     </>
   );
 }

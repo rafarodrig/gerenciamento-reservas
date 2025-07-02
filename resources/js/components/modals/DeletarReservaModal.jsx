@@ -6,6 +6,8 @@ import axios from 'axios';
 
  export default function ModalDeletarReserva({ reservaId, onResetId, onResult}) {
 
+  if(!reservaId) return null;
+
   const [showModal, setShowModal] = useState(true) 
 
   const [formData, setFormData] = useState({
@@ -19,24 +21,22 @@ import axios from 'axios';
     });
   };
 
-  const handleCancel = () =>{
+  const handleCancel = () => {
     setShowModal(false)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-      console.log(formData)
       axios.delete(`/reservas/${reservaId}`,{data: formData})
-      .then((res) => {
-          setShowModal(false)
-          onResult({
-              prevModal: false,
-              msg: res.data.msg
-            })
-      }).catch(function (error) {
-        console.log(error)
-  });
-  
+      .then((response) => {
+          onResult({show: true, type: "success", message: response.data.message });
+        })
+      .catch((err) => {
+        onResult({show: true, type: "danger", message: err })
+      })
+      .finally(() =>{
+        setShowModal(false);
+      });
   };
 
 if (!reservaId) return null
@@ -103,7 +103,7 @@ if (!reservaId) return null
           </Form.Text>
         </Modal.Body>
 
-        <Modal.Footer className="d-flex justify-content-between">
+        <Modal.Footer className=" d-flex justify-content-between">
           <Button variant="secondary" onClick={handleCancel}>
              Cancelar
           </Button>

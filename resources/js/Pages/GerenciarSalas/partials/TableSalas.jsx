@@ -1,16 +1,16 @@
 import { Table, Button, Alert, Row, Col } from 'react-bootstrap';
 import { PlusCircle, PencilSquare, Trash } from 'react-bootstrap-icons';
+import styles from "../GerenciarSalas.module.scss"
+import clsx from 'clsx';
+import PaginationControlls from '@/components/PaginationControlls';
 
-const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDelete, renderUnidades }) => {
+const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDelete, renderUnidades, onPageChange }) => {
   return (
     <>
-      {/* Hidden current page link (optional, for pagination tracking) */}
-      {/* <a id="current_page" type="hidden" href={salas.currentPageUrl}></a> */}
-
       <Row className="my-3">
         <Col>{renderUnidades && renderUnidades()}</Col>
         <Col className="d-flex justify-content-end">
-          <Button id="btn-cadastrar-sala" onClick={onCadastrar} variant="success">
+          <Button id="btn-cadastrar-sala" className='d-flex align-items-center ' onClick={onCadastrar} variant="success">
             <PlusCircle className="me-2" />
             Cadastrar Nova Sala
           </Button>
@@ -42,7 +42,7 @@ const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDele
           bordered 
           hover 
           responsive 
-          className={`align-middle tabela-consulta ${unidade === 'todas' ? 'com-unidade' : ''}`}
+          className={clsx('align-middle', styles['tabela-consulta'], { [styles['com-unidade']]: unidade === 'todas' })}
         >
           <thead>
             <tr>
@@ -59,7 +59,7 @@ const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDele
             {salas.map((sala) => (
               <tr key={sala.id}>
                 <td>{sala.numero}</td>
-                {unidade === 'todas' && <td><span className="unidade-texto">Un. {sala.unidade}</span></td>}
+                {unidade === 'todas' && <td><span className="unidade-texto" >Un. {sala.unidade}</span></td>}
                 <td>{sala.tipo}</td>
                 <td>{sala.lotacao}</td>
                 <td>{sala.maquinas_qtd}</td>
@@ -80,7 +80,7 @@ const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDele
                       variant="danger"
                       size="sm"
                       onClick={() => onDelete(sala.id)}
-                      className="btn-deletar-sala btn-acao"
+                      className="btn-editar-sala btn-acao"
                       title="Deletar sala"
                     >
                       <Trash className="me-1" />
@@ -94,9 +94,8 @@ const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDele
         </Table>
       )}
 
-      {/* Optional: pagination controls */}
-      {/* You can render pagination here with a library or your own logic */}
-      {/* Example: <PaginationComponent currentPage={...} totalPages={...} onPageChange={...} /> */}
+      <PaginationControlls paginationData={paginationData} handlePageChange={onPageChange} />
+      
     </>
   );
 };
