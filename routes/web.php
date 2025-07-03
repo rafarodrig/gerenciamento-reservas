@@ -6,14 +6,14 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReservaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Models\Turma;
-use Illuminate\Foundation\Application;
 use Inertia\Inertia;
 
 
 Route::get('/', function () {
     return redirect('/consultar-reservas');
 });
+
+Route::get('/teste', fn () => Inertia::render('Teste'));
 
 Route::get('/consultar-reservas', [PageController::class,'consultarReservas'])->name("consultar-reservas");
 
