@@ -1,14 +1,14 @@
 import { Head } from '@inertiajs/react';
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Row, Col, Button, Alert} from 'react-bootstrap';
+import { Container, Row, Col, Button, Alert } from 'react-bootstrap';
 import Layout from '@/Layouts/Layout';
-import SalaTable from '@/Pages/GerenciarSalas/partials/TableSalas';
+import SalaTable from '@/Pages/GerenciarSalas/Partials/TableSalas';
 import axios from 'axios';
 import { Building } from 'react-bootstrap-icons';
-import FormSalas from './partials/FormSalas';
-import ModalDeletarSala from './partials/ModalDeletarSala';
-import ModalEditarSala from './partials/ModalEditarSala';
-import ModalCadastrarSala from './partials/ModalCadastrarSala';
+import FormSalas from './Partials/FormSalas';
+import ModalDeletarSala from './Partials/ModalDeletarSala';
+import ModalEditarSala from './Partials/ModalEditarSala';
+import ModalCadastrarSala from './Partials/ModalCadastrarSala';
 import { CSSTransition } from 'react-transition-group';
 
 export default function GerenciarSalas() {
@@ -20,15 +20,15 @@ export default function GerenciarSalas() {
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState('');
     const alertDivRef = useRef(null);
-    
-    
+
+
     // Estados dos modais
     const [showCadastrarModal, setShowCadastrarModal] = useState(false);
     const [showEditarModal, setShowEditarModal] = useState(false);
     const [showDeletarModal, setShowDeletarModal] = useState(false);
     const [salaEditando, setSalaEditando] = useState(null);
     const [salaDeletando, setSalaDeletando] = useState(null);
-    
+
     // Estados do formulário
     const [formData, setFormData] = useState({
         numero: '',
@@ -54,11 +54,11 @@ export default function GerenciarSalas() {
 
     useEffect(() => {
         if (alert.show) {
-        const timer = setTimeout(() => {
-            setAlert((prev) => ({...prev, show: false }));
-             // Trigger fade-out after 3 seconds
-        }, 3000);
-        return () => clearTimeout(timer);
+            const timer = setTimeout(() => {
+                setAlert((prev) => ({ ...prev, show: false }));
+                // Trigger fade-out after 3 seconds
+            }, 3000);
+            return () => clearTimeout(timer);
         }
     }, [alert]);
 
@@ -70,21 +70,21 @@ export default function GerenciarSalas() {
             if (unidade !== 'todas') {
                 url += `&unidade=${unidade}`;
             }
-            
+
             const response = await axios.get(url, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 }
             });
-            
+
             // Tratamento dos dados da resposta paginada
             let salasData = [];
             let paginationInfo = null;
-            
+
             if (response.data && response.data.salas) {
                 const salasResponse = response.data.salas;
-                
+
                 if (salasResponse.data && Array.isArray(salasResponse.data)) {
                     // Resposta paginada do Laravel
                     salasData = salasResponse.data;
@@ -100,16 +100,16 @@ export default function GerenciarSalas() {
                     };
                 }
             }
-            
+
             setSalas(salasData);
             setFilteredSalas(salasData);
             setPaginationData(paginationInfo);
             setCurrentPage(page);
-            
+
         } catch (err) {
             console.error('Erro ao carregar salas:', err);
             const errorMessage = err.response?.data?.message || err.response?.data?.error || err.message || 'Erro desconhecido';
-            setAlert({show: true, type: "danger", message: 'Erro ao carregar salas: ' + errorMessage });
+            setAlert({ show: true, type: "danger", message: 'Erro ao carregar salas: ' + errorMessage });
         } finally {
             setLoading(false);
         }
@@ -137,20 +137,20 @@ export default function GerenciarSalas() {
     const handleSubmitCadastrar = async (e) => {
         e.preventDefault();
         setLoading(true);
-        
+
         try {
             const response = await axios.post('/salas', {
                 ...formData,
                 'maquinas-qtd': formData.maquinas_qtd,
                 'maquinas-tipo': formData.maquinas_tipo
             });
-            
-            setAlert({show: true, type: "success", message: response.data.message });
+
+            setAlert({ show: true, type: "success", message: response.data.message });
             setShowCadastrarModal(false);
             resetForm();
             fetchSalas(unidadeFiltro, currentPage);
         } catch (err) {
-            setAlert({show: true, type: "danger", message: 'Erro ao cadastrar sala: ' + (err.response?.data?.message || err.message) });
+            setAlert({ show: true, type: "danger", message: 'Erro ao cadastrar sala: ' + (err.response?.data?.message || err.message) });
         } finally {
             setLoading(false);
         }
@@ -176,23 +176,23 @@ export default function GerenciarSalas() {
     const handleSubmitEditar = async (e) => {
         e.preventDefault();
         if (!salaEditando) return;
-        
+
         setLoading(true);
-        
+
         try {
             const response = await axios.put(`/salas/${salaEditando.id}`, {
                 ...formData,
                 'maquinas-qtd': formData.maquinas_qtd,
                 'maquinas-tipo': formData.maquinas_tipo
             });
-            
-            setAlert({show: true, type: "success", message: response.data.message });
+
+            setAlert({ show: true, type: "success", message: response.data.message });
             setShowEditarModal(false);
             setSalaEditando(null);
             resetForm();
             fetchSalas(unidadeFiltro, currentPage);
         } catch (err) {
-            setAlert({show: true, type: "danger", message: 'Erro ao atualizar sala: ' + (err.response?.data?.message || err.message) });   
+            setAlert({ show: true, type: "danger", message: 'Erro ao atualizar sala: ' + (err.response?.data?.message || err.message) });
         } finally {
             setLoading(false);
         }
@@ -209,20 +209,20 @@ export default function GerenciarSalas() {
     const confirmarDeletar = async () => {
         if (!salaDeletando) return;
         setLoading(true);
-        
+
         try {
             const response = await axios.delete(`/salas/${salaDeletando.id}`);
 
-            setAlert({show: true, type: "success", message: response.data.message });
+            setAlert({ show: true, type: "success", message: response.data.message });
             setShowDeletarModal(false);
             setSalaDeletando(null);
             // Se estamos na última página e só tem um item, volta para a página anterior
-            const shouldGoToPrevPage = paginationData && 
-                                     filteredSalas.length === 1 && 
-                                     currentPage > 1;
+            const shouldGoToPrevPage = paginationData &&
+                filteredSalas.length === 1 &&
+                currentPage > 1;
             fetchSalas(unidadeFiltro, shouldGoToPrevPage ? currentPage - 1 : currentPage);
         } catch (err) {
-            setAlert({show: true, type: "danger", message: 'Erro ao deletar sala: ' + (err.response?.data?.message || err.message)});
+            setAlert({ show: true, type: "danger", message: 'Erro ao deletar sala: ' + (err.response?.data?.message || err.message) });
         } finally {
             setLoading(false);
         }
@@ -262,10 +262,10 @@ export default function GerenciarSalas() {
 
 
     const renderFormulario = (isEditing = false) => (
-            <FormSalas
-            isEditing={isEditing} 
-            formData={formData} 
-            setFormData={setFormData} 
+        <FormSalas
+            isEditing={isEditing}
+            formData={formData}
+            setFormData={setFormData}
             loading={loading}
             resetForm={resetForm}
             setShowEditarModal={setShowEditarModal}
@@ -273,8 +273,8 @@ export default function GerenciarSalas() {
             setSalaEditando={setSalaEditando}
             handleSubmitCadastrar={handleCadastrar}
             handleSubmitEditar={handleSubmitEditar}
-            />
-        );
+        />
+    );
 
     return (
         <>
@@ -292,23 +292,23 @@ export default function GerenciarSalas() {
                         </div>
 
                         <CSSTransition
-                        in={!!alert.show}
-                        timeout={400}
-                        classNames="fade-alert"
-                        nodeRef={alertDivRef}
-                        unmountOnExit
+                            in={!!alert.show}
+                            timeout={400}
+                            classNames="fade-alert"
+                            nodeRef={alertDivRef}
+                            unmountOnExit
                         >
-                        <div ref={alertDivRef} className="alert-container">
-                            <Alert
-                            variant={alert?.type || "light"}
-                            dismissible
-                            onClose={() => setAlert((prev) => ({...prev, show: false }))}
-                            >
-                            {alert?.message}
-                            </Alert>
-                        </div>
+                            <div ref={alertDivRef} className="alert-container">
+                                <Alert
+                                    variant={alert?.type || "light"}
+                                    dismissible
+                                    onClose={() => setAlert((prev) => ({ ...prev, show: false }))}
+                                >
+                                    {alert?.message}
+                                </Alert>
+                            </div>
                         </CSSTransition>
-                        
+
 
                         <div className="tabela-salas">
                             <div className="table-container">
@@ -333,22 +333,22 @@ export default function GerenciarSalas() {
                         </div>
 
                         {/* Modal Cadastrar Sala */}
-                         <ModalCadastrarSala
+                        <ModalCadastrarSala
                             setShowCadastrarModal={setShowCadastrarModal}
                             showCadastrarModal={showCadastrarModal}
-                            >{renderFormulario()}
-                         </ModalCadastrarSala>           
+                        >{renderFormulario()}
+                        </ModalCadastrarSala>
 
 
                         {/* Modal Editar Sala */}
                         <ModalEditarSala
                             setShowEditarModal={setShowEditarModal}
                             showEditarModal={showEditarModal}
-                            >{renderFormulario(true)}
+                        >{renderFormulario(true)}
                         </ModalEditarSala>
 
                         {/* Modal Confirmar Deletar */}
-                        <ModalDeletarSala 
+                        <ModalDeletarSala
                             loading={loading}
                             showDeletarModal={showDeletarModal}
                             confirmarDeletar={confirmarDeletar}

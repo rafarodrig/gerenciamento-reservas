@@ -2,7 +2,7 @@ import { Table, Button, Alert, Row, Col } from 'react-bootstrap';
 import { PlusCircle, PencilSquare, Trash } from 'react-bootstrap-icons';
 import styles from "../GerenciarSalas.module.scss"
 import clsx from 'clsx';
-import PaginationControlls from '@/components/PaginationControlls';
+import PaginationControlls from '@/Components/PaginationControlls';
 
 const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDelete, renderUnidades, onPageChange }) => {
   return (
@@ -31,17 +31,17 @@ const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDele
 
       {(!salas || salas.length === 0) ? (
         <Alert variant="warning">
-          {unidade === 'todas' 
-            ? 'Nenhuma sala cadastrada no sistema' 
+          {unidade === 'todas'
+            ? 'Nenhuma sala cadastrada no sistema'
             : `Nenhuma sala cadastrada da unidade ${unidade}`
           }
         </Alert>
       ) : (
-        <Table 
-          striped 
-          bordered 
-          hover 
-          responsive 
+        <Table
+          striped
+          bordered
+          hover
+          responsive
           className={clsx('align-middle', styles['tabela-consulta'], { [styles['com-unidade']]: unidade === 'todas' })}
         >
           <thead>
@@ -95,7 +95,7 @@ const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDele
       )}
 
       <PaginationControlls paginationData={paginationData} handlePageChange={onPageChange} />
-      
+
     </>
   );
 };

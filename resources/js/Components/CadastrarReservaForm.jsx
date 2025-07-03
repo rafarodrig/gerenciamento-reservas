@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Form, Col, Nav } from 'react-bootstrap';
-import TituloData from '@/components/TituloData';
+import TituloData from '@/Components/TituloData';
 import BuscarButton from './BuscarButton';
 import { dataAtual } from '@/dates';
 
@@ -14,18 +14,18 @@ const DIAS_SEMANA = [
   ['Dom', '7'],
 ];
 
-export default function CadastrarReservaForm({ 
+export default function CadastrarReservaForm({
   formData,
-  onBuscar, 
-  numeros, 
-  tipos, 
-  maquinasTipos, 
+  onBuscar,
+  numeros,
+  tipos,
+  maquinasTipos,
   paginaTitulo,
   setFormData,
   setIsDisabledBtnReservar
 }) {
   const [isActive, setIsActive] = useState(false);
-  
+
   const [disabledFields, setDisabledFields] = useState({
     dataFim: true,
     semanas: true,
@@ -33,7 +33,7 @@ export default function CadastrarReservaForm({
   });
 
 
- const atualizarCamposDinamicos = (tipo) => {
+  const atualizarCamposDinamicos = (tipo) => {
     const config = {
       Avulsa: { dataFim: true, semanas: true, diasSemana: true },
       Graduação: { dataFim: false, semanas: false, diasSemana: true },
@@ -43,45 +43,45 @@ export default function CadastrarReservaForm({
     setDisabledFields(config[tipo] || config['Avulsa']);
   };
 
-const handleChange = (e) => {
-  const { name, type, value, checked } = e.target;
+  const handleChange = (e) => {
+    const { name, type, value, checked } = e.target;
 
-  if (type === 'checkbox') {
-    const dias = new Set(formData.dias_semana);
-    checked ? dias.add(value) : dias.delete(value);
+    if (type === 'checkbox') {
+      const dias = new Set(formData.dias_semana);
+      checked ? dias.add(value) : dias.delete(value);
 
-    const novoFormData = {
-      ...formData,
-      dias_semana: Array.from(dias),
-    };
-    setFormData(novoFormData);
+      const novoFormData = {
+        ...formData,
+        dias_semana: Array.from(dias),
+      };
+      setFormData(novoFormData);
 
-} else {
-  let updatedFormData = {
-    ...formData,
-    [name]: value,
+    } else {
+      let updatedFormData = {
+        ...formData,
+        [name]: value,
+      };
+
+      if (name === "reserva_tipo") {
+        atualizarCamposDinamicos(value);
+        updatedFormData = {
+          ...updatedFormData,
+          data_fim: '',
+          semanas: '',
+          dias_semana: [],
+        };
+      }
+      setFormData(updatedFormData);
+    }
+
+    setIsActive(true);
+    setIsDisabledBtnReservar(true)
+
   };
-
-  if (name === "reserva_tipo") {
-    atualizarCamposDinamicos(value);
-    updatedFormData = {
-      ...updatedFormData,
-      data_fim: '',
-      semanas: '',
-      dias_semana: [],
-    };
-  }
-  setFormData(updatedFormData);
-}
-
-setIsActive(true);
-setIsDisabledBtnReservar(true)
-
-};
   const handleChangeData = (e) => {
-    const {name, value} = e.target
+    const { name, value } = e.target
     let updatedDisabledFields = { ...disabledFields };
-    if (formData.reserva_tipo === "Graduação"){
+    if (formData.reserva_tipo === "Graduação") {
 
       if (name === 'semanas' && value !== '') {
         updatedDisabledFields.dataFim = true;
@@ -130,7 +130,7 @@ setIsDisabledBtnReservar(true)
             id="data_fim"
             value={formData.data_fim || ""}
             min={dataAtual("ISO")}
-            onChange={(e) => {handleChange(e); handleChangeData(e);}}
+            onChange={(e) => { handleChange(e); handleChangeData(e); }}
             required
             disabled={disabledFields.dataFim}
           />
@@ -148,7 +148,7 @@ setIsDisabledBtnReservar(true)
             id="semanas"
             value={formData.semanas}
             min={1}
-            onChange={(e) => {handleChange(e); handleChangeData(e);}}
+            onChange={(e) => { handleChange(e); handleChangeData(e); }}
             required
             disabled={disabledFields.semanas}
           />
@@ -181,7 +181,7 @@ setIsDisabledBtnReservar(true)
             name="reserva_tipo"
             id="reserva_tipo"
             value={formData.reserva_tipo || ""}
-            onChange={(e) => {handleChange(e);}}
+            onChange={(e) => { handleChange(e); }}
           >
             <option value="Avulsa">Avulsa</option>
             <option value="Graduação">Graduação</option>

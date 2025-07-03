@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Row, Col, Button, Accordion } from 'react-bootstrap';
 import { PeopleFill, CalendarEvent, ListCheck } from 'react-bootstrap-icons';
-import TituloData from '@/components/TituloData';
+import TituloData from '@/Components/TituloData';
 
-export default function ReservaForm({  onBuscar, numeros, pagina_titulo, dataAtualFormatada }) {
+export default function ReservaForm({ onBuscar, numeros, pagina_titulo, dataAtualFormatada }) {
   // const [formData, setFormData] = useState(initialData);
 
   const handleChange = (e) => {

@@ -24,7 +24,7 @@ class PageController extends Controller
             'numeros' => Sala::salasOptions('numero'),
         ];
 
-        return Inertia::render('CadastrarReservas/Index', array_merge($pagina_dados, $this->getDatas()));
+        return Inertia::render('CadastrarReservas/Index', $pagina_dados);
     }
 
     public function consultarReservas(){
@@ -33,7 +33,7 @@ class PageController extends Controller
             'numeros' => Sala::salasOptions('numero')
         ];
 
-        return Inertia::render('ConsultarReservas/Index', array_merge($pagina_dados, $this->getDatas()));
+        return Inertia::render('ConsultarReservas/Index', $pagina_dados);
         
         // return view('consultar_reservas', array_merge($pagina_dados, $this->getDatas()));
     }

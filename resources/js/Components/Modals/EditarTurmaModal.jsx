@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 
-import styles from "@/components/Form/Forms.module.scss";
+import styles from "@/Components/Form/Forms.module.scss";
 import axios from 'axios';
 import { SquarePen } from 'lucide-react';
 

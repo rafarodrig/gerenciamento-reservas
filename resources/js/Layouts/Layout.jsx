@@ -1,5 +1,5 @@
 import { Container } from 'react-bootstrap';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/Components/NavBar';
 
 export default function Layout({ children }) {
   return (
@@ -7,7 +7,7 @@ export default function Layout({ children }) {
       <header>
         <NavBar />
       </header>
-    {/*  (sm, md, lg, xl, xxl) */}
+      {/*  (sm, md, lg, xl, xxl) */}
       <main className="py-4">
         <Container fluid="xxl">
           {children}

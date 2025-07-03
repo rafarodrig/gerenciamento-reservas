@@ -17,8 +17,8 @@ export default defineConfig({
             host: 'localhost', // Informa ao cliente para se conectar a localhost
         },
         watch: {
-    usePolling: true,
-    interval: 100,
-  }
+            usePolling: true,
+            interval: 100,
+        }
     },
 });

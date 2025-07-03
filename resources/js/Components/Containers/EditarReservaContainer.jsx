@@ -1,7 +1,7 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import EditarReservaModal from '../modals/EditarReservaModal';
-import ConfirmarEditarModal from '../modals/ConfirmarEditarReservaModal';
+import EditarReservaModal from '../Modals/EditarReservaModal';
+import ConfirmarEditarModal from '../Modals/ConfirmarEditarReservaModal';
 
 
 export default function EditarReservaContainer({ reservaId, onResetId, onResult }) {
@@ -44,14 +44,14 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
   // Confirmação final
   const handleConfirm = () => {
     axios.patch(`/reservas/${reservaId}`, formData)
-    .then((res) => { 
-      setShowConfirmModal(false);
-      onResult({
-              prevModal: false,
-              msg: res.data.msg
-})
-      onResetId()
-    })
+      .then((res) => {
+        setShowConfirmModal(false);
+        onResult({
+          prevModal: false,
+          msg: res.data.msg
+        })
+        onResetId()
+      })
   };
 
   return (
@@ -59,7 +59,7 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
       <EditarReservaModal
         show={showFormModal}
         reserva={reservaDados}
-        onCancel={() => {setShowFormModal(false); onResetId()}}
+        onCancel={() => { setShowFormModal(false); onResetId() }}
         formData={formData}
         setFormData={setFormData}
         onSubmit={handleSubmit}
@@ -72,7 +72,7 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
         show={showConfirmModal}
         reserva={reservaDados}
         onConfirm={handleConfirm}
-        onCancel={() => {setShowConfirmModal(false); setShowFormModal(true);}}
+        onCancel={() => { setShowConfirmModal(false); setShowFormModal(true); }}
         formData={formData}
         setFormData={setFormData}
       />
