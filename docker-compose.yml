@@ -23,7 +23,6 @@ services:
       - .:/var/www
     ports:
       - "5173:5173"
-    command: npm run dev
     mem_limit: 1g
     cpus: 1.5
 
