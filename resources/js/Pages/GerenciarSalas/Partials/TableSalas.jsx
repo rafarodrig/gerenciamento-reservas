@@ -94,7 +94,7 @@ const SalaTable = ({ salas, unidade, paginationData, onCadastrar, onEdit, onDele
         </Table>
       )}
 
-      <PaginationControlls paginationData={paginationData} handlePageChange={onPageChange} />
+      <PaginationControlls className={"d-flex justify-content-center mt-3"} paginationData={paginationData} handlePageChange={onPageChange} />
 
     </>
   );

@@ -48,15 +48,15 @@ export default function FiltrosBadge({ formData, objFiltros, onRemoverData }) {
             nodeRef={refs[data]}
           >
             <Col ref={refs[data]} xs="auto" className="d-flex data-badge-div align-items-center">
-            <OverlayTrigger overlay={<Tooltip >{diaSemana(data)}</Tooltip>}>
-              <Badge bg="primary" className="data-badge shadow-sm">
-                <span className="flex-grow-1">{converterData(data)}</span>
-                <CloseButton
-                  onClick={() => handleRemoverData(data)}
-                  className="close-badge"
-                  ariaLabel={`Remover data ${converterData(data)}`}
+              <OverlayTrigger overlay={<Tooltip >{diaSemana(data)}</Tooltip>}>
+                <Badge bg="primary" className="data-badge shadow-sm">
+                  <span className="flex-grow-1">{converterData(data)}</span>
+                  <CloseButton
+                    onClick={() => handleRemoverData(data)}
+                    className="close-badge"
+                    ariaLabel={`Remover data ${converterData(data)}`}
                   />
-              </Badge>
+                </Badge>
               </OverlayTrigger>
             </Col>
           </CSSTransition>

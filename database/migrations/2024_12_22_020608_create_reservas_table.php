@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('turma_id');
             $table->text('observacoes')->nullable();
             $table->string('responsavel_cadastro', 80);
+            $table->softDeletes();
         });
     }
 

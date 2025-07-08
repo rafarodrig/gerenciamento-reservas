@@ -60,7 +60,7 @@ class TurmaService
                 break;
         }
 
-        return $query->pluck('r.turma_id')->toArray();
+        return $query->whereNull('r.deleted_at')->pluck('r.turma_id')->toArray();
     }
 
     private static function agruparIntervalosSemanais(array $datas): array

@@ -26,16 +26,13 @@ class SalaController extends Controller
     public function index(Request $request)
     {
         try {
-          
+
             $salas = $this->salaService->obterSalasPaginadas($request);
 
-            
-            return response()->json(
-                [
-                    'salas' => $salas,
-                    'unidade' => $request->unidade ?? 'todas',
-                ]);
-
+            return response()->json([
+                'salas' => $salas,
+                'unidade' => $request->unidade ?? 'todas',
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 "status" => 500,
@@ -45,13 +42,36 @@ class SalaController extends Controller
         }
     }
 
-    public function disponiveis(Request $request){
+    public function disponiveis(Request $request)
+    {
         try {
 
             $salas = $this->salaService->obterSalasDisponiveis($request->query());
 
-            return response()->json(['salas' => $salas]);
+            return response()->json([
+                'salas' => $salas,
+                'unidade' => $request->unidade ?? '0'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => 500,
+                "message" => "Erro ao processar a solicitação.",
+                "error" => $e->getMessage(),
+            ], 500);
+        }
+    }
 
+    public function disponiveisTroca(Request $request)
+    {
+        try {
+
+            $dados = $this->salaService->obterSalasDisponiveisTroca($request->query());
+
+            return response()->json([
+                'salas' => $dados["salas"],
+                'datas' => $dados["datas"],
+                'unidade' => 'todas'
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 "status" => 500,
@@ -64,7 +84,7 @@ class SalaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreSalaRequest $request)
-    {   
+    {
         try {
             // Lógica de criação delegada ao Service
             $sala = $this->salaService->criarSala($request->validated());
@@ -73,16 +93,14 @@ class SalaController extends Controller
                 'message' => 'Sala criada com sucesso!',
                 'sala' => $sala
             ]);
-
         } catch (\Throwable $e) {
             return response()->json([
                 'error' => 'Erro ao criar sala.',
                 'message' => $e->getMessage()
             ], 500);
         }
-
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -90,7 +108,7 @@ class SalaController extends Controller
     {
         return $sala;
     }
-    
+
     /**
      * Update the specified resource in storage.
      */

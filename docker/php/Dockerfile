@@ -1,8 +1,9 @@
 FROM php:8.2-fpm-alpine
 
 # Instala dependências
-RUN apk add --no-cache git zip unzip curl bash libzip-dev \
+RUN apk add --no-cache git zip unzip curl bash dcron libzip-dev \
     && docker-php-ext-install pdo pdo_mysql zip
+
 
 # Instala Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -19,10 +20,14 @@ RUN composer install --no-dev --prefer-dist --no-scripts --no-interaction
 COPY . .
 
 # Copia o script de inicialização customizado
+COPY docker/php/crontab /var/www/docker/php/crontab
 COPY docker/php/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+# USER root
 
 # Define o entrypoint (que roda as migrations/seed se necessário)
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["php-fpm"]
+

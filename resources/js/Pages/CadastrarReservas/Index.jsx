@@ -7,7 +7,7 @@ import CadastrarReservaForm from '@/Components/CadastrarReservaForm';
 import FiltrosBadge from '@/Components/Filtros/Filtros';
 import { filtrosSalasDisponiveis } from '@/Components/Filtros/geradoresDatas';
 import CadastrarReservaContainer from '@/Components/Containers/CadastrarReservaContainer';
-import TableSalasDisponiveis from '@/Components/Tables/SalasDisponiveisTable';
+import TableSalasDisponiveis from '@/Components/Tables/TableSalasDisponiveis';
 import { dataAtual } from '@/dates';
 import FiltrosContainer from '@/Components/Filtros/FiltrosContainer';
 
@@ -32,7 +32,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
     dias_semana: [],
     reserva_tipo: "Avulsa",
     turno: "Manhã",
-    unidade: "1",
+    unidade: "todas",
     numero: "",
     maquinas_qtd: "",
     disponiveis: true,
@@ -51,7 +51,6 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
 
     try {
       const response = await axios.get('/turmas/disponiveis', { params: finalFormData });
-      console.log("🔍 Chamando turmas");
       setTurmasDisponiveis(response.data.turmas);
     } catch (error) {
       console.error('Erro ao buscar turmas disponíveis:', error);
@@ -59,7 +58,6 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
   };
 
   const buscar = async (page = null, animation = true, customFormData = null) => {
-    console.log("🔍 Chamando buscar");
     const finalFormData = { ...(customFormData || formData) };
 
     if (animation) setIsActive(false);
@@ -112,6 +110,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
       <Head title={title} />
       <Layout>
         <CadastrarReservaForm
+          className={"row g-3 p-4 bg-light border rounded-4 mt-2 m-auto shadow-sm"}
           formData={formData}
           setFormData={getFiltros}
           numeros={numeros}
@@ -123,7 +122,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
         />
 
         {/* Filtros Aplicados */}
-        <FiltrosContainer>
+        <FiltrosContainer className={"container-fluid border mt-4 shadow-sm rounded-4 bg-light py-3"}>
           <FiltrosBadge formData={formData} objFiltros={filtrosBadge} onRemoverData={handleRemoverData} />
         </FiltrosContainer>
 
@@ -135,7 +134,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
           nodeRef={tabelaRef}
           unmountOnExit
         >
-          <div ref={tabelaRef} className="container-fluid rounded-4 my-4 shadow-sm" id="container-tabela">
+          <div ref={tabelaRef} className="container-fluid border bg-light rounded-4 p-3 my-4 shadow-sm" id="container-tabela">
             <TableSalasDisponiveis
               onPageChange={(page) => buscar(page, false)}
               data={salasDisponiveis}

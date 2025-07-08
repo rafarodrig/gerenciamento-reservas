@@ -1,0 +1,13 @@
+.tableWrapper {
+    height: 400px;
+    overflow: auto;
+    border: none;
+}
+
+.stickyHeader th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; // Cor igual à table-light
+    z-index: 2;
+    border-bottom: 1px solid #dee2e6;
+}

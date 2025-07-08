@@ -15,6 +15,7 @@ const DIAS_SEMANA = [
 ];
 
 export default function CadastrarReservaForm({
+  className,
   formData,
   onBuscar,
   numeros,
@@ -104,9 +105,8 @@ export default function CadastrarReservaForm({
 
   return (
     <Nav>
-      <Form className="row g-3  p-4 form-consulta rounded-4 m-auto mt-5 shadow-sm" onSubmit={handleSubmit}>
+      <Form className={className} onSubmit={handleSubmit}>
         <TituloData titulo={paginaTitulo} />
-
         {/* Data Início */}
         <Col md={3}>
           <Form.Label htmlFor="data_inicio">De</Form.Label>
@@ -228,7 +228,7 @@ export default function CadastrarReservaForm({
             value={formData.unidade}
             onChange={handleChange}
           >
-            <option value="">Todas</option>
+            <option value="todas">Todas</option>
             <option value="1">Unidade 1</option>
             <option value="2">Unidade 2</option>
           </Form.Select>

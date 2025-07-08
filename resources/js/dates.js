@@ -28,30 +28,25 @@ export function diaSemana(data) {
     dateTime = DateTime.fromISO(data);
   }
 
-  const diaSemana = dateTime.setLocale('pt-BR').toFormat('cccc'); // ex: Segunda-feira
-
-  return diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+  return dateTime.setLocale('pt-BR').toFormat('cccc'); // ex: Segunda-feira
 
 }
 
-
-
-
-export function diaSemanaAtual(){
-    return DateTime.now().setLocale('pt-BR').toFormat('cccc');
+export function diaSemanaAtual() {
+  return DateTime.now().setLocale('pt-BR').toFormat('cccc');
 }
 /**
  * Retorna a data atual no formato "dd/MM/yyyy"
  */
 export function dataAtual(type) {
-    if(type == "ISO"){
+  if (type == "ISO") {
     return DateTime
-        .now()
-        .toFormat('yyyy-MM-dd');
-    } else {       
-        return DateTime
-        .now()
-        .setLocale('pt-BR')
-        .toFormat('dd/MM/yyyy');
-    }
+      .now()
+      .toFormat('yyyy-MM-dd');
+  } else {
+    return DateTime
+      .now()
+      .setLocale('pt-BR')
+      .toFormat('dd/MM/yyyy');
+  }
 }

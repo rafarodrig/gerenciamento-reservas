@@ -7,6 +7,8 @@ import ConfirmarEditarModal from '../Modals/ConfirmarEditarReservaModal';
 export default function EditarReservaContainer({ reservaId, onResetId, onResult }) {
   const [formData, setFormData] = useState(null);
   const [reservaDados, setReservaDados] = useState(null);
+  const [trocarSala, setTrocarSala] = useState("atual");
+  const [salasDisponiveisTroca, setSalasDisponiveisTroca] = useState(null);
 
   const [showFormModal, setShowFormModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -20,7 +22,6 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
           responsavel_cadastro: reserva.responsavel_cadastro,
           turma: reserva.turma.id,
           sala: reserva.sala.id,
-          editar_reserva: null
         });
         setReservaDados(reserva);
         setShowFormModal(true);
@@ -29,14 +30,15 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
   }, [reservaId]);
 
 
+  const buscarSalasDisponiveisTroca = async (CustomTrocarSala, page = null) => {
+    const res = await axios.get(`/salas/disponiveis_troca`, { params: { reserva_id: reservaId, opcao: CustomTrocarSala || trocarSala, page } });
+    setSalasDisponiveisTroca(res.data);
+  }
 
 
   // Ação ao clicar em "Salvar" no primeiro modal
   const handleSubmit = () => {
-    setFormData((formData) => ({
-      ...formData,
-      editar_reserva: 'atual',
-    }));
+    buscarSalasDisponiveisTroca("atual");
     setShowFormModal(false);
     setShowConfirmModal(true);
   };
@@ -64,6 +66,7 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
         setFormData={setFormData}
         onSubmit={handleSubmit}
         reservaId={reservaId}
+        onTrocarSala={handleSubmit}
         backdrop="static"
         animation
       />
@@ -71,10 +74,12 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
       <ConfirmarEditarModal
         show={showConfirmModal}
         reserva={reservaDados}
+        salas={salasDisponiveisTroca}
+        buscarSalasDisponiveisTroca={buscarSalasDisponiveisTroca}
         onConfirm={handleConfirm}
         onCancel={() => { setShowConfirmModal(false); setShowFormModal(true); }}
-        formData={formData}
-        setFormData={setFormData}
+      // formData={formData}
+      // setFormData={setFormData}
       />
 
 

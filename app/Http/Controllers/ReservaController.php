@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Turma;
 use App\Models\Reserva;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReservaRequest;
@@ -26,11 +25,19 @@ class ReservaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {   
-        
+    {
         $reservas = $this->reservaService->obterReservasPaginadas($request->all());
-        
-        return response()->json( ["reservas" => $reservas]);
+
+        return response()->json(
+            [
+                "reservas" => $reservas["reservas"],
+                "datas" => $reservas["datas"],
+                "status" => $request->reserva_status,
+                "unidade" => $request->unidade,
+                "currentTab" => $reservas["currentTab"]
+
+            ]
+        );
     }
 
     /**
@@ -45,40 +52,42 @@ class ReservaController extends Controller
      * Store a newly created resource in storage.
      */
 
-public function store(StoreReservaRequest $request)
-{
-    try {
-        $reservas = $this->reservaService->criarReservaComTurma($request);
-        
-        return response()->json([
+    public function store(StoreReservaRequest $request)
+    {
+        try {
+            $reservas = $this->reservaService->criarReservaComTurma($request);
+
+            return response()->json([
                 'message' => count($reservas) > 1
                     ? count($reservas) . ' Reservas cadastradas com sucesso!'
                     : 'Reserva cadastrada com sucesso!',
                 'reservas' => $reservas
             ], 201);
+        } catch (\Exception $e) {
+            Log::error('Erro ao cadastrar reserva', [
+                'erro' => $e->getMessage(),
+                'dados' => $request->all()
+            ]);
 
-    } catch (\Exception $e) {
-        Log::error('Erro ao cadastrar reserva', [
-            'erro' => $e->getMessage(),
-            'dados' => $request->all()
-        ]);
-
-        return response()->json([
-            'msg' => 'Ocorreu um erro ao cadastrar a reserva.',
-            'erro' => $e->getMessage()
-        ], 500);
+            return response()->json([
+                'msg' => 'Ocorreu um erro ao cadastrar a reserva.',
+                'erro' => $e->getMessage()
+            ], 500);
+        }
     }
-}
 
 
     /**
      * Display the specified resource.
      */
-    public function show(Reserva $reserva)
+    public function show($id)
     {
-        return $reserva->load(["sala","turma"]);
-    }
+        $reserva = Reserva::withTrashed() // permite buscar soft deleted
+            ->with(['sala', 'turma'])     // carrega os relacionamentos
+            ->findOrFail($id);            // busca a reserva
 
+        return $reserva;
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -91,47 +100,46 @@ public function store(StoreReservaRequest $request)
      * Update the specified resource in storage.
      */
     public function update(UpdatereservaRequest $request, Reserva $reserva)
-    {   
-        
+    {
+
         $tipo = $request->editar_reserva;
-        
+
         $turma_nova = $request->turma;
-        
+
         $turma = $reserva->turma_id;
-        
+
         $dados = ["responsavel_cadastro" => $request->responsavel_cadastro];
-        $dados["turma_id"] =  $turma;   
-        
+        $dados["turma_id"] =  $turma;
+
         switch ($tipo) {
             case 'atual':
-                
-                $res = Reserva::where("turma_id",$turma_nova)->where("data",$reserva->data)->update($dados);
+
+                $res = Reserva::where("turma_id", $turma_nova)->where("data", $reserva->data)->update($dados);
                 $reserva->update(["turma_id" => $turma_nova]);
                 break;
             case 'todos':
-                $reservas_ids = Reserva::where("turma_id",$turma)->get("id");
-                
-                Reserva::where("turma_id",$turma_nova)->update($dados);
+                $reservas_ids = Reserva::where("turma_id", $turma)->get("id");
 
-                $res = Reserva::whereIn("id",$reservas_ids)->update(["turma_id" => $turma_nova]);
-                
+                Reserva::where("turma_id", $turma_nova)->update($dados);
+
+                $res = Reserva::whereIn("id", $reservas_ids)->update(["turma_id" => $turma_nova]);
+
                 break;
-                case 'apartir':
-                    $res = Reserva::where("turma_id",$reserva->turma_id)
-                    ->where("data",">=",$reserva->data)
+            case 'apartir':
+                $res = Reserva::where("turma_id", $reserva->turma_id)
+                    ->where("data", ">=", $reserva->data)
                     ->update($dados);
-                    break;
-                }
+                break;
+        }
 
-                $msg = $res > 1 ? "$res reservas atualizadas com sucesso": "Reserva atualizada com sucesso";
-                return response()->json(["message"=> $msg],200);
-        
+        $msg = $res > 1 ? "$res reservas atualizadas com sucesso" : "Reserva atualizada com sucesso";
+        return response()->json(["message" => $msg], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-public function destroy(Reserva $reserva, Request $request)
+    public function destroy(Reserva $reserva, Request $request)
     {
         $opcao = $request->input('opcao');
 
@@ -147,7 +155,6 @@ public function destroy(Reserva $reserva, Request $request)
                 : "Reserva deletada com sucesso";
 
             return response()->json(['message' => $mensagem], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erro ao excluir reserva.',
@@ -155,5 +162,4 @@ public function destroy(Reserva $reserva, Request $request)
             ], 500);
         }
     }
-
 }

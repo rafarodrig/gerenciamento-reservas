@@ -2,6 +2,7 @@ import { Nav, Form, Row, Col, Button } from 'react-bootstrap';
 import TituloData from '@/Components/TituloData';
 
 export default function ConsultarReservaForm({
+    className,
     formData,
     setFormData,
     onBuscar,
@@ -23,7 +24,7 @@ export default function ConsultarReservaForm({
         <>
             <Nav >
                 <Form
-                    className="row g-3 p-4 form-consulta rounded-4 m-auto mt-5 shadow-sm"
+                    className={className}
                     id="form-consultar-reservas"
                     method="get"
                     onSubmit={handleSubmit}>
@@ -154,9 +155,9 @@ export default function ConsultarReservaForm({
                                 value={formData.unidade}
                                 onChange={handleChange}
                             >
+                                <option value="todas">Todas</option>
                                 <option value="1">Unidade 1</option>
                                 <option value="2">Unidade 2</option>
-                                <option value="">Todas</option>
                             </Form.Select>
                         </Col>
 
