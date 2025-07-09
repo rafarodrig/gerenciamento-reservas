@@ -6,6 +6,7 @@ use App\Services\TurmaService;
 use App\Models\Reserva;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReservaService
 {
@@ -99,12 +100,13 @@ class ReservaService
         if (!empty($dados["tabData"]) && $datas->contains($dados["tabData"])) {
             $data = $dados["tabData"];
         } else {
-            $data = $datas->first();
+            $data = $datas->first() ?? $dados["data_inicio"];
         }
 
         if ($data) {
             $query->where("data", '=', $data);
         }
+        // Log::debug('Data selecionada para listagem:', ['data' => $data]);
 
         // Lista paginada de reservas para a data selecionada
         $reservas = $query->orderBy("data")->paginate(20);

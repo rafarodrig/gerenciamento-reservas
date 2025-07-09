@@ -20,7 +20,6 @@ export default function ConsultarReservas({ numeros }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [editarReserva, setEditarReserva] = useState(null);
   const [deletarReserva, setDeletarReserva] = useState(null);
-  const [currentTab, setCurrentTab] = useState(null);
   const [tabDados, setTabDados] = useState({
     currentTab: null,
     datas: []
@@ -62,9 +61,10 @@ export default function ConsultarReservas({ numeros }) {
 
     if (animation) setIsActive(false);
 
+    console.log(finalFormData)
     try {
       const response = await axios.get('/reservas', { params: { ...finalFormData, page, tabData } });
-
+      console.log(response.data)
       const dados = response.data
       setReservas(dados);
       setTabDados((prev) => ({ ...prev, datas: dados.datas, currentTab: dados.currentTab }))

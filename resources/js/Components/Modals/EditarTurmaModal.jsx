@@ -3,7 +3,8 @@ import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 
 import styles from "@/Components/Form/Forms.module.scss";
 import axios from 'axios';
-import { SquarePen } from 'lucide-react';
+import { PencilSquare } from 'react-bootstrap-icons';
+
 
 export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult, errors }) {
   const [formData, setFormData] = useState(null);
@@ -67,11 +68,11 @@ export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title><SquarePen size={28} className="me-2" />Editar Turma</Modal.Title>
+        <Modal.Title><PencilSquare className="me-2" />Editar Turma</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
-          <Row>
+          <Row className='px-3'>
             <Col md={12} className='mb-4'>
               <Form.Group>
                 <Form.Label className={styles["form-section-title"]}>

@@ -8,15 +8,10 @@ use Inertia\Inertia;
 
 class PageController extends Controller
 {
-    public function getDatas(){
-        return [
-            "dataAtual"=> Helper::dataAtual(),
-            "dataAtualFormatada" => Helper::getDataAtual()
-        ];
-    }
 
-    public function cadastrarReservas(){
-        
+    public function cadastrarReservas()
+    {
+
         $pagina_dados = [
             'pagina_titulo' => 'Cadastrar Reservas',
             'tipos' => Sala::salasOptions('tipo'),
@@ -27,22 +22,20 @@ class PageController extends Controller
         return Inertia::render('CadastrarReservas/Index', $pagina_dados);
     }
 
-    public function consultarReservas(){
+    public function consultarReservas()
+    {
         $pagina_dados = [
             'pagina_titulo' => 'Consultar Reservas',
             'numeros' => Sala::salasOptions('numero')
         ];
 
         return Inertia::render('ConsultarReservas/Index', $pagina_dados);
-        
-        // return view('consultar_reservas', array_merge($pagina_dados, $this->getDatas()));
     }
-    
-    public function gerenciarSalas(){
+
+    public function gerenciarSalas()
+    {
         $unidade = 1;
-        // $salas = Sala::where('unidade', $unidade)->paginate(15);
-        // $salas->withPath('/salas?unidade='. $unidade);
-        // return view('gerenciar_salas',['salas' => $salas, 'unidade' => $unidade, 'url' => '/salas?']);
+
         return Inertia::render('GerenciarSalas/Index');
     }
 }

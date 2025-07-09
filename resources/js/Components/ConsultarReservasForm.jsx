@@ -33,22 +33,19 @@ export default function ConsultarReservaForm({
                     {/* FILTRO turma */}
                     <Row className="g-3">
                         <Col md={6}>
-                            <Form.Label htmlFor="inp-consulta-turma">Turma</Form.Label>
+                            <Form.Label >Turma</Form.Label>
                             <Form.Control
                                 type="text"
-                                id="inp-consulta-turma"
                                 name="turma"
                                 value={formData.turma || ""}
                                 onChange={handleChange}
                             />
                         </Col>
-
                         {/* Docente */}
                         <Col md={6}>
-                            <Form.Label htmlFor="inp-consulta-docente">Docente</Form.Label>
+                            <Form.Label >Docente</Form.Label>
                             <Form.Control
                                 type="text"
-                                id="inp-consulta-docente"
                                 name="docente"
                                 value={formData.docente || ""}
                                 onChange={handleChange}
@@ -57,10 +54,9 @@ export default function ConsultarReservaForm({
 
                         {/* Curso */}
                         <Col md={3}>
-                            <Form.Label htmlFor="inp-consulta-curso">Curso</Form.Label>
+                            <Form.Label >Curso</Form.Label>
                             <Form.Control
                                 type="text"
-                                id="inp-consulta-curso"
                                 name="curso"
                                 value={formData.curso || ""}
                                 onChange={handleChange}

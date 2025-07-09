@@ -1,20 +1,19 @@
 import axios from 'axios';
 import { Modal, Button, Form, Row, Col, Card, ToggleButton } from 'react-bootstrap';
 import {
+  Building,
+  Laptop,
+  People,
   Save,
   XCircle,
+  PencilSquare,
+  Clock,
+  Book
 } from 'react-bootstrap-icons';
 import CardTurmaCadastrada from '../Card/CardTurmaCadastrada';
 import { converterData } from '@/dates'; // ajuste conforme seu projeto
 import OptionsTurmasDisponiveis from '../OptionsTurmasDisponiveis';
-import { 
-  Building, 
-  LaptopMinimal, 
-  Users, 
-  SquarePen, 
-  BookOpen,
-  Clock 
-} from 'lucide-react';
+
 
 
 export default function CadastrarReservaModal({
@@ -31,16 +30,16 @@ export default function CadastrarReservaModal({
   turmaCadastrada,
 }) {
 
-    const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const payload = {
       sala: sala.id,
       responsavel_cadastro: formData.responsavel_cadastro,
       turma: formData.turma || null,
       datas: formData.datas
     };
-  
+
     if (!formData.turma) {
       // Nova turma: incluir dados obrigatórios
       Object.assign(payload, {
@@ -53,16 +52,16 @@ export default function CadastrarReservaModal({
       });
     }
     axios.post('/reservas', payload)
-    .then((res) => {
-      onResult({ show: true, type: "success", message: res.data.message });
-    })
-    .catch((error) => {
-      if (error.response?.data?.errors) onResult({ show: true, type: "danger", message: error });
+      .then((res) => {
+        onResult({ show: true, type: "success", message: res.data.message });
+      })
+      .catch((error) => {
+        if (error.response?.data?.errors) onResult({ show: true, type: "danger", message: error });
       });
-    };
+  };
 
 
-const handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value, type } = e.target;
 
     setFormData((prev) => ({
@@ -77,7 +76,7 @@ const handleChange = (e) => {
       }));
     }
 
-  };  
+  };
 
   if (!sala || !reserva) return null;
 
@@ -85,68 +84,87 @@ const handleChange = (e) => {
     <Modal show={show} className='modal-custom' onHide={onCancel} centered size="lg" animation>
       <Modal.Header closeButton>
         <Modal.Title>
-          <SquarePen size={28} className="me-2" />
+          <PencilSquare size={28} className="me-2" />
           Cadastrar Reserva
         </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <Form id="form-cadastrar-reserva"  onSubmit={handleSubmit}>
-          <Row className="g-4 mb-4">
-            <Col md={6}>
-                <Card className="shadow h-100 rounded-4" >
+        <Form id="form-cadastrar-reserva" onSubmit={handleSubmit}>
+          <Row className="g-3 align-items-stretch ">
+
+            {/* Coluna Sala */}
+            <Col xs={12} md={6} className="d-flex">
+              <div className="d-flex flex-column w-100">
+                <span className="mx-2 fw-semibold text-uppercase small text-muted">Sala</span>
+                <Card className="shadow-sm rounded-4 flex-grow-1">
                   <Card.Body>
-                    <span className="text-secondary">Sala</span>
-                    <Card.Title className="mb-3 fs-">{sala.numero} - {sala.tipo}</Card.Title>
-                    <p className='d-flex align-items-center mb-2'><Building size={18} className="me-2" /> {sala.unidade} unidade</p>
-                    <p className='d-flex align-items-center mb-2'><Users size={18} className="me-2" /> {sala.lotacao} pessoas</p>
-                    <p className='d-flex align-items-center mb-2'><LaptopMinimal size={18} className="me-2" /> {sala.maquinas_qtd} máquinas</p>
+                    <Card.Title className="d-flex align-items-center justify-content-between mb-3">
+                      <span>{sala.numero} - {sala.tipo}</span>
+                    </Card.Title>
+                    <p className="d-flex align-items-center mb-2">
+                      <Building size={18} className="me-2" /> {sala.unidade} unidade
+                    </p>
+                    <p className="d-flex align-items-center mb-2">
+                      <People size={18} className="me-2" /> {sala.lotacao} pessoas
+                    </p>
+                    <p className="d-flex align-items-center mb-0">
+                      <Laptop size={18} className="me-2" /> {sala.maquinas_qtd} máquinas
+                    </p>
                   </Card.Body>
                 </Card>
-              </Col>
+              </div>
+            </Col>
 
-            <Col md={6}>
-              <Card className="shadow h-100 rounded-4">
-                <Card.Body>
-                  <span className="text-secondary ">Reserva</span>
-                  <Card.Title className="mb-3">
-                    {converterData(reserva.data_inicio)}
-                  </Card.Title>
-                  <p className='d-flex align-items-center mb-2'><Clock size={18} className="me-2" />{reserva.turno}</p>
-                  <p className='d-flex align-items-center mb-2'><BookOpen size={18} className="me-2" />{reserva.reserva_tipo}</p>
-                </Card.Body>
-              </Card>
+            {/* Coluna Reserva */}
+            <Col xs={12} md={6} className="d-flex">
+              <div className="d-flex flex-column w-100">
+                <span className="mx-2 fw-semibold text-uppercase small text-muted">Reserva</span>
+                <Card className="shadow-sm rounded-4 flex-grow-1">
+                  <Card.Body>
+                    <Card.Title className="d-flex align-items-center justify-content-between mb-3">
+                      <span>{converterData(reserva.data_inicio)}</span>
+                    </Card.Title>
+                    <p className="d-flex align-items-center mb-2">
+                      <Clock size={18} className="me-2" /> {reserva.turno}
+                    </p>
+                    <p className="d-flex align-items-center mb-2">
+                      <Book size={18} className="me-2" /> {reserva.reserva_tipo}
+                    </p>
+                  </Card.Body>
+                </Card>
+              </div>
             </Col>
           </Row>
 
-          <Row className="text-center mb-2">
+          <Row className=" mt-4 text-center mb-2">
             <Col>
               <ToggleButton
                 type="radio"
                 name="cadastro_turma"
                 id="btn-buscar-turma"
                 value="cadastrada"
-                className='shadow border-0 mb-4'
+                className='shadow-sm border-0 mb-4'
                 checked={formData.cadastro_turma === 'cadastrada'}
                 onChange={handleChange}
               >Buscar Turma</ToggleButton>
 
               <Form.Group className="form-floating">
                 <Form.Select
-                    id="turma-cadastrada"
-                    name="turma"
-                    onChange={handleChange}
-                    value={formData.turma}
-                    className='shadow border-1'
-                    disabled={formData.cadastro_turma !== 'cadastrada'}
-                    required
-                    >
-                    <option value="">Selecione a turma</option>
-                    <OptionsTurmasDisponiveis turmas={turmas} />
+                  id="turma-cadastrada"
+                  name="turma"
+                  onChange={handleChange}
+                  value={formData.turma}
+                  className='shadow-sm border-1'
+                  disabled={formData.cadastro_turma !== 'cadastrada'}
+                  required
+                >
+                  <option value="">Selecione a turma</option>
+                  <OptionsTurmasDisponiveis turmas={turmas} />
                 </Form.Select>
                 <Form.Label htmlFor="turma-cadastrada">Turma</Form.Label>
-                    </Form.Group>
-                  
+              </Form.Group>
+
             </Col>
 
             <Col>
@@ -157,12 +175,12 @@ const handleChange = (e) => {
                 value="nova"
                 checked={formData.cadastro_turma === 'nova'}
                 onChange={handleChange}
-                className='shadow border-0 mb-4 '
+                className='shadow-sm border-0 mb-4 '
               >Cadastrar Turma</ToggleButton>
               <Form.Group className="form-floating">
                 <Form.Control
                   type="text"
-                  className='shadow border-1'
+                  className='shadow-sm border-1'
                   id="inp-cadastrar-nome"
                   name="nome"
                   placeholder="Nome"
@@ -179,17 +197,17 @@ const handleChange = (e) => {
 
           <Row className="mb-3">
             <Col>
-                <CardTurmaCadastrada 
-                  setDeletarTurma={(id)=> setDeletarTurma(id)} 
-                  setEditarTurma={(id)=> setEditarTurma(id)} 
-                  turmaCadastrada={turmaCadastrada}
-                />
+              <CardTurmaCadastrada
+                setDeletarTurma={(id) => setDeletarTurma(id)}
+                setEditarTurma={(id) => setEditarTurma(id)}
+                turmaCadastrada={turmaCadastrada}
+              />
             </Col>
-            
+
             <Col>
               <Form.Group className="form-floating mb-2">
                 <Form.Control
-                  className='shadow border-1'
+                  className='shadow-sm border-1'
                   type="text"
                   id="inp-cadastrar-docente"
                   name="docente"
@@ -204,7 +222,7 @@ const handleChange = (e) => {
 
               <Form.Group className="form-floating mb-2">
                 <Form.Control
-                  className='shadow border-1'
+                  className='shadow-sm border-1'
                   type="text"
                   id="inp-cadastrar-curso"
                   name="curso"
@@ -220,7 +238,7 @@ const handleChange = (e) => {
               <Form.Group className="form-floating mb-2">
                 <Form.Control
                   type="number"
-                  className='shadow border-1'
+                  className='shadow-sm border-1'
                   id="inp-cadastrar-lotacao"
                   name="lotacao"
                   placeholder="Lotação"
@@ -242,7 +260,7 @@ const handleChange = (e) => {
               name="responsavel_cadastro"
               placeholder="Responsável Cadastro"
               autoComplete="off"
-              className='shadow border-1'
+              className='shadow-sm border-1'
               value={formData.responsavel_cadastro}
               onChange={handleChange}
               required

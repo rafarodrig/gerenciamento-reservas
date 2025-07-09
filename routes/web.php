@@ -13,7 +13,6 @@ Route::get('/', function () {
     return redirect('/consultar-reservas');
 });
 
-Route::get('/teste', fn() => Inertia::render('Teste'));
 
 Route::get('/consultar-reservas', [PageController::class, 'consultarReservas'])->name("consultar-reservas");
 

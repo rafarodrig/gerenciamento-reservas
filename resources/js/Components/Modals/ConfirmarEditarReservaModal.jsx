@@ -37,7 +37,7 @@ export default function ConfirmarEditarModal({ show, onConfirm, onCancel, salas,
 
   return (
     <Modal show={show} onHide={handleCancel} size="xl" centered animation>
-      <Modal.Header closeButton data-bs-theme="dark">
+      <Modal.Header closeButton >
         <Modal.Title>
           <PencilSquare className="me-2" />
           Editar Reserva
@@ -46,97 +46,96 @@ export default function ConfirmarEditarModal({ show, onConfirm, onCancel, salas,
 
       <Form>
         <Modal.Body>
-          <Row className='g-3'>
-            <Col md={6} className='bg-white border rounded-4 p-4 shadow-sm'>
-              <p className="text-muted mb-3">
-                Selecione como deseja aplicar a edição desta reserva:
-              </p>
 
-              <Form.Check
-                type="radio"
-                id="editar-atual"
-                name="editar_reserva"
-                value="atual"
-                label="Editar somente este registro"
-                defaultChecked
-                className="mb-2"
-                onChange={handleChange}
-              />
-              <Form.Text className="text-muted ms-4">
-                Altere apenas esta reserva individualmente.
-              </Form.Text>
+          <Row className="g-3 d-flex ">
+            {/* Coluna de opções */}
+            <Col xs={12} lg={6} className="d-flex">
+              <div className="bg-white p-4 border rounded-4 shadow-sm w-100">
+                <p className="text-muted mb-3">
+                  Selecione como deseja aplicar a edição desta reserva:
+                </p>
 
-              <Form.Check
-                type="radio"
-                id="editar-todos"
-                name="editar_reserva"
-                value="todos"
-                label="Editar todos os registros relacionados"
-                className="mt-3 mb-2"
-                onChange={handleChange}
-              />
-              <Form.Text className="text-muted ms-4">
-                Todos os registros relacionados (mesma turma e sala) serão modificados.
-              </Form.Text>
+                <Form.Check
+                  type="radio"
+                  id="editar-atual"
+                  name="editar_reserva"
+                  value="atual"
+                  label="Editar somente este registro"
+                  defaultChecked
+                  className="mb-2"
+                  onChange={handleChange}
+                />
+                <Form.Text className="text-muted ms-4">
+                  Altere apenas esta reserva individualmente.
+                </Form.Text>
 
-              <Form.Check
-                type="radio"
-                id="editar-apartir"
-                name="editar_reserva"
-                value="apartir"
-                label="Editar registros a partir deste"
-                className="mt-3 mb-2"
-                onChange={handleChange}
-              />
-              <Form.Text className="text-muted ms-4">
-                Edita este e os futuros registros relacionados.
-              </Form.Text>
+                <Form.Check
+                  type="radio"
+                  id="editar-todos"
+                  name="editar_reserva"
+                  value="todos"
+                  label="Editar todos os registros relacionados"
+                  className="mt-3 mb-2"
+                  onChange={handleChange}
+                />
+                <Form.Text className="text-muted ms-4">
+                  Todos os registros relacionados (mesma turma e sala) serão modificados.
+                </Form.Text>
+
+                <Form.Check
+                  type="radio"
+                  id="editar-apartir"
+                  name="editar_reserva"
+                  value="apartir"
+                  label="Editar registros a partir deste"
+                  className="mt-3 mb-2"
+                  onChange={handleChange}
+                />
+                <Form.Text className="text-muted ms-4">
+                  Edita este e os futuros registros relacionados.
+                </Form.Text>
+              </div>
             </Col>
 
-            <Col md={6}>
-              <Row className="g-3">
-                <Col md={12}>
-                  <Card className="shadow-sm rounded-4 h-100">
-                    <Card.Body>
-                      <Card.Title className="text-muted small text-uppercase">Sala atual</Card.Title>
-                      {reserva?.sala ? (
-                        <>
-                          <p><strong>{reserva.sala.numero}</strong> - {reserva.sala.tipo}</p>
-                          <p className='text-muted mb-0'>{reserva.sala.lotacao} pessoas, {reserva.sala.maquinas_qtd} máquinas</p>
-                        </>
-                      ) : (
-                        <p className="text-muted">Nenhuma sala atual.</p>
-                      )}
-                    </Card.Body>
-                  </Card>
-                </Col>
+            <Col xs={12} lg={6} className="d-flex flex-column gap-3">
+              <Card className="shadow-sm rounded-4 flex-fill">
+                <Card.Body>
+                  <Card.Title className="text-muted small text-uppercase">Sala atual</Card.Title>
+                  {reserva?.sala ? (
+                    <>
+                      <p><strong>{reserva.sala.numero}</strong> - {reserva.sala.tipo}</p>
+                      <p className="text-muted mb-0">{reserva.sala.lotacao} pessoas, {reserva.sala.maquinas_qtd} máquinas</p>
+                    </>
+                  ) : (
+                    <p className="text-muted">Nenhuma sala atual.</p>
+                  )}
+                </Card.Body>
+              </Card>
 
-                <Col md={12}>
-                  <Card className="shadow-sm rounded-4 h-100 border-primary">
-                    <Card.Body>
-                      <Card.Title className="text-muted small text-uppercase">Nova sala</Card.Title>
-                      {salaTroca ? (
-                        <>
-                          <p><strong>{salaTroca.numero}</strong> - {salaTroca.tipo}</p>
-                          <p className='text-muted mb-0'>{salaTroca.lotacao} pessoas, {salaTroca.maquinas_qtd} máquinas</p>
-                        </>
-                      ) : (
-                        <p className="text-muted">Nenhuma sala selecionada.</p>
-                      )}
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
+              <Card className="shadow-sm rounded-4 flex-fill">
+                <Card.Body>
+                  <Card.Title className="text-muted small text-uppercase">Nova sala</Card.Title>
+                  {salaTroca ? (
+                    <>
+                      <p><strong>{salaTroca.numero}</strong> - {salaTroca.tipo}</p>
+                      <p className="text-muted mb-0">{salaTroca.lotacao} pessoas, {salaTroca.maquinas_qtd} máquinas</p>
+                    </>
+                  ) : (
+                    <p className="text-muted">Nenhuma sala selecionada.</p>
+                  )}
+                </Card.Body>
+              </Card>
             </Col>
+
+            <Col>
+              <TableSalasDisponiveisTroca
+                data={salas}
+                onPageChange={(page) => buscarSalasDisponiveisTroca(null, page)}
+                onReservar={salaSelecionada}
+              />
+            </Col>
+
           </Row>
-
-          <div className="mt-4">
-            <TableSalasDisponiveisTroca
-              data={salas}
-              onPageChange={(page) => buscarSalasDisponiveisTroca(null, page)}
-              onReservar={salaSelecionada}
-            />
-          </div>
         </Modal.Body>
 
         <Modal.Footer className="d-flex justify-content-between">
