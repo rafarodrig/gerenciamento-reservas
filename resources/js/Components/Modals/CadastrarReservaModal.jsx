@@ -13,6 +13,7 @@ import {
 import CardTurmaCadastrada from '../Card/CardTurmaCadastrada';
 import { converterData } from '@/dates'; // ajuste conforme seu projeto
 import OptionsTurmasDisponiveis from '../OptionsTurmasDisponiveis';
+import { useState } from 'react';
 
 
 
@@ -28,17 +29,26 @@ export default function CadastrarReservaModal({
   onResult,
   onCancel,
   turmaCadastrada,
+  setAlert
 }) {
 
+  const[errors, setErrors] = useState(null)
+
+      const handleCancel = () =>{
+          setErrors(null);
+          onCancel()
+    }
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setErrors(null)
     const payload = {
       sala: sala.id,
       responsavel_cadastro: formData.responsavel_cadastro,
       turma: formData.turma || null,
       datas: formData.datas
     };
+
+
 
     if (!formData.turma) {
       // Nova turma: incluir dados obrigatórios
@@ -56,7 +66,11 @@ export default function CadastrarReservaModal({
         onResult({ show: true, type: "success", message: res.data.message });
       })
       .catch((error) => {
-        if (error.response?.data?.errors) onResult({ show: true, type: "danger", message: error });
+        
+        setErrors(error.response.data.errors);
+        setAlert({ show: true, type: "danger", message:  error.response.data.message})
+        console.log(error)
+        //  onResult({ show: true, type: "danger", message: error.response.data.message });
       });
   };
 
@@ -81,7 +95,7 @@ export default function CadastrarReservaModal({
   if (!sala || !reserva) return null;
 
   return (
-    <Modal show={show} className='modal-custom' onHide={onCancel} centered size="lg" animation>
+    <Modal show={show} className='modal-custom' onHide={handleCancel} centered size="lg" animation>
       <Modal.Header closeButton>
         <Modal.Title>
           <PencilSquare size={28} className="me-2" />
@@ -147,6 +161,7 @@ export default function CadastrarReservaModal({
                 className='shadow-sm border-0 mb-4'
                 checked={formData.cadastro_turma === 'cadastrada'}
                 onChange={handleChange}
+                
               >Buscar Turma</ToggleButton>
 
               <Form.Group className="form-floating">
@@ -177,6 +192,7 @@ export default function CadastrarReservaModal({
                 onChange={handleChange}
                 className='shadow-sm border-0 mb-4 '
               >Cadastrar Turma</ToggleButton>
+
               <Form.Group className="form-floating">
                 <Form.Control
                   type="text"
@@ -187,10 +203,16 @@ export default function CadastrarReservaModal({
                   autoComplete="off"
                   value={formData.nome}
                   onChange={handleChange}
+                  isInvalid={!!errors?.nome}
                   disabled={formData.cadastro_turma !== 'nova'}
                   required
                 />
                 <Form.Label htmlFor="inp-cadastrar-nome">Nome</Form.Label>
+                                  {errors?.nome && (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.nome}
+                  </Form.Control.Feedback>
+                  )}
               </Form.Group>
             </Col>
           </Row>
@@ -213,11 +235,17 @@ export default function CadastrarReservaModal({
                   name="docente"
                   placeholder="Docente"
                   value={formData.docente}
+                  isInvalid={!!errors?.docente}
                   onChange={handleChange}
                   disabled={formData.cadastro_turma !== 'nova'}
                   required
                 />
                 <Form.Label htmlFor="inp-cadastrar-docente">Docente</Form.Label>
+                    {errors?.docente && (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.docente}
+                  </Form.Control.Feedback>
+                  )}
               </Form.Group>
 
               <Form.Group className="form-floating mb-2">
@@ -229,10 +257,16 @@ export default function CadastrarReservaModal({
                   placeholder="Curso"
                   value={formData.curso}
                   onChange={handleChange}
+                  isInvalid={!!errors?.curso}
                   disabled={formData.cadastro_turma !== 'nova'}
                   required
                 />
                 <Form.Label htmlFor="inp-cadastrar-curso">Curso</Form.Label>
+                      {errors?.curso && (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.curso}
+                  </Form.Control.Feedback>
+                  )}
               </Form.Group>
 
               <Form.Group className="form-floating mb-2">
@@ -244,11 +278,17 @@ export default function CadastrarReservaModal({
                   placeholder="Lotação"
                   min="1"
                   value={formData.lotacao}
+                  isInvalid={!!errors?.lotacao}
                   onChange={handleChange}
                   disabled={formData.cadastro_turma !== 'nova'}
                   required
                 />
                 <Form.Label htmlFor="inp-cadastrar-lotacao">Lotação</Form.Label>
+                                                  {errors?.lotacao && (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.lotacao}
+                  </Form.Control.Feedback>
+                  )}
               </Form.Group>
             </Col>
           </Row>
@@ -262,16 +302,22 @@ export default function CadastrarReservaModal({
               autoComplete="off"
               className='shadow-sm border-1'
               value={formData.responsavel_cadastro}
+              isInvalid={!!errors?.responsavel_cadastro}
               onChange={handleChange}
               required
             />
             <Form.Label htmlFor="inp-cadastrar-responsavel-cadastro">Responsável Cadastro</Form.Label>
+                                                              {errors?.responsavel_cadastro && (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.responsavel_cadastro}
+                  </Form.Control.Feedback>
+                  )}
           </Form.Group>
         </Form>
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={onCancel}>
+        <Button variant="secondary" onClick={handleCancel}>
           <XCircle className="me-1" /> Cancelar
         </Button>
         <Button type="submit" form="form-cadastrar-reserva" variant="primary" >

@@ -104,7 +104,7 @@ export default function CadastrarReservaContainer({
         onCancel={() => { setShowCadastrarReservaModal(false); resetId(); }}
         setEditarTurma={(id) => { setShowCadastrarReservaModal(false); setEditarTurma(id) }}
         setDeletarTurma={(id) => { setShowCadastrarReservaModal(false); setDeletarTurma(id) }}
-      // errorMsg={errorMsg}
+        setAlert={setAlert}
       />
 
       <EditarTurmaModal

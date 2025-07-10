@@ -70,7 +70,7 @@ class ReservaController extends Controller
             ]);
 
             return response()->json([
-                'msg' => 'Ocorreu um erro ao cadastrar a reserva.',
+                'message' => 'Ocorreu um erro ao cadastrar a reserva.',
                 'erro' => $e->getMessage()
             ], 500);
         }

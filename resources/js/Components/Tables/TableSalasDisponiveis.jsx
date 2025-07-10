@@ -6,7 +6,7 @@ import PaginationControlls from '../PaginationControlls';
 
 export default function SalasDisponiveisTable({ data, onReservar, onPageChange, isDisabledBtnReservar }) {
   if (!data) return null;
-  console.log("Tabela Salas");
+
   const salas = data?.salas.data;
   const salasResponse = data?.salas;
   let paginationData = null;

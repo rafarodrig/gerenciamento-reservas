@@ -13,26 +13,11 @@ Route::get('/', function () {
     return redirect('/consultar-reservas');
 });
 
-
 Route::get('/consultar-reservas', [PageController::class, 'consultarReservas'])->name("consultar-reservas");
 
 Route::get('/cadastrar-reservas', [PageController::class, 'cadastrarReservas'])->name("cadastrar-reservas");
 
 Route::get('/gerenciar-salas', [PageController::class, 'gerenciarSalas'])->name("gerenciar-salas");
-
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
-
-
-// Route::resource('salas',SalaController::class,[
-//     'except' => ['edit','create']
-// ])->name("get","salas.index");
 
 // Salas
 Route::prefix('salas')->group(function () {

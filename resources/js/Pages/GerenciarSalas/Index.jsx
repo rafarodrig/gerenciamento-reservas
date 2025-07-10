@@ -271,7 +271,7 @@ export default function GerenciarSalas() {
             setShowEditarModal={setShowEditarModal}
             setShowCadastrarModal={setShowCadastrarModal}
             setSalaEditando={setSalaEditando}
-            handleSubmitCadastrar={handleCadastrar}
+            handleSubmitCadastrar={handleSubmitCadastrar}
             handleSubmitEditar={handleSubmitEditar}
         />
     );
