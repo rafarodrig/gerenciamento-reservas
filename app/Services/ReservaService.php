@@ -118,6 +118,34 @@ class ReservaService
         ];
     }
 
+    public function trocarSala(Reserva $reserva, string $opcao, int $salaNovaId): int
+    {
+        $turmaId = $reserva->turma_id;
+        $salaAtualId = $reserva->sala_id;
+        $dataReserva = $reserva->data;
+
+        switch ($opcao) {
+            case 'atual':
+                $reserva->sala_id = $salaNovaId;
+                $reserva->save();
+                return 1;
+
+            case 'todos':
+                return Reserva::where('turma_id', $turmaId)
+                    ->where('sala_id', $salaAtualId)
+                    ->update(['sala_id' => $salaNovaId]);
+
+            case 'apartir':
+                return Reserva::where('turma_id', $turmaId)
+                    ->where('sala_id', $salaAtualId)
+                    ->where('data', '>=', $dataReserva)
+                    ->update(['sala_id' => $salaNovaId]);
+
+            default:
+                throw new \InvalidArgumentException("Opção de troca inválida: $opcao");
+        }
+    }
+
 
     public function excluirReserva(Reserva $reserva, string $opcao): int
     {

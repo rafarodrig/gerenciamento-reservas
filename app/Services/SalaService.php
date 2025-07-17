@@ -4,36 +4,62 @@ namespace App\Services;
 
 use App\Models\Reserva;
 use App\Models\Sala;
+use Barryvdh\Debugbar\Twig\Extension\Debug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SalaService
 {
+
     public function obterSalasPaginadas(Request $request)
     {
-        $query = Sala::query();
+        $query = Sala::with(['tipoSala', 'tipoMaquina']);
 
         if ($request->filled('unidade') && $request->unidade !== 'todas') {
             $query->where('unidade', $request->unidade);
         }
 
-        return $query->orderBy('unidade')
-            ->orderBy('numero')
-            ->paginate(15);
+        if ($request->filled('tipo_sala_id')) {
+            $query->where('tipo_sala_id', $request->tipo_sala_id);
+        }
+
+        if ($request->filled('tipo_maquina_id')) {
+            $query->where('tipo_maquina_id', $request->tipo_maquina_id);
+        }
+
+        // Aplicar ordenação
+        $query->orderBy('unidade')->orderBy('numero');
+
+        // Paginar e armazenar resultado
+        $salasPaginadas = $query->paginate(15);
+
+        // Logar resultado paginado (você pode reduzir a verbosidade se quiser)
+        Log::debug('Salas paginadas retornadas', [
+            'filtros' => $request->all(),
+            'total' => $salasPaginadas->total(),
+            'por_pagina' => $salasPaginadas->perPage(),
+            'dados' => $salasPaginadas,
+            // 'dados' => $salasPaginadas->items(), // cuidado: pode gerar log muito grande
+        ]);
+
+        return $salasPaginadas;
     }
+
+
     public function obterSalasDisponiveis(array $dados)
     {
-        $query = Sala::query();
+        $query = Sala::query()->with(['tipoSala', 'tipoMaquina']);
 
         if (!empty($dados['unidade']) && $dados['unidade'] !== "todas") $query->where('unidade', (int) $dados['unidade']);
 
         if (!empty($dados['numero'])) $query->where('numero', (int) $dados['numero']);
 
-        if (!empty($dados['tipo'])) $query->where('tipo', $dados['tipo']);
+        if (!empty($dados['tipo_sala_id'])) $query->where('tipo_sala_id', $dados['tipo_sala_id']);
 
         if (!empty($dados['maquinas_qtd'])) $query->where('maquinas_qtd', '>=', (int) $dados['maquinas_qtd']);
 
-        if (!empty($dados['maquinas_tipo'])) $query->where('maquinas_tipo', 'LIKE', '%' . $dados['maquinas_tipo'] . '%');
+        if (!empty($dados['tipo_maquina_id'])) $query->where('tipo_maquina_id', $dados['tipo_maquina_id']);
 
         if (!empty($dados['lotacao'])) $query->where('lotacao', '>=', (int) $dados['lotacao']);
 
@@ -54,8 +80,7 @@ class SalaService
         }
 
         return $query->orderBy('unidade')
-            ->orderBy('numero')
-            ->paginate(20);
+            ->orderBy('numero');
     }
 
 

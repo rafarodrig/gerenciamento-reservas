@@ -1,0 +1,18 @@
+$tw-gradient-stops: var(#f9fafb), var(#f3f4f6);
+
+.bg-gradient-to-top-gray {
+    background-image: linear-gradient(to top, #6b7280, #939aa5); // gray-600 to gray-400
+    // color: #fff; // garante contraste de texto
+}
+
+.bg-gradient-to-top-blue {
+    background-image: linear-gradient(to top, #0250c4, #0363f3); // blue-600 to blue-500
+}
+
+.bg-gradient-to-top-red {
+    background-image: linear-gradient(to top, #a51d2a, #ca2435); // blue-600 to blue-500
+}
+
+.bg-gradient-to-br {
+    background-image: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
+}

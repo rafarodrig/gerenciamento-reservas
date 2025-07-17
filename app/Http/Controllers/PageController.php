@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sala;
-use App\Helpers\Helper;
+use App\Models\TipoMaquina;
+use App\Models\TipoSala;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class PageController extends Controller
@@ -13,29 +15,21 @@ class PageController extends Controller
     {
 
         $pagina_dados = [
-            'pagina_titulo' => 'Cadastrar Reservas',
-            'tipos' => Sala::salasOptions('tipo'),
-            'maquinas_tipos' => Sala::salasOptions('maquinas_tipo'),
-            'numeros' => Sala::salasOptions('numero'),
+            'tipos' => TipoSala::orderBy('nome')->pluck('nome', 'id'),            // retorna: { id: nome }
+            'maquinas_tipos' => TipoMaquina::orderBy('nome')->pluck('nome', 'id'),
+            'numeros' => Sala::salasOptions("numero"),     // se quiser manter os números
         ];
 
-        return Inertia::render('CadastrarReservas/Index', $pagina_dados);
+        return Inertia::render('CadastrarReservasPage', $pagina_dados);
     }
 
     public function consultarReservas()
     {
-        $pagina_dados = [
-            'pagina_titulo' => 'Consultar Reservas',
-            'numeros' => Sala::salasOptions('numero')
-        ];
-
-        return Inertia::render('ConsultarReservas/Index', $pagina_dados);
+        return Inertia::render('ConsultarReservasPage', ['numeros' => Sala::salasOptions('numero')]);
     }
 
     public function gerenciarSalas()
     {
-        $unidade = 1;
-
-        return Inertia::render('GerenciarSalas/Index');
+        return Inertia::render('GerenciarSalasPage');
     }
 }

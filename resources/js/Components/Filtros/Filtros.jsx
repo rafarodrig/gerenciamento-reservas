@@ -1,10 +1,8 @@
 import React, { useRef, useMemo } from 'react';
-import { Row, Col, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { converterData, diaSemana } from '@/dates';
+import { Row, Col, Badge } from 'react-bootstrap';
 import { filtrosSalasDisponiveis } from './geradoresDatas';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import CloseButton from './CloseButton';
-import "./FiltrosBadge.css"
+import DataBadge from '../Badges/DataBadge';
 
 export default function FiltrosBadge({ formData, objFiltros, onRemoverData }) {
   const filtrosAtivos = objFiltros || filtrosSalasDisponiveis(formData);
@@ -30,11 +28,11 @@ export default function FiltrosBadge({ formData, objFiltros, onRemoverData }) {
   if (Object.keys(filtros).length === 0 && datas.length === 0) return null;
 
   return (
-    <Row className="g-2">
-      {Object.entries(filtros).map(([chave, valor]) => (
-        <Col key={chave} xs="auto" className="d-flex">
-          <Badge bg="primary" className='d-flex align-items-center justify-content-center shadow-sm' >
-            {valor}
+    <Row className="g-2 filtros-aplicados-badges">
+      {Object.entries(filtros).map(([key, val]) => (
+        <Col key={key} xs="auto" className="d-flex">
+          <Badge className='d-flex align-items-center justify-content-center shadow-sm' >
+            {val}
           </Badge>
         </Col>
       ))}
@@ -48,16 +46,7 @@ export default function FiltrosBadge({ formData, objFiltros, onRemoverData }) {
             nodeRef={refs[data]}
           >
             <Col ref={refs[data]} xs="auto" className="d-flex data-badge-div align-items-center">
-              <OverlayTrigger overlay={<Tooltip >{diaSemana(data)}</Tooltip>}>
-                <Badge bg="primary" className="data-badge shadow-sm">
-                  <span className="flex-grow-1">{converterData(data)}</span>
-                  <CloseButton
-                    onClick={() => handleRemoverData(data)}
-                    className="close-badge"
-                    ariaLabel={`Remover data ${converterData(data)}`}
-                  />
-                </Badge>
-              </OverlayTrigger>
+              <DataBadge data={data} handleRemoverData={handleRemoverData} />
             </Col>
           </CSSTransition>
         ))}

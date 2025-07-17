@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { Tab, Tabs, Button } from "react-bootstrap";
 import { ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import { converterData } from "@/dates";
-import styles from "./TabDatas.module.scss";
+import styles from "../../scss/TabDatas.module.scss";
 
 export default function TabDatas({ datas, currentTab, setCurrentData }) {
     const scrollRef = useRef();

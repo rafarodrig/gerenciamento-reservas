@@ -6,8 +6,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReservaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use Inertia\Inertia;
-
+use App\Http\Controllers\TipoMaquinaController;
+use App\Http\Controllers\TipoSalaController;
 
 Route::get('/', function () {
     return redirect('/consultar-reservas');
@@ -39,10 +39,20 @@ Route::prefix('turmas')->group(function () {
     Route::delete('/{turma}', [TurmaController::class, 'destroy'])->name('turmas.destroy');
 });
 
+// Route::prefix('reservas')->group(function () {
+//     Route::get('/', [TurmaController::class, 'index'])->name('reservas.index');
+//     Route::get('/{reserva}', [TurmaController::class, 'show'])->name('reservas.show');
+//     Route::post('/', [TurmaController::class, 'store'])->name('reservas.store');
+//     Route::put('/{reserva}', [TurmaController::class, 'update'])->name('reservas.update');
+//     Route::delete('/{reserva}', [TurmaController::class, 'destroy'])->name('reservas.destroy');
+// });
+
 Route::resource('reservas', ReservaController::class, [
     'except' => ['edit', 'create']
 ])->name("get", "reservas.index");
 
+Route::resource('tipos-sala', TipoSalaController::class, ['except' => ['edit', 'create']]);
+Route::resource('tipos-maquina', TipoMaquinaController::class, ['except' => ['edit', 'create']]);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -1,0 +1,30 @@
+.alert-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100;
+    min-width: 300px;
+}
+
+/* Melhorias para alertas */
+.alert {
+    border-radius: $border-radius-lg;
+    border: none;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+
+    &-warning {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    &-success {
+        background-color: #d1edff;
+        color: #0c5460;
+    }
+
+    &-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+}

@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
-
-import styles from "@/Components/Form/Forms.module.scss";
 import axios from 'axios';
-import { PencilSquare } from 'react-bootstrap-icons';
+
+import { PenSquare } from 'lucide-react';
+import CancelarButton from '../Buttons/CancelarButton';
+import SalvarButton from '../Buttons/SalvarButton';
 
 
-export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult, errors }) {
+export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult }) {
   const [formData, setFormData] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [errors, setErrors] = useState(false);
 
   useEffect(() => {
     if (!turmaId) return;
@@ -36,6 +38,7 @@ export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult
   }, [turmaId]);
 
   const handleChange = (e) => {
+    setErrors((prev) => { })
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -47,9 +50,9 @@ export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult
         setShowModal(false);
         onResult({ show: true, type: "success", message: response.data.message });
       })
-      .catch(err => {
-        console.error;
-        onResult({ show: true, type: "danger", message: "Erro ao atualizar turma: " + err });
+      .catch((err) => {
+        setErrors(err.response.data.errors)
+        // onResult({ show: true, type: "danger", message: "Erro ao atualizar turma: " + err });
       });
   };
 
@@ -68,14 +71,14 @@ export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title><PencilSquare className="me-2" />Editar Turma</Modal.Title>
+        <Modal.Title className='d-flex align-items-center' ><PenSquare className="me-2" />Editar Turma</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Row className='px-3'>
             <Col md={12} className='mb-4'>
               <Form.Group>
-                <Form.Label className={styles["form-section-title"]}>
+                <Form.Label >
                   Nome<span className="text-danger">*</span>
                 </Form.Label>
                 <Form.Control
@@ -87,15 +90,21 @@ export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult
                   isInvalid={!!errors?.nome}
                   required
                 />
-                <Form.Control.Feedback type="invalid">
-                  {errors?.nome}
-                </Form.Control.Feedback>
+                {errors?.nome ? (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.nome}
+                  </Form.Control.Feedback>
+                ) : (
+                  <Form.Text className="text-muted">
+                    Informe o nome da disciplina, evento ou identificação da turma.
+                  </Form.Text>
+                )}
               </Form.Group>
             </Col>
 
             <Col md={12} className='mb-4'>
               <Form.Group>
-                <Form.Label className={styles["form-section-title"]}>
+                <Form.Label >
                   Docente<span className="text-danger">*</span>
                 </Form.Label>
                 <Form.Control
@@ -107,15 +116,21 @@ export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult
                   isInvalid={!!errors?.docente}
                   required
                 />
-                <Form.Control.Feedback type="invalid">
-                  {errors?.docente}
-                </Form.Control.Feedback>
+                {errors?.docente ? (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.docente}
+                  </Form.Control.Feedback>
+                ) : (
+                  <Form.Text className="text-muted">
+                    Nome do professor responsável pela turma ou disciplina.
+                  </Form.Text>
+                )}
               </Form.Group>
             </Col>
 
             <Col md={12} className='mb-4'>
               <Form.Group>
-                <Form.Label className={styles["form-section-title"]}>
+                <Form.Label >
                   Curso<span className="text-danger">*</span>
                 </Form.Label>
                 <Form.Control
@@ -127,15 +142,21 @@ export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult
                   isInvalid={!!errors?.curso}
                   required
                 />
-                <Form.Control.Feedback type="invalid">
-                  {errors?.curso}
-                </Form.Control.Feedback>
+                {errors?.curso ? (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.curso}
+                  </Form.Control.Feedback>
+                ) : (
+                  <Form.Text className="text-muted">
+                    Nome completo do curso associado à turma.
+                  </Form.Text>
+                )}
               </Form.Group>
             </Col>
 
             <Col md={12} className='mb-4'>
               <Form.Group>
-                <Form.Label className={styles["form-section-title"]}>
+                <Form.Label >
                   Capacidade/Lotação<span className="text-danger">*</span>
                 </Form.Label>
                 <Form.Control
@@ -147,21 +168,23 @@ export default function EditarTurmaModal({ turmaId, onCancel, onExited, onResult
                   required
                   min="1"
                 />
-                <Form.Control.Feedback type="invalid">
-                  {errors?.lotacao}
-                </Form.Control.Feedback>
+                {errors?.lotacao ? (
+                  <Form.Control.Feedback type="invalid">
+                    {errors.lotacao}
+                  </Form.Control.Feedback>
+                ) : (
+                  <Form.Text className="text-muted">
+                    Quantidade total de alunos previstos para a turma.
+                  </Form.Text>
+                )}
               </Form.Group>
             </Col>
           </Row>
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancel}>
-            Cancelar
-          </Button>
-          <Button variant="primary" type="submit">
-            Salvar
-          </Button>
+          <CancelarButton onClick={handleCancel} />
+          <SalvarButton onClick={handleSubmit} />
         </Modal.Footer>
       </Form>
     </Modal>

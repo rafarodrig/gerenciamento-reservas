@@ -15,13 +15,17 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $this->call([SalaSeeder::class, TurmaSeeder::class, ReservaSeeder::class]);
+        $this->call([
+            TipoSalaSeeder::class,
+            TipoMaquinaSeeder::class,
+            SalaSeeder::class,
+            TurmaSeeder::class,
+            ReservaSeeder::class
+        ]);
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
-
-        
     }
 }

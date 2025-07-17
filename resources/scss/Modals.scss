@@ -1,0 +1,25 @@
+.modal-content {
+    background-color: $white;
+    border-radius: $modal-content-border-radius;
+    border: none;
+}
+
+.modal-header,
+.modal-footer {
+    border: none;
+}
+
+.modal-header {
+    padding: 1.25rem;
+}
+
+.modal-title {
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+        stroke-width: 2px;
+        width: 30px;
+        height: 30px;
+    }
+}

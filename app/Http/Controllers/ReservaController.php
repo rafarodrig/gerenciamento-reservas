@@ -64,10 +64,6 @@ class ReservaController extends Controller
                 'reservas' => $reservas
             ], 201);
         } catch (\Exception $e) {
-            Log::error('Erro ao cadastrar reserva', [
-                'erro' => $e->getMessage(),
-                'dados' => $request->all()
-            ]);
 
             return response()->json([
                 'message' => 'Ocorreu um erro ao cadastrar a reserva.',
@@ -83,7 +79,7 @@ class ReservaController extends Controller
     public function show($id)
     {
         $reserva = Reserva::withTrashed() // permite buscar soft deleted
-            ->with(['sala', 'turma'])     // carrega os relacionamentos
+            ->with(['sala.tipoSala', 'turma'])     // carrega os relacionamentos
             ->findOrFail($id);            // busca a reserva
 
         return $reserva;
@@ -99,42 +95,58 @@ class ReservaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatereservaRequest $request, Reserva $reserva)
+    // public function update(UpdatereservaRequest $request, Reserva $reserva)
+    // {
+
+    //     $tipo = $request->editar_reserva;
+
+    //     $turma_nova = $request->turma;
+
+    //     $turma = $reserva->turma_id;
+
+    //     $dados = ["responsavel_cadastro" => $request->responsavel_cadastro];
+    //     $dados["turma_id"] =  $turma;
+
+    //     switch ($tipo) {
+    //         case 'atual':
+
+    //             $res = Reserva::where("turma_id", $turma_nova)->where("data", $reserva->data)->update($dados);
+    //             $reserva->update(["turma_id" => $turma_nova]);
+    //             break;
+    //         case 'todos':
+    //             $reservas_ids = Reserva::where("turma_id", $turma)->get("id");
+
+    //             Reserva::where("turma_id", $turma_nova)->update($dados);
+
+    //             $res = Reserva::whereIn("id", $reservas_ids)->update(["turma_id" => $turma_nova]);
+
+    //             break;
+    //         case 'apartir':
+    //             $res = Reserva::where("turma_id", $reserva->turma_id)
+    //                 ->where("data", ">=", $reserva->data)
+    //                 ->update($dados);
+    //             break;
+    //     }
+
+    //     $msg = $res > 1 ? "$res reservas atualizadas com sucesso" : "Reserva atualizada com sucesso";
+    //     return response()->json(["message" => $msg], 200);
+    // }
+
+
+    public function update(Reserva $reserva, Request $request)
     {
+        $validated = $request->validate([
+            'opcao' => 'required|in:atual,todos,apartir',
+            'sala_nova' => 'required|exists:salas,id',
+        ]);
 
-        $tipo = $request->editar_reserva;
-
-        $turma_nova = $request->turma;
-
-        $turma = $reserva->turma_id;
-
-        $dados = ["responsavel_cadastro" => $request->responsavel_cadastro];
-        $dados["turma_id"] =  $turma;
-
-        switch ($tipo) {
-            case 'atual':
-
-                $res = Reserva::where("turma_id", $turma_nova)->where("data", $reserva->data)->update($dados);
-                $reserva->update(["turma_id" => $turma_nova]);
-                break;
-            case 'todos':
-                $reservas_ids = Reserva::where("turma_id", $turma)->get("id");
-
-                Reserva::where("turma_id", $turma_nova)->update($dados);
-
-                $res = Reserva::whereIn("id", $reservas_ids)->update(["turma_id" => $turma_nova]);
-
-                break;
-            case 'apartir':
-                $res = Reserva::where("turma_id", $reserva->turma_id)
-                    ->where("data", ">=", $reserva->data)
-                    ->update($dados);
-                break;
-        }
+        $res = $this->reservaService->trocarSala($reserva, $validated['opcao'], $validated['sala_nova']);
 
         $msg = $res > 1 ? "$res reservas atualizadas com sucesso" : "Reserva atualizada com sucesso";
-        return response()->json(["message" => $msg], 200);
+
+        return response()->json(['message' => $msg], 200);
     }
+
 
     /**
      * Remove the specified resource from storage.

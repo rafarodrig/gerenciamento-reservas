@@ -49,7 +49,7 @@ class SalaController extends Controller
             $salas = $this->salaService->obterSalasDisponiveis($request->query());
 
             return response()->json([
-                'salas' => $salas,
+                'salas' => $salas->paginate(20),
                 'unidade' => $request->unidade ?? '0'
             ]);
         } catch (\Exception $e) {
@@ -68,7 +68,7 @@ class SalaController extends Controller
             $dados = $this->salaService->obterSalasDisponiveisTroca($request->query());
 
             return response()->json([
-                'salas' => $dados["salas"],
+                'salas' => $dados["salas"]->paginate(15),
                 'datas' => $dados["datas"],
                 'unidade' => 'todas'
             ]);
@@ -106,6 +106,7 @@ class SalaController extends Controller
      */
     public function show(Sala $sala)
     {
+        $sala->load(['tipoSala', 'tipoMaquina']);
         return $sala;
     }
 

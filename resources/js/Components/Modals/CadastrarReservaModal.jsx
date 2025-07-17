@@ -1,19 +1,14 @@
 import axios from 'axios';
-import { Modal, Button, Form, Row, Col, Card, ToggleButton } from 'react-bootstrap';
-import {
-  Building,
-  Laptop,
-  People,
-  Save,
-  XCircle,
-  PencilSquare,
-  Clock,
-  Book
-} from 'react-bootstrap-icons';
-import CardTurmaCadastrada from '../Card/CardTurmaCadastrada';
+import { Modal, Form, Row, Col, Card, ToggleButton } from 'react-bootstrap';
+import CardTurmaCadastrada from '../Cards/CardTurmaCadastrada';
 import { converterData } from '@/dates'; // ajuste conforme seu projeto
 import OptionsTurmasDisponiveis from '../OptionsTurmasDisponiveis';
 import { useState } from 'react';
+import CancelarButton from '../Buttons/CancelarButton';
+import SalvarButton from '../Buttons/SalvarButton';
+import SalaCard from '../Cards/SalaCard';
+import { BookOpen, Clock1, Clock10, PenSquare, PlusCircle } from 'lucide-react';
+import BadgeTw from '../Badges/BadgeTw';
 
 
 
@@ -32,12 +27,14 @@ export default function CadastrarReservaModal({
   setAlert
 }) {
 
-  const[errors, setErrors] = useState(null)
+  const [errors, setErrors] = useState(null)
 
-      const handleCancel = () =>{
-          setErrors(null);
-          onCancel()
-    }
+  const handleCancel = () => {
+    setErrors(null);
+    onCancel()
+  }
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors(null)
@@ -66,9 +63,9 @@ export default function CadastrarReservaModal({
         onResult({ show: true, type: "success", message: res.data.message });
       })
       .catch((error) => {
-        
+
         setErrors(error.response.data.errors);
-        setAlert({ show: true, type: "danger", message:  error.response.data.message})
+        setAlert({ show: true, type: "danger", message: error.response.data.message })
         console.log(error)
         //  onResult({ show: true, type: "danger", message: error.response.data.message });
       });
@@ -95,10 +92,10 @@ export default function CadastrarReservaModal({
   if (!sala || !reserva) return null;
 
   return (
-    <Modal show={show} className='modal-custom' onHide={handleCancel} centered size="lg" animation>
+    <Modal show={show} onHide={handleCancel} centered size="lg" animation>
       <Modal.Header closeButton>
         <Modal.Title>
-          <PencilSquare size={28} className="me-2" />
+          <PlusCircle className="me-2" />
           Cadastrar Reserva
         </Modal.Title>
       </Modal.Header>
@@ -108,46 +105,31 @@ export default function CadastrarReservaModal({
           <Row className="g-3 align-items-stretch ">
 
             {/* Coluna Sala */}
+
             <Col xs={12} md={6} className="d-flex">
-              <div className="d-flex flex-column w-100">
-                <span className="mx-2 fw-semibold text-uppercase small text-muted">Sala</span>
-                <Card className="shadow-sm rounded-4 flex-grow-1">
-                  <Card.Body>
-                    <Card.Title className="d-flex align-items-center justify-content-between mb-3">
-                      <span>{sala.numero} - {sala.tipo}</span>
-                    </Card.Title>
-                    <p className="d-flex align-items-center mb-2">
-                      <Building size={18} className="me-2" /> {sala.unidade} unidade
-                    </p>
-                    <p className="d-flex align-items-center mb-2">
-                      <People size={18} className="me-2" /> {sala.lotacao} pessoas
-                    </p>
-                    <p className="d-flex align-items-center mb-0">
-                      <Laptop size={18} className="me-2" /> {sala.maquinas_qtd} máquinas
-                    </p>
-                  </Card.Body>
-                </Card>
-              </div>
+              {/* <div className="d-flex flex-column w-100"> */}
+              <SalaCard sala={sala} badge={<span className='tw-badge tw-badge--blue-lg'>Sala</span>} />
+              {/* </div> */}
             </Col>
 
             {/* Coluna Reserva */}
             <Col xs={12} md={6} className="d-flex">
-              <div className="d-flex flex-column w-100">
-                <span className="mx-2 fw-semibold text-uppercase small text-muted">Reserva</span>
-                <Card className="shadow-sm rounded-4 flex-grow-1">
-                  <Card.Body>
-                    <Card.Title className="d-flex align-items-center justify-content-between mb-3">
-                      <span>{converterData(reserva.data_inicio)}</span>
-                    </Card.Title>
-                    <p className="d-flex align-items-center mb-2">
-                      <Clock size={18} className="me-2" /> {reserva.turno}
-                    </p>
-                    <p className="d-flex align-items-center mb-2">
-                      <Book size={18} className="me-2" /> {reserva.reserva_tipo}
-                    </p>
-                  </Card.Body>
-                </Card>
-              </div>
+              {/* <div className="d-flex flex-column w-100"> */}
+              <Card className="container-style flex-grow-1">
+                <Card.Body>
+                  <Card.Title className="d-flex align-items-center justify-content-between mb-3">
+                    <span>{converterData(reserva.data_inicio)}</span>
+                    <span className='tw-badge tw-badge--blue-lg'>Reserva</span>
+                  </Card.Title>
+                  <p className="d-flex align-items-center mb-2">
+                    <Clock10 size={18} className="me-2" /> {reserva.turno}
+                  </p>
+                  <p className="d-flex align-items-center mb-2">
+                    <BookOpen size={18} className="me-2" /> {reserva.reserva_tipo}
+                  </p>
+                </Card.Body>
+              </Card>
+              {/* </div> */}
             </Col>
           </Row>
 
@@ -161,7 +143,7 @@ export default function CadastrarReservaModal({
                 className='shadow-sm border-0 mb-4'
                 checked={formData.cadastro_turma === 'cadastrada'}
                 onChange={handleChange}
-                
+
               >Buscar Turma</ToggleButton>
 
               <Form.Group className="form-floating">
@@ -208,11 +190,10 @@ export default function CadastrarReservaModal({
                   required
                 />
                 <Form.Label htmlFor="inp-cadastrar-nome">Nome</Form.Label>
-                                  {errors?.nome && (
-                  <Form.Control.Feedback type="invalid">
-                    {errors.nome}
-                  </Form.Control.Feedback>
-                  )}
+
+                <Form.Control.Feedback type="invalid">
+                  {errors?.nome}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
@@ -241,11 +222,11 @@ export default function CadastrarReservaModal({
                   required
                 />
                 <Form.Label htmlFor="inp-cadastrar-docente">Docente</Form.Label>
-                    {errors?.docente && (
-                  <Form.Control.Feedback type="invalid">
-                    {errors.docente}
-                  </Form.Control.Feedback>
-                  )}
+
+                <Form.Control.Feedback type="invalid">
+                  {errors?.docente}
+                </Form.Control.Feedback>
+
               </Form.Group>
 
               <Form.Group className="form-floating mb-2">
@@ -262,11 +243,9 @@ export default function CadastrarReservaModal({
                   required
                 />
                 <Form.Label htmlFor="inp-cadastrar-curso">Curso</Form.Label>
-                      {errors?.curso && (
-                  <Form.Control.Feedback type="invalid">
-                    {errors.curso}
-                  </Form.Control.Feedback>
-                  )}
+                <Form.Control.Feedback type="invalid">
+                  {errors?.curso}
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group className="form-floating mb-2">
@@ -284,11 +263,11 @@ export default function CadastrarReservaModal({
                   required
                 />
                 <Form.Label htmlFor="inp-cadastrar-lotacao">Lotação</Form.Label>
-                                                  {errors?.lotacao && (
-                  <Form.Control.Feedback type="invalid">
-                    {errors.lotacao}
-                  </Form.Control.Feedback>
-                  )}
+
+                <Form.Control.Feedback type="invalid">
+                  {errors?.lotacao}
+                </Form.Control.Feedback>
+
               </Form.Group>
             </Col>
           </Row>
@@ -307,22 +286,16 @@ export default function CadastrarReservaModal({
               required
             />
             <Form.Label htmlFor="inp-cadastrar-responsavel-cadastro">Responsável Cadastro</Form.Label>
-                                                              {errors?.responsavel_cadastro && (
-                  <Form.Control.Feedback type="invalid">
-                    {errors.responsavel_cadastro}
-                  </Form.Control.Feedback>
-                  )}
+            <Form.Control.Feedback type="invalid">
+              {errors?.responsavel_cadastro}
+            </Form.Control.Feedback>
           </Form.Group>
         </Form>
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCancel}>
-          <XCircle className="me-1" /> Cancelar
-        </Button>
-        <Button type="submit" form="form-cadastrar-reserva" variant="primary" >
-          <Save className="me-1" /> Salvar
-        </Button>
+        <CancelarButton onClick={handleCancel} />
+        <SalvarButton form="form-cadastrar-reserva" type='submit' />
       </Modal.Footer>
     </Modal>
   );
