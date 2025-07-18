@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Modal, Form, Row, Col, Card, ToggleButton } from 'react-bootstrap';
-import CardTurmaCadastrada from '../Cards/CardTurmaCadastrada';
 import { converterData } from '@/dates'; // ajuste conforme seu projeto
 import OptionsTurmasDisponiveis from '../OptionsTurmasDisponiveis';
 import { useState } from 'react';
@@ -8,7 +7,7 @@ import CancelarButton from '../Buttons/CancelarButton';
 import SalvarButton from '../Buttons/SalvarButton';
 import SalaCard from '../Cards/SalaCard';
 import { BookOpen, Clock1, Clock10, PenSquare, PlusCircle } from 'lucide-react';
-import BadgeTw from '../Badges/BadgeTw';
+import TurmaCard from '../Cards/TurmaCard';
 
 
 
@@ -24,6 +23,7 @@ export default function CadastrarReservaModal({
   onResult,
   onCancel,
   turmaCadastrada,
+  setCadastrarTurma,
   setAlert
 }) {
 
@@ -107,29 +107,31 @@ export default function CadastrarReservaModal({
             {/* Coluna Sala */}
 
             <Col xs={12} md={6} className="d-flex">
-              {/* <div className="d-flex flex-column w-100"> */}
-              <SalaCard sala={sala} badge={<span className='tw-badge tw-badge--blue-lg'>Sala</span>} />
-              {/* </div> */}
+              <div className="d-flex flex-column w-100">
+                <span className="mx-2 fw-semibold text-uppercase small text-muted">Sala </span>
+                <SalaCard sala={sala} badge={<span className='tw-badge tw-badge--blue-lg'>Sala</span>} />
+              </div>
             </Col>
 
             {/* Coluna Reserva */}
             <Col xs={12} md={6} className="d-flex">
-              {/* <div className="d-flex flex-column w-100"> */}
-              <Card className="container-style flex-grow-1">
-                <Card.Body>
-                  <Card.Title className="d-flex align-items-center justify-content-between mb-3">
-                    <span>{converterData(reserva.data_inicio)}</span>
-                    <span className='tw-badge tw-badge--blue-lg'>Reserva</span>
-                  </Card.Title>
-                  <p className="d-flex align-items-center mb-2">
-                    <Clock10 size={18} className="me-2" /> {reserva.turno}
-                  </p>
-                  <p className="d-flex align-items-center mb-2">
-                    <BookOpen size={18} className="me-2" /> {reserva.reserva_tipo}
-                  </p>
-                </Card.Body>
-              </Card>
-              {/* </div> */}
+              <div className="d-flex flex-column w-100">
+                <span className="mx-2 fw-semibold text-uppercase small text-muted">Reserva</span>
+                <Card className="container-style flex-grow-1">
+                  <Card.Body>
+                    <Card.Title className="d-flex align-items-center justify-content-between mb-3">
+                      <span>{converterData(reserva.data_inicio)}</span>
+                      {/* <span className='tw-badge tw-badge--blue-lg'>Reserva</span> */}
+                    </Card.Title>
+                    <p className="d-flex align-items-center mb-2">
+                      <Clock10 size={18} className="me-2" /> {reserva.turno}
+                    </p>
+                    <p className="d-flex align-items-center mb-2">
+                      <BookOpen size={18} className="me-2" /> {reserva.reserva_tipo}
+                    </p>
+                  </Card.Body>
+                </Card>
+              </div>
             </Col>
           </Row>
 
@@ -171,6 +173,7 @@ export default function CadastrarReservaModal({
                 id="btn-cadastro-turma"
                 value="nova"
                 checked={formData.cadastro_turma === 'nova'}
+                // onClick={setCadastrarTurma}
                 onChange={handleChange}
                 className='shadow-sm border-0 mb-4 '
               >Cadastrar Turma</ToggleButton>
@@ -200,10 +203,10 @@ export default function CadastrarReservaModal({
 
           <Row className="mb-3">
             <Col>
-              <CardTurmaCadastrada
-                setDeletarTurma={(id) => setDeletarTurma(id)}
-                setEditarTurma={(id) => setEditarTurma(id)}
-                turmaCadastrada={turmaCadastrada}
+              <TurmaCard
+                turma={turmaCadastrada}
+                setDeletarTurma={(turma) => setDeletarTurma(turma)}
+                setEditarTurma={(turma) => setEditarTurma(turma)}
               />
             </Col>
 

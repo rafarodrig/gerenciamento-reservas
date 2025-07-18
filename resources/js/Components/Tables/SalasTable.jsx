@@ -4,8 +4,7 @@ import EditarButton from '../Buttons/EditarButton';
 import DeletarButton from '../Buttons/DeletarButton';
 import { Building, LucidePlusCircle } from 'lucide-react';
 
-export default function SalasTable({ salas, unidade, paginationData, unidadeFiltro, onCadastrar, onEdit, onDelete, handleUnidadeChange, onPageChange }) {
-  console.log(salas)
+export default function SalasTable({ salas, unidade, paginationData, onEdit, onDelete, onPageChange }) {
   return (
     <>
       {/* Informações de paginação */}

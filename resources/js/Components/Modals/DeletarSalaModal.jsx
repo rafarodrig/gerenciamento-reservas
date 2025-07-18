@@ -1,5 +1,6 @@
+import { Trash2Icon, TriangleAlert } from "lucide-react";
 import { Button, Modal } from "react-bootstrap";
-import { ExclamationTriangle, Trash } from "react-bootstrap-icons";
+import CancelarButton from "../Buttons/CancelarButton";
 
 export default function ModalDeletarSala({ showDeletarModal, salaDeletando, setShowDeletarModal, loading, confirmarDeletar }) {
 
@@ -7,25 +8,25 @@ export default function ModalDeletarSala({ showDeletarModal, salaDeletando, setS
         <Modal show={showDeletarModal} onHide={() => setShowDeletarModal(false)} centered>
             <Modal.Header closeButton>
                 <Modal.Title className="text-danger">
-                    <ExclamationTriangle className="me-2" />
+                    <TriangleAlert className="me-2" />
                     Confirmar Exclusão
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="text-center">
-                    <Trash className="text-danger" style={{ fontSize: '3rem' }} />
+                    <Trash2Icon className="text-danger" strokeWidth={1.5} size={50} />
                     <p className="mt-3 mb-2">Tem certeza que deseja deletar a sala <strong>{salaDeletando?.numero}</strong> da unidade <strong>{salaDeletando?.unidade}</strong>?</p>
                     <p className="text-muted">Esta ação não pode ser desfeita.</p>
                 </div>
             </Modal.Body>
             <Modal.Footer className="">
-                <Button variant="secondary" onClick={() => setShowDeletarModal(false)}>
-                    Cancelar
-                </Button>
+                <CancelarButton variant="secondary" onClick={() => setShowDeletarModal(false)}>
+                </CancelarButton>
                 <Button
                     variant="danger"
                     onClick={confirmarDeletar}
                     disabled={loading}
+                    className="d-flex align-items-center gap-2 btn-translate-animation"
                 >
                     {loading ? (
                         <>
@@ -34,7 +35,7 @@ export default function ModalDeletarSala({ showDeletarModal, salaDeletando, setS
                         </>
                     ) : (
                         <>
-                            <Trash className="me-2" />
+                            <Trash2Icon size={20} />
                             Deletar
                         </>
                     )}

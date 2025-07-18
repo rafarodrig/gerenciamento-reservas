@@ -1,14 +1,13 @@
-
 import { PenSquare } from "lucide-react";
 import { Modal } from "react-bootstrap";
 
-export default function ModalEditarSala({ showEditarModal, setShowEditarModal, children }) {
+export default function EditarTurmaModal({ onClose, onExited, showEditarTurmaModal, children }) {
     return (
-        <Modal show={showEditarModal} onHide={() => setShowEditarModal(false)} size="lg" centered>
+        <Modal show={showEditarTurmaModal} onHide={onClose} onExited={onExited} size="lg" centered>
             <Modal.Header closeButton>
                 <Modal.Title>
                     <PenSquare className="me-2" />
-                    Editar Sala
+                    Editar Turma
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>

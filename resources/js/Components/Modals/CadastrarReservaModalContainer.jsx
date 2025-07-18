@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from "react";
-import EditarTurmaModal from "./EditarTurmaModal";
+import EditarTurmaModal from "./EditarTurmaModall";
 import DeletarTurmaModal from "./DeletarTurmaModal";
 import CadastrarReservaModal from "./CadastrarReservaModal";
 import axios from "axios";
-import AlertaModal from "./AlertaModal";
 import { Alert } from "react-bootstrap";
 import { CSSTransition } from "react-transition-group";
+import TurmaForm from "../Forms/TurmaForm";
+import CadastrarTurmaModal from "./CadastrarTurmaModal";
 export default function CadastrarReservaContainer({
   salaId,
   reserva,
@@ -18,6 +19,9 @@ export default function CadastrarReservaContainer({
 
   const [editarTurma, setEditarTurma] = useState(false)
   const [deletarTurma, setDeletarTurma] = useState(false)
+
+  const [showCadastrarTurmaModal, setShowCadastrarTurmaModal] = useState(false);
+  const [showEditarTurmaModal, setShowEditarTurmaModal] = useState(false);
 
 
   const [showCadastrarReservaModal, setShowCadastrarReservaModal] = useState(false)
@@ -86,6 +90,32 @@ export default function CadastrarReservaContainer({
     }
   }, [alert]);
 
+  const handleClose = (modal) => {
+    if (modal == "cadastrar") {
+      setShowCadastrarTurmaModal(false);
+    } else {
+      setShowEditarTurmaModal(false);
+      setEditarTurma(null)
+    }
+    setShowCadastrarReservaModal(true);
+  }
+
+  const renderFormulario = (isEditing = false) => (
+    <TurmaForm
+      isEditing={isEditing}
+      turma={editarTurma}
+      onCancel={handleClose}
+      onEdited={() => { fetchTurma(editarTurma?.id); setShowEditarTurmaModal(false); }}
+      onCreated={() => { fetchTurmasDisponiveis(); setShowEditarTurmaModal(false); }}
+      onResult={(msg) => { setAlert(msg); setShowCadastrarReservaModal(true); }}
+    />
+  );
+
+  const handleEditarTurma = (turma) => {
+    setEditarTurma(turma);
+    setShowCadastrarReservaModal(false);
+    setShowEditarTurmaModal(true)
+  }
 
   if (!reserva) return null;
 
@@ -101,17 +131,35 @@ export default function CadastrarReservaContainer({
         setFormData={setFormData}
         onResult={(msg) => { setAlert(msg); setShowCadastrarReservaModal(false); onResult(false); resetId(); }}
         onCancel={() => { setShowCadastrarReservaModal(false); resetId(); }}
-        setEditarTurma={(id) => { setShowCadastrarReservaModal(false); setEditarTurma(id) }}
+        setCadastrarTurma={() => { setShowCadastrarReservaModal(false); setShowCadastrarTurmaModal(true) }}
+        setEditarTurma={(turma) => handleEditarTurma(turma)}
         setDeletarTurma={(id) => { setShowCadastrarReservaModal(false); setDeletarTurma(id) }}
         setAlert={setAlert}
       />
 
+      <CadastrarTurmaModal
+        onClose={() => { setShowCadastrarTurmaModal(false); setShowCadastrarReservaModal(true) }}
+        showCadastrarTurmaModal={showCadastrarTurmaModal}
+      >
+        {renderFormulario()}
+      </CadastrarTurmaModal>
+
+
       <EditarTurmaModal
-        turmaId={editarTurma}
+        onExited={() => setEditarTurma(null)}
+        onClose={() => { setShowEditarTurmaModal(false); setShowCadastrarReservaModal(true) }}
+        showEditarTurmaModal={showEditarTurmaModal}
+      >
+        {renderFormulario(true)}
+      </EditarTurmaModal>
+
+
+      {/* <EditarTurmaModal
+        turma={editarTurma}
         onCancel={() => { setShowCadastrarReservaModal(true); }}
         onResult={(msg) => { setAlert(msg); fetchTurma(editarTurma); setShowCadastrarReservaModal(true); }}
         onExited={() => setEditarTurma(null)}
-      />
+      /> */}
 
       <DeletarTurmaModal
         turmaId={deletarTurma}
@@ -119,6 +167,7 @@ export default function CadastrarReservaContainer({
         onResult={(msg) => { setAlert(msg); fetchTurmasDisponiveis(); setShowCadastrarReservaModal(true); setFormData((prev) => ({ ...prev, turma: "" })); }}
         onExited={() => setDeletarTurma(null)}
       />
+
       <CSSTransition
         in={!!alert.show}
         timeout={400}

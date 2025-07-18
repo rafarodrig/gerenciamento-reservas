@@ -125,26 +125,26 @@ class SalaService
     public function criarSala(array $dados)
     {
         return Sala::create([
-            'numero'         => $dados['numero'],
-            'tipo'           => $dados['tipo'],
-            'unidade'        => $dados['unidade'],
-            'lotacao'        => $dados['lotacao'],
-            'maquinas_qtd'   => $dados['maquinas_qtd'] ?? null,
-            'maquinas_tipo'  => $dados['maquinas_tipo'] ?? null,
-            'descricao'      => $dados['descricao'] ?? null,
+            'numero'          => $dados['numero'],
+            'tipo_sala_id'    => $dados['tipo_sala_id'],
+            'unidade'         => $dados['unidade'],
+            'lotacao'         => $dados['lotacao'],
+            'maquinas_qtd'    => $dados['maquinas_qtd'] ?? null,
+            'tipo_maquina_id' => $dados['tipo_maquina_id'] ?? null,
+            'descricao'       => $dados['descricao'] ?? null,
         ]);
     }
 
     public function atualizarSala(Sala $sala, array $dados)
     {
         return $sala->update([
-            'numero'         => $dados['numero'],
-            'tipo'           => $dados['tipo'],
-            'unidade'        => $dados['unidade'],
-            'lotacao'        => $dados['lotacao'],
-            'maquinas_qtd'   => $dados['maquinas_qtd'] ?? null,
-            'maquinas_tipo'  => $dados['maquinas_tipo'] ?? null,
-            'descricao'      => $dados['descricao'] ?? null,
+            'numero'          => $dados['numero'],
+            'tipo_sala_id'    => $dados['tipo_sala_id'],
+            'unidade'         => $dados['unidade'],
+            'lotacao'         => $dados['lotacao'],
+            'maquinas_qtd'    => $dados['maquinas_qtd'] ?? null,
+            'tipo_maquina_id' => $dados['tipo_maquina_id'] ?? null,
+            'descricao'       => $dados['descricao'] ?? null,
         ]);
     }
 

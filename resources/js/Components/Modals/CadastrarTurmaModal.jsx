@@ -1,13 +1,13 @@
 import { PlusCircleIcon } from "lucide-react";
 import { Modal } from "react-bootstrap";
 
-export default function ModalCadastrarSala({ setShowCadastrarModal, showCadastrarModal, children }) {
+export default function CadastrarTurmaModal({ setShowCadastrarTurmaModal, showCadastrarTurmaModal, children }) {
     return (
-        <Modal show={showCadastrarModal} onHide={() => setShowCadastrarModal(false)} size="lg" centered>
+        <Modal show={showCadastrarTurmaModal} onHide={() => setShowCadastrarTurmaModal(false)} size="lg" centered>
             <Modal.Header closeButton>
                 <Modal.Title>
                     <PlusCircleIcon className="me-2" />
-                    Cadastrar Nova Sala
+                    Cadastrar Nova Turma
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>

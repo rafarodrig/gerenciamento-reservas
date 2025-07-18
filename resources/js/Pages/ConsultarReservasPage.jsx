@@ -10,6 +10,7 @@ import TabDatas from '@/Components/TabDatas';
 import { CSSTransition } from 'react-transition-group';
 import { Alert } from 'react-bootstrap';
 import TituloData from '@/Components/TituloData';
+import AlertPop from '@/Components/Alerts/Alert';
 
 export default function ConsultarReservas({ numeros }) {
 
@@ -27,7 +28,7 @@ export default function ConsultarReservas({ numeros }) {
   })
 
   const [alert, setAlert] = useState('')
-  const alertDivRef = useRef(null);
+  // const alertDivRef = useRef(null);
 
   const [formData, setFormData] = useState({
     turma: "",
@@ -113,6 +114,7 @@ export default function ConsultarReservas({ numeros }) {
           reservaId={editarReserva}
           onResetId={() => setEditarReserva(null)}
           onResult={handleResult}
+          setAlert={setAlert}
         />
 
 
@@ -122,7 +124,11 @@ export default function ConsultarReservas({ numeros }) {
           onResult={handleResult}
         />
 
-        <CSSTransition
+        <AlertPop
+          alert={alert}
+        />
+
+        {/* <CSSTransition
           in={!!alert.show}
           timeout={400}
           classNames="fade-alert"
@@ -138,7 +144,7 @@ export default function ConsultarReservas({ numeros }) {
               {alert?.message}
             </Alert>
           </div>
-        </CSSTransition>
+        </CSSTransition> */}
 
       </Layout>
     </>

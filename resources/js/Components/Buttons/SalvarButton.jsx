@@ -17,8 +17,13 @@ export default function SalvarButton({
             disabled={disabled}
             {...props}
         >
-            <Save size={20} />
-            {children ? children : "Salvar"}
+            {children ? children :
+                (
+                    <>
+                        <Save size={20} />
+                        Salvar
+                    </>
+                )}
         </Button>
     );
 }

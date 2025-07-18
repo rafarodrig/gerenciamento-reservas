@@ -4,7 +4,7 @@ import EditarReservaModal from './EditarReservaModal';
 import TrocarTurmaModal from './TrocarSalaModal';
 
 
-export default function EditarReservaContainer({ reservaId, onResetId, onResult }) {
+export default function EditarReservaContainer({ reservaId, onResetId, onResult, setAlert }) {
   const [formData, setFormData] = useState(null);
   const [reservaDados, setReservaDados] = useState(null);
   const [editarRegistro, setEditarRegistro] = useState("atual");
@@ -39,7 +39,6 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
 
   // Ação ao clicar em "Salvar" no primeiro modal
   const handleSubmit = () => {
-
     setShowFormModal(false);
     setShowConfirmModal(true);
   };
@@ -79,6 +78,7 @@ export default function EditarReservaContainer({ reservaId, onResetId, onResult 
         buscarSalasDisponiveisTroca={buscarSalasDisponiveisTroca}
         onConfirm={handleConfirm}
         setEditarRegistro={setEditarRegistro}
+        setAlert={setAlert}
         onCancel={() => { setShowConfirmModal(false); setShowFormModal(true); }}
       />
 

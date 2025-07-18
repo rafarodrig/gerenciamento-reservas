@@ -20,25 +20,40 @@ class UpdateSalaRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {   
-        return [
-            "numero" => ["required","numeric"],
-            "tipo" => ["required","min:3","max:255"],
-            "unidade"=> ["required","numeric"],
-            "lotacao"=> ["required","numeric"],
-            "maquinas_qtd"=> ["required","numeric"],
-            "maquinas_tipo"=> ["nullable","max:80"],
-            "descricao" => ["nullable","max:255"]
-        ];
-    }
-    public function attributes(): array
     {
         return [
-            'descricao' => 'descrição',
-            'lotacao' => 'lotação',
-            'maquinas_tipo' => 'Tipo de máquinas',
-            'maquinas_qtd' => 'N.º de máquinas',
+            "numero" => ["required", "numeric"],
+            "tipo_sala_id" => ["required", "numeric", "exists:tipos_sala,id"],
+            "unidade" => ["required", "numeric"],
+            "lotacao" => ["required", "numeric"],
+
+            "maquinas_qtd" => [
+                "nullable",
+                "numeric",
+                "required_with:tipo_maquina_id"
+            ],
+            "tipo_maquina_id" => [
+                "nullable",
+                "numeric",
+                "exists:tipos_maquina,id",
+                "required_with:maquinas_qtd"
+            ],
+
+            "descricao" => ["nullable", "max:255"],
         ];
     }
 
+
+    public function attributes(): array
+    {
+        return [
+            'numero' => 'número da sala',
+            'tipo_sala_id' => 'tipo de sala',
+            'unidade' => 'unidade',
+            'lotacao' => 'lotação',
+            'maquinas_qtd' => 'n.º de máquinas',
+            'tipo_maquina_id' => 'tipo de máquinas',
+            'descricao' => 'descrição',
+        ];
+    }
 }

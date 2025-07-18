@@ -17,8 +17,13 @@ export default function CancelarButton({
             disabled={disabled}
             {...props}
         >
-            <XCircleIcon size={20} />
-            {children ? children : "Cancelar"}
+            {children ? children :
+                (
+                    <>
+                        <XCircleIcon size={20} />
+                        Cancelar
+                    </>
+                )}
         </Button>
     );
 }

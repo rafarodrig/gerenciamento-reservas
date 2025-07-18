@@ -60,7 +60,7 @@ export default function TableSalasDisponiveisTroca({ data, onReservar, onPageCha
                 {salas.map((sala) => (
                   <tr key={sala.id}>
                     <td>{sala.numero}</td>
-                    <td>{sala.tipo}</td>
+                    <td>{sala.tipo_sala.nome}</td>
                     {data.unidade === "todas" &&
                       <td>
                         Un.{sala.unidade}
@@ -68,7 +68,7 @@ export default function TableSalasDisponiveisTroca({ data, onReservar, onPageCha
                     }
                     <td>{sala.lotacao}</td>
                     <td>{sala.maquinas_qtd}</td>
-                    <td>{sala.maquinas_tipo}</td>
+                    <td>{sala.tipo_maquina.nome}</td>
                     <td className="text-center">
                       <Button
                         variant="primary"

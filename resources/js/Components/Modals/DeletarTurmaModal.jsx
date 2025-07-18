@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { ExclamationTriangle, Trash } from "react-bootstrap-icons";
 import axios from 'axios';
+import { Trash2, Trash2Icon, TriangleAlert } from 'lucide-react';
+import CancelarButton from '../Buttons/CancelarButton';
 
 export default function DeletarTurmaModal({
   turmaId,
@@ -59,25 +61,24 @@ export default function DeletarTurmaModal({
     <Modal show={showModal} onHide={handleCancel} onExited={onExited} centered>
       <Modal.Header closeButton>
         <Modal.Title className="d-flex align-items-center text-danger">
-          <ExclamationTriangle className="me-2" />
+          <TriangleAlert className="me-2" />
           Confirmar Exclusão
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="text-center">
-          <Trash className="text-danger" style={{ fontSize: '3rem' }} />
+          <Trash2Icon className="text-danger" strokeWidth={1.5} size={50} />
           <p className="mt-3 mb-2">Tem certeza que deseja deletar a turma <strong>{turma.nome}</strong>?</p>
           <p className="text-muted">Esta ação não pode ser desfeita.</p>
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCancel}>
-          Cancelar
-        </Button>
+        <CancelarButton onClick={handleCancel} />
         <Button
           variant="danger"
           onClick={handleSubmit}
           disabled={loading}
+          className='d-flex align-items-center gap-2 btn-translate-animation'
         >
           {loading ? (
             <>
@@ -86,7 +87,7 @@ export default function DeletarTurmaModal({
             </>
           ) : (
             <>
-              <Trash className="me-2" />
+              <Trash2 size={20} />
               Deletar
             </>
           )}

@@ -1,5 +1,7 @@
-import { Button, Col, Form, Row } from "react-bootstrap";
-import { CheckCircle, PlusCircle, XCircle } from "react-bootstrap-icons";
+import { Col, Form, Row } from "react-bootstrap";
+import CancelarButton from "../Buttons/CancelarButton";
+import SalvarButton from "../Buttons/SalvarButton";
+import { CheckCircleIcon, PlusCircleIcon } from "lucide-react";
 
 
 export default function FormSalas({
@@ -13,11 +15,13 @@ export default function FormSalas({
     handleSubmitEditar,
     setShowEditarModal,
     setShowCadastrarModal,
+    tiposSala,
+    tiposMaquina,
 }) {
 
     return (
         <Form onSubmit={isEditing ? handleSubmitEditar : handleSubmitCadastrar}>
-            <div className="form-section shadow-sm">
+            <div className="form-section container-style">
                 <div className="form-section-title">Informações Básicas</div>
                 <Row>
                     <Col md={6}>
@@ -62,14 +66,24 @@ export default function FormSalas({
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Tipo <span className="text-danger">*</span></Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={formData.tipo}
-                                onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+                            <Form.Label>
+                                Tipo <span className="text-danger">*</span>
+                            </Form.Label>
+                            <Form.Select
+                                name="tipo_sala_id"
+                                value={formData.tipo_sala_id || ""}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, tipo_sala_id: e.target.value })
+                                }
                                 required
-                                placeholder="Ex: Laboratório, Auditório, Sala de Aula"
-                            />
+                            >
+                                <option value="">Selecione</option>
+                                {tiposSala.map((tipo) => (
+                                    <option key={tipo.id} value={tipo.id}>
+                                        {tipo.nome}
+                                    </option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
                     </Col>
                     <Col md={6}>
@@ -88,7 +102,7 @@ export default function FormSalas({
                 </Row>
             </div>
 
-            <div className="form-section shadow-sm">
+            <div className="form-section container-style">
                 <div className="form-section-title">Equipamentos</div>
                 <Row>
                     <Col md={6}>
@@ -108,22 +122,30 @@ export default function FormSalas({
                     </Col>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Tipo de Máquinas</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={formData.maquinas_tipo}
-                                onChange={(e) => setFormData({ ...formData, maquinas_tipo: e.target.value })}
-                                placeholder="Ex: Desktop, Notebook, iMac"
-                            />
+                            <Form.Label htmlFor="tipo_maquina_id">Tipo de Máquinas</Form.Label>
+                            <Form.Select
+                                id="tipo_maquina_id"
+                                name="tipo_maquina_id"
+                                value={formData.tipo_maquina_id || ""}
+                                onChange={(e) => setFormData({ ...formData, tipo_maquina_id: e.target.value })}
+                            >
+                                <option value="">Selecione</option>
+                                {tiposMaquina.map((tipo) => (
+                                    <option key={tipo.id} value={tipo.id}>
+                                        {tipo.nome}
+                                    </option>
+                                ))}
+                            </Form.Select>
                             <Form.Text className="text-muted">
-                                Especifique o modelo ou tipo dos equipamentos
+                                Selecione o tipo de equipamento desejado
                             </Form.Text>
                         </Form.Group>
                     </Col>
+
                 </Row>
             </div>
 
-            <div className="form-section shadow-sm">
+            <div className="form-section container-style">
                 <div className="form-section-title">Informações Adicionais</div>
                 <Form.Group className="mb-3">
                     <Form.Label>Descrição</Form.Label>
@@ -141,8 +163,7 @@ export default function FormSalas({
             </div>
 
             <div className="d-flex justify-content-end gap-2 mt-4">
-                <Button
-                    variant="secondary"
+                <CancelarButton
                     onClick={() => {
                         if (isEditing) {
                             setShowEditarModal(false);
@@ -153,15 +174,10 @@ export default function FormSalas({
                         resetForm();
                     }}
                     disabled={loading}
-                >
-                    <XCircle className="me-2" />
-                    Cancelar
-                </Button>
-                <Button
-                    variant="primary"
+                ></CancelarButton>
+                <SalvarButton
                     type="submit"
                     disabled={loading}
-                    className="btn-acao"
                 >
                     {loading ? (
                         <>
@@ -170,11 +186,11 @@ export default function FormSalas({
                         </>
                     ) : (
                         <>
-                            {isEditing ? <CheckCircle className="me-2" /> : <PlusCircle className="me-2" />}
+                            {isEditing ? <CheckCircleIcon size={20} /> : <PlusCircleIcon size={20} />}
                             {isEditing ? 'Atualizar' : 'Cadastrar'}
                         </>
                     )}
-                </Button>
+                </SalvarButton>
             </div>
         </Form>
     )

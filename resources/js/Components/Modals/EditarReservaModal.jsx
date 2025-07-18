@@ -67,7 +67,7 @@ export default function EditarReservaModal({
                 <Col xs={12} md={6} className="d-flex">
                   <div className="d-flex flex-column w-100">
                     {/* <span className="mx-2 fw-semibold text-uppercase small text-muted">Sala </span> */}
-                    <SalaCard sala={reserva.sala} badge={<span className='tw-badge tw-badge--blue-lg'>Sala</span>} />
+                    <SalaCard onTrocarSala={onTrocarSala} isEditing={true} sala={reserva.sala} badge={<span className='tw-badge tw-badge--blue-lg'>Sala</span>} />
                   </div>
                 </Col>
 

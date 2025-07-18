@@ -16,7 +16,8 @@ export default function TrocarSalaModal({
   salas,
   reserva,
   buscarSalasDisponiveisTroca,
-  setEditarRegistro
+  setEditarRegistro,
+  setAlert,
 }) {
   const [salaTroca, setSalaTroca] = useState(null);
 
@@ -37,6 +38,7 @@ export default function TrocarSalaModal({
 
       if (res?.data) {
         setSalaTroca(res.data); // Define a nova sala selecionada
+        setAlert({ show: true, type: "primary", message: `Sala ${res.data.numero} da unidade ${res.data.unidade} foi selecionada` })
       } else {
         console.warn('Sala não encontrada');
       }
@@ -113,34 +115,29 @@ export default function TrocarSalaModal({
             </Col>
 
             <Col xs={12} lg={6} className="d-flex flex-column gap-3">
-              <SalaCard className='h-100 flex-fill p-2' sala={reserva.sala} />
-              {/* <Card className="container-style h-100 flex-fill">
-                <Card.Body>
-                  <Card.Title className="text-muted small text-uppercase">Sala atual</Card.Title>
-                  {reserva?.sala ? (
-                    <>
-                      <p><strong>{reserva.sala.numero}</strong> - {reserva.sala.tipo}</p>
-                      <p className="text-muted mb-0">{reserva.sala.lotacao} pessoas, {reserva.sala.maquinas_qtd} máquinas</p>
-                    </>
-                  ) : (
-                    <p className="text-muted">Nenhuma sala atual.</p>
-                  )}
-                </Card.Body>
-              </Card> */}
+              {/* <Col> */}
+              <div className="d-flex flex-column w-100">
+                {/* <span className="mx-2 fw-semibold text-uppercase small text-muted">Sala Atual</span> */}
+                <SalaCard className='h-100 flex-fill p-2' sala={reserva.sala} badge={<span className='tw-bage tw-badge--blue-lg' >Sala Atual</span>} />
+              </div>
+              {/* </Col> */}
 
-              <Card className="container-style h-100 flex-fill">
-                <Card.Body>
-                  <Card.Title className="text-muted small text-uppercase">Nova sala</Card.Title>
-                  {salaTroca ? (
-                    <>
-                      <p><strong>{salaTroca.numero}</strong> - {salaTroca.tipo}</p>
-                      <p className="text-muted mb-0">{salaTroca.lotacao} pessoas, {salaTroca.maquinas_qtd} máquinas</p>
-                    </>
-                  ) : (
-                    <p className="text-muted">Nenhuma sala selecionada.</p>
-                  )}
-                </Card.Body>
-              </Card>
+              {/* <Col> */}
+              <div className="d-flex flex-fill flex-column w-100">
+                {/* <span className="mx-2 fw-semibold text-uppercase small text-muted">Nova Sala</span> */}
+                {salaTroca ? (
+
+                  <SalaCard className='p-2 flex-fill' sala={salaTroca} badge={<span className='tw-bage tw-badge--blue-lg' >Sala Nova</span>} />
+
+                ) : (
+                  <Card className=' flex-fill container-style ' >
+                    <Card.Body className='d-flex align-items-center justify-content-center' >
+                      <span className="text-muted">Nenhuma sala selecionada.</span>
+                    </Card.Body>
+                  </Card>
+                )}
+              </div>
+              {/* </Col> */}
             </Col>
             <Col md={12}>
               <FiltrosContainer title='Datas' className="container-style p-3" ><DatasBadge dataAtual={reserva.data} datas={salas?.datas} /></FiltrosContainer>
@@ -161,6 +158,6 @@ export default function TrocarSalaModal({
           <SalvarButton onClick={() => onConfirm(salaTroca.id)} disabled={!salaTroca} >Aplicar Edição</SalvarButton>
         </Modal.Footer>
       </Form>
-    </Modal>
+    </Modal >
   );
 }

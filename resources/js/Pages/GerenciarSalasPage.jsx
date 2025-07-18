@@ -23,6 +23,9 @@ export default function GerenciarSalas() {
     const [alert, setAlert] = useState('');
     const alertDivRef = useRef(null);
 
+    const [tiposSala, setTiposSala] = useState([]);
+    const [tiposMaquina, setTiposMaquina] = useState([]);
+
 
     // Estados dos modais
     const [showCadastrarModal, setShowCadastrarModal] = useState(false);
@@ -34,22 +37,22 @@ export default function GerenciarSalas() {
     // Estados do formulário
     const [formData, setFormData] = useState({
         numero: '',
-        tipo: '',
+        tipo_sala_id: '',
         unidade: '1',
         lotacao: '',
         maquinas_qtd: '',
-        maquinas_tipo: '',
+        tipo_maquina_id: '',
         descricao: ''
     });
 
     const resetForm = () => {
         setFormData({
             numero: '',
-            tipo: '',
+            tipo_sala_id: '',
             unidade: '1',
             lotacao: '',
             maquinas_qtd: '',
-            maquinas_tipo: '',
+            tipo_maquina_id: '',
             descricao: ''
         });
     };
@@ -117,6 +120,22 @@ export default function GerenciarSalas() {
         }
     };
 
+    const fetchTiposSala = () => {
+        axios.get('/tipos-sala')
+            .then(res => { setTiposSala(res.data); console.log(res.data) })
+            .catch(err => console.error('Erro ao buscar tipos de sala:', err));
+    }
+    const fetchTiposMaquina = () => {
+        axios.get('/tipos-maquina')
+            .then(res => { setTiposMaquina(res.data); console.log(res.data) })
+            .catch(err => console.error('Erro ao buscar tipos de máquina:', err));
+    }
+
+    useEffect(() => {
+        fetchTiposSala();
+        fetchTiposMaquina();
+    }, []);
+
     useEffect(() => {
         fetchSalas(unidadeFiltro, 1);
     }, [unidadeFiltro]);
@@ -155,15 +174,16 @@ export default function GerenciarSalas() {
 
     const handleEditar = (salaId) => {
         const sala = salas.find(s => s.id === salaId);
+        console.log(sala)
         if (sala) {
             setSalaEditando(sala);
             setFormData({
                 numero: sala.numero,
-                tipo: sala.tipo,
+                tipo_sala_id: sala.tipo_sala_id,
                 unidade: sala.unidade,
                 lotacao: sala.lotacao,
                 maquinas_qtd: sala.maquinas_qtd,
-                maquinas_tipo: sala.maquinas_tipo,
+                tipo_maquina_id: sala.tipo_maquina_id,
                 descricao: sala.descricao || ''
             });
             setShowEditarModal(true);
@@ -176,8 +196,9 @@ export default function GerenciarSalas() {
 
         setLoading(true);
 
+        console.log(formData)
         try {
-            const response = await axios.put(`/salas/${salaEditando.id}`, { formData });
+            const response = await axios.put(`/salas/${salaEditando.id}`, formData);
 
             setAlert({ show: true, type: "success", message: response.data.message });
             setShowEditarModal(false);
@@ -225,6 +246,8 @@ export default function GerenciarSalas() {
     const renderFormulario = (isEditing = false) => (
         <FormSalas
             isEditing={isEditing}
+            tiposMaquina={tiposMaquina}
+            tiposSala={tiposSala}
             formData={formData}
             setFormData={setFormData}
             loading={loading}
