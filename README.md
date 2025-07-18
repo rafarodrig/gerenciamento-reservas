@@ -1,4 +1,4 @@
-# Sistema de Ensalamento das Unidades I e II do Senac-Rs
+ # Sistema de Ensalamento das Unidades I e II do Senac-Rs
 
 ## Resumo do Projeto
 
@@ -166,6 +166,20 @@ Esses gerenciadores foram fundamentais para instalar e manter bibliotecas e fram
 - [https://getcomposer.org](https://getcomposer.org)
 - [https://www.npmjs.com](https://www.npmjs.com)
 
+---
+
+### 9. Contêineres e Ambientes Isolados – Docker
+
+**Descrição:**  
+Docker é uma plataforma para criação, execução e gerenciamento de contêineres. Ele permite empacotar uma aplicação com todas as suas dependências em um ambiente padronizado e isolado, garantindo que o sistema se comporte da mesma forma em qualquer máquina.
+
+**Justificativa:**  
+A utilização do Docker no projeto permitiu a criação de um ambiente de desenvolvimento consistente, facilitando a replicação do ambiente de produção e a integração contínua. Isso também reduziu problemas de configuração entre diferentes sistemas operacionais, além de simplificar o setup do projeto em novas máquinas.
+
+**Referência:**
+
+- [https://www.docker.com](https://www.docker.com)  
+- Merkel, D. (2014). *Docker: Lightweight Linux Containers for Consistent Development and Deployment*. Linux Journal, 2014(239).
 
 
 ## Descrição da Solução
