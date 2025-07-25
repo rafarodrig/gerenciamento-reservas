@@ -1,14 +1,13 @@
 import { Col, Form, Row } from "react-bootstrap";
 import CancelarButton from "../Buttons/CancelarButton";
 import SalvarButton from "../Buttons/SalvarButton";
-import { CheckCircleIcon, PlusCircleIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { api } from "@/services/api";
 
 
 export default function TurmaForm({
     turma,
     isEditing,
-    setSalaEditando,
     loading,
     onResult,
     onEdited,
@@ -18,27 +17,13 @@ export default function TurmaForm({
 }) {
 
     const [formData, setFormData] = useState({
-        nome: "",
-        docente: "",
-        curso: "",
-        lotacao: "",
+        nome: turma?.nome || "",
+        docente: turma?.docente || "",
+        curso: turma?.curso || "",
+        lotacao: turma?.lotacao || "",
     });
 
     const [errors, setErrors] = useState({});
-
-    useEffect(() => {
-        if (turma) {
-            setFormData({
-                nome: turma?.nome || "",
-                docente: turma?.docente || "",
-                curso: turma?.curso || "",
-                lotacao: turma?.lotacao || "",
-            });
-            // Limpa os erros ao receber uma nova turma
-            setErrors({});
-        }
-        console.log(turma)
-    }, [turma]);
 
     // Manipulador para atualizar o estado do formulário
     const handleChange = (e) => {
@@ -62,7 +47,7 @@ export default function TurmaForm({
 
     const handleSubmitEditar = (e) => {
         e.preventDefault();
-        axios.put(`/turmas/${turma?.id}`, formData)
+        api.put(`/turmas/${turma?.id}`, formData)
             .then((response) => {
                 onEdited();
                 onResult({ show: true, type: "success", message: response.data.message });
@@ -75,7 +60,7 @@ export default function TurmaForm({
 
     const handleSubmitCadastrar = (e) => {
         e.preventDefault();
-        axios.post(`/turmas`, formData)
+        api.post(`/turmas`, formData)
             .then((response) => {
                 onCreated();
                 onResult({ show: true, type: "success", message: response.data.message });
@@ -88,7 +73,7 @@ export default function TurmaForm({
 
     const handleCancel = () => {
         resetForm();
-        onCancel?.(isEditing ? undefined : "cadastrar");
+        onCancel();
     };
 
     return (
@@ -209,18 +194,8 @@ export default function TurmaForm({
                 <SalvarButton
                     type="submit"
                     disabled={loading}
-                >
-                    {loading ? (
-                        <>
-                            <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                            Salvando...
-                        </>
-                    ) : (
-                        <>
-                            {isEditing ? <CheckCircleIcon size={20} /> : <PlusCircleIcon size={20} />}
-                            {isEditing ? 'Atualizar' : 'Cadastrar'}
-                        </>
-                    )}
+                    isEditing={isEditing}
+                    loading={loading}>
                 </SalvarButton>
             </div>
         </Form>

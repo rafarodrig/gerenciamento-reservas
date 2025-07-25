@@ -11,7 +11,7 @@ class CreateTiposSalaTable extends Migration
         Schema::create('tipos_sala', function (Blueprint $table) {
             $table->id();
             $table->string('nome')->unique(); // Ex: Laboratório, Auditório
-            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -26,18 +26,39 @@ class ReservaController extends Controller
      */
     public function index(Request $request)
     {
-        $reservas = $this->reservaService->obterReservasPaginadas($request->all());
+        try {
 
-        return response()->json(
-            [
-                "reservas" => $reservas["reservas"],
-                "datas" => $reservas["datas"],
-                "status" => $request->reserva_status,
-                "unidade" => $request->unidade,
-                "currentTab" => $reservas["currentTab"]
+            $reservas = $this->reservaService->obterReservasPaginadas($request->all());
 
-            ]
-        );
+            return response()->json(
+                [
+                    "reservas" => $reservas["reservas"],
+                    "datas" => $reservas["datas"],
+                    "status" => $request->reserva_status,
+                    "unidade" => $request->unidade,
+                    "currentTab" => $reservas["currentTab"]
+
+                ]
+            );
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Ocorreu um erro no servidor.',
+                'erro' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function tabData(Request $request)
+    {
+        $dados = $this->reservaService->obterTabData($request->all());
+
+        return response()->json([
+            "reservas" => $dados["reservas"],
+            "status" => $request->reserva_status,
+            "unidade" => $request->unidade,
+            "currentTab" => $dados["currentTab"]
+        ]);
     }
 
     /**
@@ -79,7 +100,7 @@ class ReservaController extends Controller
     public function show($id)
     {
         $reserva = Reserva::withTrashed() // permite buscar soft deleted
-            ->with(['sala.tipoSala', 'turma'])     // carrega os relacionamentos
+            ->with(['sala.tipoSala', 'turma', 'usuario'])     // carrega os relacionamentos
             ->findOrFail($id);            // busca a reserva
 
         return $reserva;
@@ -146,6 +167,8 @@ class ReservaController extends Controller
 
         return response()->json(['message' => $msg], 200);
     }
+
+
 
 
     /**

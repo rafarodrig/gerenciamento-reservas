@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('turmas', function (Blueprint $table) {
             $table->id(); // Equivalent to int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT
             $table->string('nome', 80);
-            $table->string('curso', 80);
+            $table->string('curso', 80)->default("Não Definido");
             $table->string('docente', 50);
             $table->string('turno', 10);
             $table->string('tipo', 20);

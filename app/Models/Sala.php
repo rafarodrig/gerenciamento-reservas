@@ -18,7 +18,7 @@ class Sala extends Model
    */
   public function tipoSala()
   {
-    return $this->belongsTo(TipoSala::class, 'tipo_sala_id');
+    return $this->belongsTo(TipoSala::class, 'tipo_sala_id')->withTrashed();
   }
 
   /**
@@ -26,7 +26,7 @@ class Sala extends Model
    */
   public function tipoMaquina()
   {
-    return $this->belongsTo(TipoMaquina::class, 'tipo_maquina_id');
+    return $this->belongsTo(TipoMaquina::class, 'tipo_maquina_id')->withTrashed();
   }
 
   /**

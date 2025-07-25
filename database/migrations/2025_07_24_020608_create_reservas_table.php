@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('reservas', function (Blueprint $table) {
             $table->id(); // Primary key with auto-increment
             $table->date('data');
-            $table->unsignedInteger('sala_id');
-            $table->unsignedInteger('turma_id');
+            $table->foreignId('sala_id')->nullable()->constrained('salas')->nullOnDelete();
+            $table->foreignId('turma_id')->nullable()->constrained('turmas')->nullOnDelete();
+            // $table->unsignedInteger('turma_id');
             $table->text('observacoes')->nullable();
-            $table->string('responsavel_cadastro', 80);
+            $table->foreignId('usuario_id')->nullable()->constrained('usuarios')->nullOnDelete();
             $table->softDeletes();
         });
     }

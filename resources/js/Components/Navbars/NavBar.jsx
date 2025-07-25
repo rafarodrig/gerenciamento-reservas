@@ -1,6 +1,4 @@
 import { Navbar, Nav } from 'react-bootstrap';
-import { CalendarCheck, ClipboardPlus, LayoutDashboard } from 'lucide-react';
-import NavLink from '@/Components/NavLinks/NavLink';
 
 
 export default function NavBar({

@@ -1,55 +1,86 @@
-import { Table, Button, Alert, Card, Container } from 'react-bootstrap';
-import { DoorOpen } from 'react-bootstrap-icons';
-import { ExclamationTriangleFill } from 'react-bootstrap-icons';
-import PaginationControlls from '../Pagination/PaginationControlls';
+import { Table, Button } from 'react-bootstrap';
+import TableAlert from '../Alerts/TableAlert';
+import { useQuery } from '@tanstack/react-query';
+import LoadingOverlay from '../FeedBack/LoadingOverlay';
+import { AnimatePresence, motion } from 'framer-motion';
+import { api } from '@/services/api';
 
-export default function TableSalasDisponiveisTroca({ data, onReservar, onPageChange }) {
+export default function TableSalasDisponiveisTroca({
+  reserva,
+  currentPage,
+  editarRegistro,
+  CustomTrocarSala,
+  onReservar,
+  setPaginationData,
+  setDatas
+}) {
 
-  if (!data) return null;
-  const salas = data?.salas.data;
-  const salasResponse = data?.salas;
-  let paginationData = null;
+  const { data, isLoading, isFetching, isError } = useQuery({
+    queryKey: ['salasDisponiveisTroca', reserva?.id, CustomTrocarSala || editarRegistro, currentPage],
+    queryFn: async () => {
+      const res = await api.get('/salas/disponiveis_troca', {
+        params: {
+          reserva_id: reserva?.id,
+          opcao: CustomTrocarSala || editarRegistro,
+          page: currentPage || null,
+        },
 
-  if (salasResponse.data && Array.isArray(salasResponse.data)) {
-    // Resposta paginada do Laravel
-    paginationData = {
-      current_page: salasResponse.current_page,
-      last_page: salasResponse.last_page,
-      per_page: salasResponse.per_page,
-      total: salasResponse.total,
-      from: salasResponse.from,
-      to: salasResponse.to,
-      prev_page_url: salasResponse.prev_page_url,
-      next_page_url: salasResponse.next_page_url
-    };
-  }
+      });
 
-  if (!salas || salas.length === 0) {
-    return (
-      <Container className='container-style overflow-auto p-3'  >
-        <Alert variant="warning" className="d-flex align-items-center gap-2 shadow-sm m-0 ">
-          <ExclamationTriangleFill className="me-2 text-warning" size={20} />
-          <div><strong>Nenhuma sala disponível.</strong></div>
-        </Alert>
-      </Container>
-    );
-  }
+      const salasResponse = res.data?.salas;
+      const paginationData = salasResponse
+        ? {
+          current_page: salasResponse.current_page,
+          last_page: salasResponse.last_page,
+          per_page: salasResponse.per_page,
+          total: salasResponse.total,
+          from: salasResponse.from,
+          to: salasResponse.to,
+          prev_page_url: salasResponse.prev_page_url,
+          next_page_url: salasResponse.next_page_url,
+        }
+        : null;
+      setPaginationData(paginationData)
+      setDatas(res.data.datas)
+      return res.data;
+    },
+
+    enabled: !!reserva?.id,
+    keepPreviousData: true,
+    refetchOnWindowFocus: false,
+  });
+
+  const salas = data?.salas?.data ?? [];
 
   return (
     <>
-      <Container className='tabela-salas-troca container-style p-3'>
-        <Card className="border-0">
-          <Card.Header className="d-flex  align-items-center">
-            <DoorOpen className="me-2 text-primary" />
-            <strong>Salas disponíveis </strong>
-          </Card.Header>
-          <Card.Body className=" scrollable-container p-0 border-bottom" style={{ height: '400px' }}>
+      <LoadingOverlay isVisible={isFetching} />
+      {!isFetching && isError && (
+        <div className="d-flex justify-content-center align-items-center h-100">
+          <TableAlert>Erro ao buscar salas disponíveis.</TableAlert>
+        </div>
+      )}
+
+      {!isFetching && !isError && !data?.salas?.data?.length && (
+        <div className="d-flex justify-content-center align-items-center h-100">
+          <TableAlert>Nenhuma sala disponível.</TableAlert>
+        </div>
+      )}
+      {!isError && data?.salas?.data?.length > 0 && (
+        <AnimatePresence>
+          <motion.div
+            key="table"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="w-100 h-100"
+          >
             <Table hover responsive className="text-center align-middle mb-0">
               <thead>
                 <tr>
                   <th>Sala</th>
                   <th>Tipo</th>
-                  {data.unidade === "todas" && <th>Unidade</th>}
+                  {data.unidade === 'todas' && <th>Unidade</th>}
                   <th>Lotação</th>
                   <th>N.º Máquinas</th>
                   <th>Tipo de Máquinas</th>
@@ -61,11 +92,7 @@ export default function TableSalasDisponiveisTroca({ data, onReservar, onPageCha
                   <tr key={sala.id}>
                     <td>{sala.numero}</td>
                     <td>{sala.tipo_sala.nome}</td>
-                    {data.unidade === "todas" &&
-                      <td>
-                        Un.{sala.unidade}
-                      </td>
-                    }
+                    {data.unidade === 'todas' && <td>Un.{sala.unidade}</td>}
                     <td>{sala.lotacao}</td>
                     <td>{sala.maquinas_qtd}</td>
                     <td>{sala.tipo_maquina.nome}</td>
@@ -82,10 +109,10 @@ export default function TableSalasDisponiveisTroca({ data, onReservar, onPageCha
                 ))}
               </tbody>
             </Table>
-          </Card.Body>
-        </Card>
-        <PaginationControlls className={"d-flex justify-content-center my-3"} paginationData={paginationData} handlePageChange={onPageChange} />
-      </Container>
+          </motion.div>
+        </AnimatePresence>
+      )}
     </>
+
   );
 }

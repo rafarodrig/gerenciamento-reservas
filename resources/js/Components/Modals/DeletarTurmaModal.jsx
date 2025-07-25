@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { ExclamationTriangle, Trash } from "react-bootstrap-icons";
-import axios from 'axios';
+import { Modal, Button } from 'react-bootstrap'
 import { Trash2, Trash2Icon, TriangleAlert } from 'lucide-react';
 import CancelarButton from '../Buttons/CancelarButton';
+import { api } from '@/services/api';
 
 export default function DeletarTurmaModal({
   turmaId,
@@ -20,7 +19,7 @@ export default function DeletarTurmaModal({
 
     let isMounted = true;
 
-    axios.get(`/turmas/${turmaId}`)
+    api.get(`/turmas/${turmaId}`)
       .then(res => {
         if (isMounted) {
           setTurma(res.data);
@@ -42,7 +41,7 @@ export default function DeletarTurmaModal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.delete(`/turmas/${turmaId}`)
+    api.delete(`/turmas/${turmaId}`)
       .then(response => {
         onResult({ show: true, type: "success", message: response.data.message });
       })

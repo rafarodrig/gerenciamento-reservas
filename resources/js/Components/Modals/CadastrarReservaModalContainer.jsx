@@ -2,11 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import EditarTurmaModal from "./EditarTurmaModall";
 import DeletarTurmaModal from "./DeletarTurmaModal";
 import CadastrarReservaModal from "./CadastrarReservaModal";
-import axios from "axios";
-import { Alert } from "react-bootstrap";
-import { CSSTransition } from "react-transition-group";
 import TurmaForm from "../Forms/TurmaForm";
 import CadastrarTurmaModal from "./CadastrarTurmaModal";
+import AlertPop from "../Alerts/Alert";
+import { api } from "@/services/api";
 export default function CadastrarReservaContainer({
   salaId,
   reserva,
@@ -17,11 +16,13 @@ export default function CadastrarReservaContainer({
 
 }) {
 
+  const [showEditarTurmaModal, setShowEditarTurmaModal] = useState(false);
   const [editarTurma, setEditarTurma] = useState(false)
+
+
   const [deletarTurma, setDeletarTurma] = useState(false)
 
   const [showCadastrarTurmaModal, setShowCadastrarTurmaModal] = useState(false);
-  const [showEditarTurmaModal, setShowEditarTurmaModal] = useState(false);
 
 
   const [showCadastrarReservaModal, setShowCadastrarReservaModal] = useState(false)
@@ -29,9 +30,7 @@ export default function CadastrarReservaContainer({
   const [sala, setSala] = useState(null);
   const [prevSala, setPrevSala] = useState(salaId);
   const [turmaCadastrada, setTurmaCadastrada] = useState(null);
-
   const [alert, setAlert] = useState('');
-  const alertDivRef = useRef(null);
 
   if (prevSala !== salaId) {
     setPrevSala(salaId)
@@ -42,7 +41,6 @@ export default function CadastrarReservaContainer({
       docente: '',
       curso: '',
       lotacao: '',
-      responsavel_cadastro: '',
       turma: '',
       datas: reserva.datas,
       turno: reserva.turno,
@@ -53,7 +51,7 @@ export default function CadastrarReservaContainer({
 
   useEffect(() => {
     if (salaId) {
-      axios.get(`/salas/${salaId}`)
+      api.get(`/salas/${salaId}`)
         .then((res) => {
           const sala = res.data
           setSala(sala);
@@ -67,9 +65,8 @@ export default function CadastrarReservaContainer({
       setTurmaCadastrada(null);
       return;
     }
-
     try {
-      const res = await axios.get(`/turmas/${turma}`);
+      const res = await api.get(`/turmas/${turma}`);
       setTurmaCadastrada(res.data);
     } catch (error) {
       console.error("Erro ao buscar turma cadastrada:", error);
@@ -81,21 +78,14 @@ export default function CadastrarReservaContainer({
     fetchTurma(formData.turma);
   }, [formData.turma]);
 
-  useEffect(() => {
-    if (alert.show) {
-      const timer = setTimeout(() => {
-        setAlert((prev) => ({ ...prev, show: false })); // Trigger fade-out after 3 seconds
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [alert]);
 
-  const handleClose = (modal) => {
-    if (modal == "cadastrar") {
-      setShowCadastrarTurmaModal(false);
-    } else {
+
+  const handleClose = () => {
+    if (editarTurma) {
       setShowEditarTurmaModal(false);
       setEditarTurma(null)
+    } else {
+      setShowCadastrarTurmaModal(false);
     }
     setShowCadastrarReservaModal(true);
   }
@@ -154,13 +144,6 @@ export default function CadastrarReservaContainer({
       </EditarTurmaModal>
 
 
-      {/* <EditarTurmaModal
-        turma={editarTurma}
-        onCancel={() => { setShowCadastrarReservaModal(true); }}
-        onResult={(msg) => { setAlert(msg); fetchTurma(editarTurma); setShowCadastrarReservaModal(true); }}
-        onExited={() => setEditarTurma(null)}
-      /> */}
-
       <DeletarTurmaModal
         turmaId={deletarTurma}
         onCancel={() => { setShowCadastrarReservaModal(true); }}
@@ -168,23 +151,7 @@ export default function CadastrarReservaContainer({
         onExited={() => setDeletarTurma(null)}
       />
 
-      <CSSTransition
-        in={!!alert.show}
-        timeout={400}
-        classNames="fade-alert"
-        nodeRef={alertDivRef}
-        unmountOnExit
-      >
-        <div ref={alertDivRef} className="alert-container">
-          <Alert
-            variant={alert?.type || "light"}
-            dismissible
-            onClose={() => setAlert((prev) => ({ ...prev, show: false }))}
-          >
-            {alert?.message}
-          </Alert>
-        </div>
-      </CSSTransition>
+      <AlertPop alert={alert} setAlert={setAlert} />
     </>
   )
 

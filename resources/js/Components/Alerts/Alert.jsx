@@ -1,8 +1,20 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Alert } from "react-bootstrap";
 import { CSSTransition } from "react-transition-group";
 
-export default function AlertPop({ alert }) {
+
+
+export default function AlertPop({ alert, setAlert }) {
+
+    useEffect(() => {
+        if (alert.show) {
+            const timer = setTimeout(() => {
+                setAlert((prev) => ({ ...prev, show: false })); // Trigger fade-out after 3 seconds
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [alert]);
+
     const alertDivRef = useRef(null);
     return (
         <CSSTransition

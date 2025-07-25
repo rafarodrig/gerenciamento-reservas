@@ -17,7 +17,19 @@ export default function FormSalas({
     setShowCadastrarModal,
     tiposSala,
     tiposMaquina,
+    errors,
+    setErrors,
 }) {
+
+    // Manipulador para atualizar o estado do formulário
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        // Limpa o erro do campo específico ao ser alterado
+        if (errors[name]) {
+            setErrors(prev => ({ ...prev, [name]: null }));
+        }
+    };
 
     return (
         <Form onSubmit={isEditing ? handleSubmitEditar : handleSubmitCadastrar}>
@@ -28,14 +40,18 @@ export default function FormSalas({
                         <Form.Group className="mb-3">
                             <Form.Label>Número da Sala <span className="text-danger">*</span></Form.Label>
                             <Form.Control
-
                                 type="number"
+                                name="numero"
                                 value={formData.numero}
-                                onChange={(e) => setFormData({ ...formData, numero: e.target.value })}
-                                required
+                                onChange={handleChange}
                                 min="1"
                                 placeholder="Ex: 101"
+                                isInvalid={!!errors?.numero}
+                                required
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {errors?.numero}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                     <Col md={6}>
@@ -47,18 +63,23 @@ export default function FormSalas({
                                     label="Unidade 1"
                                     name="unidade"
                                     value="1"
-                                    checked={formData.unidade === '1'}
-                                    onChange={(e) => setFormData({ ...formData, unidade: e.target.value })}
+                                    checked={formData.unidade == '1'}
+                                    onChange={handleChange}
+                                    isInvalid={!!errors?.unidade}
                                 />
                                 <Form.Check
                                     type="radio"
                                     label="Unidade 2"
                                     name="unidade"
                                     value="2"
-                                    checked={formData.unidade === '2'}
-                                    onChange={(e) => setFormData({ ...formData, unidade: e.target.value })}
+                                    checked={formData.unidade == '2'}
+                                    onChange={handleChange}
+                                    isInvalid={!!errors?.unidade}
                                 />
                             </div>
+                            <Form.Control.Feedback type="invalid">
+                                {errors?.unidade}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -71,11 +92,10 @@ export default function FormSalas({
                             </Form.Label>
                             <Form.Select
                                 name="tipo_sala_id"
-                                value={formData.tipo_sala_id || ""}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, tipo_sala_id: e.target.value })
-                                }
+                                value={formData.tipo_sala_id}
+                                onChange={handleChange}
                                 required
+                                isInvalid={!!errors?.tipo_sala_id}
                             >
                                 <option value="">Selecione</option>
                                 {tiposSala.map((tipo) => (
@@ -84,6 +104,9 @@ export default function FormSalas({
                                     </option>
                                 ))}
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                                {errors?.tipo_sala_id}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                     <Col md={6}>
@@ -91,12 +114,17 @@ export default function FormSalas({
                             <Form.Label>Capacidade/Lotação <span className="text-danger">*</span></Form.Label>
                             <Form.Control
                                 type="number"
+                                name="lotacao"
                                 value={formData.lotacao}
-                                onChange={(e) => setFormData({ ...formData, lotacao: e.target.value })}
+                                onChange={handleChange}
                                 required
                                 min="1"
                                 placeholder="Ex: 30"
+                                isInvalid={!!errors?.lotacao}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {errors?.lotacao}
+                            </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -110,14 +138,22 @@ export default function FormSalas({
                             <Form.Label>Número de Máquinas</Form.Label>
                             <Form.Control
                                 type="number"
+                                name="maquinas_qtd"
                                 value={formData.maquinas_qtd}
-                                onChange={(e) => setFormData({ ...formData, maquinas_qtd: e.target.value })}
+                                onChange={handleChange}
                                 min="0"
                                 placeholder="Ex: 25"
+                                isInvalid={!!errors?.maquinas_qtd}
                             />
-                            <Form.Text className="text-muted">
-                                Deixe em branco se não houver máquinas
-                            </Form.Text>
+                            {errors?.maquinas_qtd ? (
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.maquinas_qtd}
+                                </Form.Control.Feedback>
+                            ) : (
+                                <Form.Text className="text-muted">
+                                    Deixe em branco se não houver máquinas
+                                </Form.Text>
+                            )}
                         </Form.Group>
                     </Col>
                     <Col md={6}>
@@ -126,8 +162,9 @@ export default function FormSalas({
                             <Form.Select
                                 id="tipo_maquina_id"
                                 name="tipo_maquina_id"
-                                value={formData.tipo_maquina_id || ""}
-                                onChange={(e) => setFormData({ ...formData, tipo_maquina_id: e.target.value })}
+                                value={formData.tipo_maquina_id}
+                                onChange={handleChange}
+                                isInvalid={!!errors?.tipo_maquina_id}
                             >
                                 <option value="">Selecione</option>
                                 {tiposMaquina.map((tipo) => (
@@ -136,9 +173,17 @@ export default function FormSalas({
                                     </option>
                                 ))}
                             </Form.Select>
-                            <Form.Text className="text-muted">
-                                Selecione o tipo de equipamento desejado
-                            </Form.Text>
+
+                            {errors?.tipo_maquina_id ? (
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.tipo_maquina_id}
+                                </Form.Control.Feedback>
+                            ) : (
+                                <Form.Text className="text-muted">
+                                    Selecione o tipo de equipamento desejado
+                                </Form.Text>
+                            )}
+
                         </Form.Group>
                     </Col>
 
@@ -150,15 +195,24 @@ export default function FormSalas({
                 <Form.Group className="mb-3">
                     <Form.Label>Descrição</Form.Label>
                     <Form.Control
+                        name="descricao"
                         as="textarea"
                         rows={3}
                         value={formData.descricao}
-                        onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
+                        onChange={handleChange}
                         placeholder="Descreva características especiais, equipamentos adicionais, observações..."
+                        isInvalid={!!errors?.descricao}
                     />
-                    <Form.Text className="text-muted">
-                        Informações complementares sobre a sala (opcional)
-                    </Form.Text>
+                    {errors?.descricao ? (
+                        <Form.Control.Feedback type="invalid">
+                            {errors.descricao}
+                        </Form.Control.Feedback>
+                    ) : (
+                        <Form.Text className="text-muted">
+                            Informações complementares sobre a sala (opcional)
+                        </Form.Text>
+                    )}
+
                 </Form.Group>
             </div>
 
@@ -175,22 +229,8 @@ export default function FormSalas({
                     }}
                     disabled={loading}
                 ></CancelarButton>
-                <SalvarButton
-                    type="submit"
-                    disabled={loading}
-                >
-                    {loading ? (
-                        <>
-                            <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                            Salvando...
-                        </>
-                    ) : (
-                        <>
-                            {isEditing ? <CheckCircleIcon size={20} /> : <PlusCircleIcon size={20} />}
-                            {isEditing ? 'Atualizar' : 'Cadastrar'}
-                        </>
-                    )}
-                </SalvarButton>
+                <SalvarButton type="submit" isEditing={isEditing} loading={loading} disabled={loading} />
+
             </div>
         </Form>
     )

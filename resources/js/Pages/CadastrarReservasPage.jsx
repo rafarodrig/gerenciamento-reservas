@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { CSSTransition } from 'react-transition-group';
-import Layout from '@/Layouts/Layout';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useRef } from 'react';
 import CadastrarReservaForm from '@/Components/Forms/CadastrarReservaForm';
 import FiltrosBadge from '@/Components/Filtros/Filtros';
@@ -10,6 +10,7 @@ import TableSalasDisponiveis from '@/Components/Tables/SalasDisponiveisTable';
 import { dataAtual } from '@/dates';
 import FiltrosContainer from '@/Components/Filtros/FiltrosContainer';
 import TituloData from '@/Components/TituloData';
+import { api } from '@/services/api';
 
 export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
   const dataAtualISO = dataAtual("ISO")
@@ -42,9 +43,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
 
   const fetchSalasDisponiveis = async (customFormData = null, page = null) => {
     const finalFormData = { ...(customFormData || formData) };
-    const response = await axios.get('/salas/disponiveis', { params: { ...finalFormData, page } });
-
-    console.log(response.data)
+    const response = await api.get('/salas/disponiveis', { params: { ...finalFormData, page } });
     return response.data;
   };
 
@@ -52,7 +51,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
     const finalFormData = { ...(customFormData || formData) };
 
     try {
-      const response = await axios.get('/turmas/disponiveis', { params: finalFormData });
+      const response = await api.get('/turmas/disponiveis', { params: finalFormData });
       setTurmasDisponiveis(response.data.turmas);
     } catch (error) {
       console.error('Erro ao buscar turmas disponíveis:', error);
@@ -110,7 +109,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
   return (
     <>
       <Head title={title} />
-      <Layout>
+      <AuthenticatedLayout >
 
         <TituloData className='page-component' titulo={title} descricao={"Cadastre as reservas do sistema"} />
 
@@ -157,7 +156,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
           onResult={(animation) => buscar(currentPage, animation)}
           resetId={() => setCadastrarReserva(null)}
         />
-      </Layout>
+      </AuthenticatedLayout>
     </>
   )
 }

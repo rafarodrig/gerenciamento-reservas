@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
-import Layout from '@/Layouts/Layout';
-import React, { useState, useRef, useEffect } from 'react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import React, { useState, useRef } from 'react';
 import ReservaForm from '@/Components/Forms/ConsultarReservasForm';
 import ModalEditarReserva from '@/Components/Modals/EditarReservaModalContainer';
 import ModalDeletarReserva from '@/Components/Modals/DeletarReservaModal';
@@ -8,16 +8,16 @@ import { dataAtual } from '@/dates';
 import TabelaReservas from '@/Components/Tables/ReservasTable';
 import TabDatas from '@/Components/TabDatas';
 import { CSSTransition } from 'react-transition-group';
-import { Alert } from 'react-bootstrap';
 import TituloData from '@/Components/TituloData';
 import AlertPop from '@/Components/Alerts/Alert';
+import { api } from '@/services/api';
 
 export default function ConsultarReservas({ numeros }) {
 
   const title = "Consultar Reservas"
 
   const tabelaRef = useRef(null);
-  const [reservas, setReservas] = useState([]);
+  const [reservasTabela, setReservasTabela] = useState([]);
   const [isActive, setIsActive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [editarReserva, setEditarReserva] = useState(null);
@@ -27,8 +27,10 @@ export default function ConsultarReservas({ numeros }) {
     datas: []
   })
 
-  const [alert, setAlert] = useState('')
-  // const alertDivRef = useRef(null);
+  const [alert, setAlert] = useState({ show: false, type: null, message: null })
+
+  const [showEditarReservaModal, setShowEditarReservaModal] = useState(false);
+
 
   const [formData, setFormData] = useState({
     turma: "",
@@ -48,14 +50,6 @@ export default function ConsultarReservas({ numeros }) {
     buscar(currentPage, true, tabDados.currentTab);
   }
 
-  useEffect(() => {
-    if (alert.show) {
-      const timer = setTimeout(() => {
-        setAlert((prev) => ({ ...prev, show: false })); // Trigger fade-out after 3 seconds
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [alert]);
 
   const buscar = async (page, animation, tabData, customFormData = null) => {
 
@@ -63,24 +57,48 @@ export default function ConsultarReservas({ numeros }) {
 
     if (animation) setIsActive(false);
 
-    console.log(finalFormData)
-    try {
-      const response = await axios.get('/reservas', { params: { ...finalFormData, page, tabData } });
-      console.log(response.data)
-      const dados = response.data
-      setReservas(dados);
-      setTabDados((prev) => ({ ...prev, datas: dados.datas, currentTab: dados.currentTab }))
-      setCurrentPage(page);
-      setIsActive(true);
-    } catch (error) {
-      console.error('Error ', error);
+    api.get('/reservas', { params: { ...finalFormData, page, tabData } })
+      .then((res) => {
+        const dados = res.data
+        setReservasTabela(dados);
+        setTabDados((prev) => ({ ...prev, datas: dados.datas, currentTab: dados.currentTab }))
+        setCurrentPage(page);
+      })
+      .catch((err) => {
+        setAlert({ show: true, type: "danger", message: err.response?.data?.message })
+      })
+      .finally(() => {
+        setIsActive(true);
+      });
+  };
+
+  const fetchTab = (tabData) => {
+    api.get('/reservas/tabData', { params: { ...formData, tabData } })
+      .then((res) => {
+        const dados = res.data
+        setReservasTabela(dados);
+        setTabDados((prev) => ({ ...prev, currentTab: tabData }))
+        console.log(dados)
+      }).catch((err) => {
+        setAlert({ show: true, type: "danger", message: err.response?.data?.message })
+      });
+  }
+
+  const handleEditarReserva = (reservaId) => {
+    const reservas = reservasTabela?.reservas?.data;
+
+    const reserva = reservas.find(r => r.id === reservaId);
+    console.log(reserva)
+    if (reserva) {
+      setEditarReserva(reserva);
+      setShowEditarReservaModal(true)
     }
   };
 
   return (
     <>
       <Head title={title} />
-      <Layout>
+      <AuthenticatedLayout>
         <TituloData className='page-component' titulo={title} descricao={"Edite, exclua e gerencie as reservas do sistema"} />
         <ReservaForm
           className='page-component'
@@ -88,7 +106,6 @@ export default function ConsultarReservas({ numeros }) {
           setFormData={(formData) => setFormData(formData)}
           numeros={numeros}
           onBuscar={() => buscar(null, true)}
-          paginaTitulo={title}
         />
 
 
@@ -100,53 +117,41 @@ export default function ConsultarReservas({ numeros }) {
           unmountOnExit
         >
           <div ref={tabelaRef} className="tabela-reservas page-component" >
-            <TabDatas datas={tabDados.datas} currentTab={tabDados.currentTab} setCurrentData={(data) => { buscar(null, false, data) }} />
+            <TabDatas
+              datas={tabDados.datas}
+              currentTab={tabDados.currentTab}
+              setCurrentData={(data) => { fetchTab(data) }}
+            />
             <TabelaReservas
               onPageChange={(page) => buscar(page, false)}
-              data={reservas}
-              editarReserva={(id) => setEditarReserva(id)}
+              data={reservasTabela}
+              editarReserva={handleEditarReserva}
               deletarReserva={(id) => setDeletarReserva(id)}
             />
           </div>
         </CSSTransition>
 
+        {/*Container Reserva*/}
         <ModalEditarReserva
-          reservaId={editarReserva}
+          showEditarReservaModal={showEditarReservaModal}
+          setShowEditarReservaModal={setShowEditarReservaModal}
+          reserva={editarReserva}
           onResetId={() => setEditarReserva(null)}
           onResult={handleResult}
           setAlert={setAlert}
         />
-
 
         <ModalDeletarReserva
           reservaId={deletarReserva}
           onResetId={() => setDeletarReserva(null)}
           onResult={handleResult}
         />
-
+        {/* Alert Popup */}
         <AlertPop
-          alert={alert}
+          alert={alert} setAlert={setAlert}
         />
 
-        {/* <CSSTransition
-          in={!!alert.show}
-          timeout={400}
-          classNames="fade-alert"
-          nodeRef={alertDivRef}
-          unmountOnExit
-        >
-          <div ref={alertDivRef} className="alert-container">
-            <Alert
-              variant={alert?.type || "light"}
-              dismissible
-              onClose={() => setAlert((prev) => ({ ...prev, show: false }))}
-            >
-              {alert?.message}
-            </Alert>
-          </div>
-        </CSSTransition> */}
-
-      </Layout>
+      </AuthenticatedLayout>
     </>
   )
 }

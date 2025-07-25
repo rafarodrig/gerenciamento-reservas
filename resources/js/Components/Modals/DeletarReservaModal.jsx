@@ -1,7 +1,9 @@
-import { Modal, Button, Form, Container } from 'react-bootstrap';
+import { Modal, Form, Container } from 'react-bootstrap';
 import { useState } from 'react';
-import { ExclamationTriangle, PencilSquare, Trash } from 'react-bootstrap-icons';
-import axios from 'axios';
+import { TriangleAlert } from 'lucide-react';
+import CancelarButton from '../Buttons/CancelarButton';
+import DeletarButton from '../Buttons/DeletarButton';
+import { api } from '@/services/api';
 
 
 export default function ModalDeletarReserva({ reservaId, onResetId, onResult }) {
@@ -27,7 +29,7 @@ export default function ModalDeletarReserva({ reservaId, onResetId, onResult }) 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.delete(`/reservas/${reservaId}`, { data: formData })
+    api.delete(`/reservas/${reservaId}`, { data: formData })
       .then((response) => {
         onResult({ show: true, type: "success", message: response.data.message });
       })
@@ -56,7 +58,7 @@ export default function ModalDeletarReserva({ reservaId, onResetId, onResult }) 
         centered>
         <Modal.Header closeButton className='pb-2' >
           <Modal.Title className="d-flex align-items-center text-danger">
-            <ExclamationTriangle className="me-2" />
+            <TriangleAlert className="me-2" />
             Deletar Reserva
           </Modal.Title>
         </Modal.Header>
@@ -107,13 +109,11 @@ export default function ModalDeletarReserva({ reservaId, onResetId, onResult }) 
           </Modal.Body>
 
           <Modal.Footer className=" d-flex justify-content-between">
-            <Button variant="secondary" onClick={handleCancel}>
-              Cancelar
-            </Button>
-            <Button variant="danger" type='submit'>
-              <Trash className='me-2' />
-              Deletar
-            </Button>
+
+            <CancelarButton onClick={handleCancel} />
+
+            <DeletarButton type='submit' > Deletar</DeletarButton>
+
           </Modal.Footer>
         </Form>
       </Modal>

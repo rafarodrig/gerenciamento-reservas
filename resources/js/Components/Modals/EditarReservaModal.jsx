@@ -1,20 +1,18 @@
-import { Modal, Form, Row, Col, Card } from 'react-bootstrap';
+import { Modal, Row, Col, Card } from 'react-bootstrap';
 import { converterData, diaSemana } from '@/dates';
-import { Clock, } from 'react-bootstrap-icons';
 import CancelarButton from '../Buttons/CancelarButton';
-import SalvarButton from '../Buttons/SalvarButton';
 import SalaCard from '../Cards/SalaCard';
 import TurmaCard from '../Cards/TurmaCard';
-import { PenSquare } from 'lucide-react';
+import { ArrowLeft, Clock1, LucideUserRoundPen, Pencil, PenSquare, User } from 'lucide-react';
 
 
 export default function EditarReservaModal({
   show,
   onCancel,
   reserva,
-  onSubmit,
   formData,
   setFormData,
+  setEditarTurma,
   onTrocarSala,
 }) {
 
@@ -25,7 +23,7 @@ export default function EditarReservaModal({
     });
   };
 
-  if (!reserva) return null;
+  // if (!reserva) return null;
 
   return (
     <>
@@ -51,12 +49,17 @@ export default function EditarReservaModal({
                 <Card className="container-style">
                   <Card.Body>
                     <Card.Title className="d-flex align-items-center justify-content-between mb-2">
-                      {converterData(reserva.data)} ({diaSemana(reserva.data)})
+                      {converterData(reserva?.data)} ({diaSemana(reserva?.data)})
                       <span className='tw-badge tw-badge--blue-lg'>Reserva</span>
+
                     </Card.Title>
-                    <p className="d-flex mb-0 align-items-center">
-                      <Clock size={18} className="me-2" />
-                      {reserva.turma.turno}
+                    <p className="d-flex mb-2 align-items-center">
+                      <Clock1 size={18} className="me-2" />
+                      {reserva?.turma.turno}
+                    </p>
+                    <p className="d-flex mb-2 align-items-center">
+                      <LucideUserRoundPen size={18} className="me-2" />
+                      {reserva?.usuario?.name}
                     </p>
                   </Card.Body>
                 </Card>
@@ -67,7 +70,7 @@ export default function EditarReservaModal({
                 <Col xs={12} md={6} className="d-flex">
                   <div className="d-flex flex-column w-100">
                     {/* <span className="mx-2 fw-semibold text-uppercase small text-muted">Sala </span> */}
-                    <SalaCard onTrocarSala={onTrocarSala} isEditing={true} sala={reserva.sala} badge={<span className='tw-badge tw-badge--blue-lg'>Sala</span>} />
+                    <SalaCard onTrocarSala={onTrocarSala} isEditing={true} sala={reserva?.sala} badge={<span className='tw-badge tw-badge--blue-lg'>Sala</span>} />
                   </div>
                 </Col>
 
@@ -75,13 +78,13 @@ export default function EditarReservaModal({
                 <Col xs={12} md={6} className="d-flex">
                   <div className="d-flex flex-column w-100">
                     {/* <span className=" mx-2 fw-semibold text-uppercase small text-muted">Turma</span> */}
-                    <TurmaCard turma={reserva.turma} badge={<span className='tw-badge tw-badge--blue-lg'>Turma</span>} />
+                    <TurmaCard setEditarTurma={setEditarTurma} turma={reserva?.turma} badge={<span className='tw-badge tw-badge--blue-lg'>Turma</span>} />
                   </div>
                 </Col>
               </Row>
             </Col>
 
-            <Col md={12} >
+            {/* <Col md={12} >
               <Form id="form-editar-reserva">
                 <Form.Group className="form-floating">
                   <Form.Control
@@ -90,7 +93,7 @@ export default function EditarReservaModal({
                     name="responsavel_cadastro"
                     placeholder="Responsável Cadastro"
                     className="shadow-sm rounded-3"
-                    value={formData.responsavel_cadastro}
+                    value={formData?.responsavel_cadastro}
                     onChange={handleChange}
                     autoComplete="off"
                     required
@@ -98,14 +101,14 @@ export default function EditarReservaModal({
                   <Form.Label htmlFor="inp-responsavel-cadastro">Responsável pelo Cadastro</Form.Label>
                 </Form.Group>
               </Form>
-            </Col>
+            </Col> */}
           </Row>
 
         </Modal.Body>
 
-        <Modal.Footer>
-          <CancelarButton onClick={onCancel} />
-          <SalvarButton onClick={onSubmit} />
+        <Modal.Footer className='modal-footer '>
+          <CancelarButton onClick={onCancel} > <ArrowLeft size={20} />  Voltar</CancelarButton>
+          {/* <SalvarButton onClick={onSubmit} /> */}
         </Modal.Footer>
       </Modal>
     </>

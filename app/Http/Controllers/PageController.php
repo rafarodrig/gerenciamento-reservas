@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sala;
 use App\Models\TipoMaquina;
 use App\Models\TipoSala;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
@@ -31,5 +32,20 @@ class PageController extends Controller
     public function gerenciarSalas()
     {
         return Inertia::render('GerenciarSalasPage');
+    }
+    public function login()
+    {
+        if (Auth::check()) {
+            return redirect()->route('consultar-reservas');
+        }
+
+        return Inertia::render('Auth/Login');
+    }
+    public function register()
+    {
+        if (Auth::check()) {
+            return redirect()->route('consultar-reservas');
+        }
+        return Inertia::render('Auth/Register');
     }
 }

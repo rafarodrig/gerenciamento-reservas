@@ -21,9 +21,9 @@ return new class extends Migration
             $table->integer('unidade'); // Not null
             $table->text('descricao')->nullable(); // Nullable text
             $table->softDeletes();
-            $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

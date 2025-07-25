@@ -46,17 +46,17 @@ export default function SalasTable({ salas, unidade, paginationData, onEdit, onD
             </thead>
             <tbody>
               {salas.map((sala) => (
-                <tr key={sala.id}>
-                  <td>{sala.numero}</td>
-                  {unidade === 'todas' && <td><span className="unidade-texto" >Un. {sala.unidade}</span></td>}
-                  <td>{sala.tipo_sala.nome}</td>
-                  <td>{sala.lotacao}</td>
-                  <td>{sala.maquinas_qtd}</td>
-                  <td>{sala.tipo_maquina.nome}</td>
+                <tr key={sala?.id}>
+                  <td>{sala?.numero}</td>
+                  {unidade === 'todas' && <td><span className="unidade-texto" >Un. {sala?.unidade}</span></td>}
+                  <td>{sala?.tipo_sala?.nome}</td>
+                  <td>{sala?.lotacao}</td>
+                  <td>{sala?.maquinas_qtd}</td>
+                  <td>{sala?.tipo_maquina?.nome}</td>
                   <td>
                     <div className="action-buttons">
-                      <EditarButton onClick={() => onEdit(sala.id)} ></EditarButton>
-                      <DeletarButton onClick={() => onDelete(sala.id)} ></DeletarButton>
+                      <EditarButton onClick={() => onEdit(sala?.id)} ></EditarButton>
+                      <DeletarButton onClick={() => onDelete(sala?.id)} ></DeletarButton>
                     </div>
                   </td>
                 </tr>

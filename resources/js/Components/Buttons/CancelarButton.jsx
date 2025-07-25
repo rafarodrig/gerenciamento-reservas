@@ -12,7 +12,7 @@ export default function CancelarButton({
     return (
         <Button
             type={type}
-            className={`d-flex border-0 btn-translate-animation align-items-center gap-2 ${className}`}
+            className={`btn-acao ${className}`}
             variant={variant}
             disabled={disabled}
             {...props}

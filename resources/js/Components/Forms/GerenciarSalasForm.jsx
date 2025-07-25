@@ -1,7 +1,8 @@
 import { Building, LucidePlusCircle } from "lucide-react";
 import { Button, Col, Row } from "react-bootstrap";
+import PrimaryButton from "../Buttons/PrimaryButton";
 
-export default function GerenciarSalasForm({ handleUnidadeChange, unidadeFiltro, onCadastrar }) {
+export default function GerenciarSalasForm({ handleUnidadeChange, unidadeFiltro, onCadastrar, onGerenciarTipos }) {
     return (
         <Row className="my-3">
             <Col>
@@ -35,7 +36,7 @@ export default function GerenciarSalasForm({ handleUnidadeChange, unidadeFiltro,
                     </Button>
                 </div>
                 <div>
-                    Recusos das Salas
+                    <PrimaryButton onClick={onGerenciarTipos} >Gerenciar Recursos</PrimaryButton>
                 </div>
             </Col>
             <Col className="d-flex justify-content-end">

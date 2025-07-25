@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Modal, Form, Row, Col } from 'react-bootstrap';
-import axios from 'axios';
-
 import { PenSquare } from 'lucide-react';
 import CancelarButton from '../Buttons/CancelarButton';
 import SalvarButton from '../Buttons/SalvarButton';
+import { api } from '@/services/api';
 
 /**
  * Modal para editar uma turma.
@@ -60,7 +59,7 @@ export default function EditarTurmaModal({ turma, onCancel, onExited, onResult }
   const handleSubmit = (e) => {
     e.preventDefault();
     // A requisição PUT agora usa o ID do objeto 'turma' recebido via props
-    axios.put(`/turmas/${turma.id}`, formData)
+    api.put(`/turmas/${turma.id}`, formData)
       .then((response) => {
         onResult({ show: true, type: "success", message: response.data.message });
         onCancel(); // Fecha o modal via função do pai

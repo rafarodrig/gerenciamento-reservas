@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
             TipoMaquinaSeeder::class,
             SalaSeeder::class,
             TurmaSeeder::class,
-            ReservaSeeder::class
         ]);
 
         User::factory()->create([

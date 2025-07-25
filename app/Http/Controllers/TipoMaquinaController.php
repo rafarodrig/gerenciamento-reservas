@@ -16,33 +16,55 @@ class TipoMaquinaController extends Controller
 
     public function store(Request $request)
     {
+        try {
+
+            $request->validate([
+                'nome' => 'required|unique:tipos_maquina,nome|max:255',
+            ]);
+
+            TipoMaquina::create($request->all());
+
+            return response()->json([
+                'message' => 'Tipo de máquina criado com sucesso!',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao cadastrar um novo tipo de máquina.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function show(TipoMaquina $tipos_maquina)
+    {
+        return $tipos_maquina;
+    }
+
+    public function update(Request $request, TipoMaquina $tipos_maquina)
+    {
         $request->validate([
-            'nome' => 'required|unique:tipos_maquina,nome|max:255',
+            'nome' => 'required|max:255|unique:tipos_maquina,nome,' . $tipos_maquina->id,
         ]);
 
-        return TipoMaquina::create($request->all());
+        $tipos_maquina->update($request->all());
+
+        return $tipos_maquina;
     }
 
-    public function show(TipoMaquina $tipo_maquina)
+    public function destroy(TipoMaquina $tipos_maquina)
     {
-        return $tipo_maquina;
-    }
+        try {
 
-    public function update(Request $request, TipoMaquina $tipo_maquina)
-    {
-        $request->validate([
-            'nome' => 'required|max:255|unique:tipos_maquina,nome,' . $tipo_maquina->id,
-        ]);
+            $tipos_maquina->delete();
 
-        $tipo_maquina->update($request->all());
-
-        return $tipo_maquina;
-    }
-
-    public function destroy(TipoMaquina $tipo_maquina)
-    {
-        $tipo_maquina->delete();
-
-        return response()->noContent();
+            return response()->json([
+                'message' => 'Tipo de máquina deletado com sucesso!',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao deletar tipo de máquina.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

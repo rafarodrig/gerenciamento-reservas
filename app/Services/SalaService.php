@@ -34,15 +34,6 @@ class SalaService
         // Paginar e armazenar resultado
         $salasPaginadas = $query->paginate(15);
 
-        // Logar resultado paginado (você pode reduzir a verbosidade se quiser)
-        Log::debug('Salas paginadas retornadas', [
-            'filtros' => $request->all(),
-            'total' => $salasPaginadas->total(),
-            'por_pagina' => $salasPaginadas->perPage(),
-            'dados' => $salasPaginadas,
-            // 'dados' => $salasPaginadas->items(), // cuidado: pode gerar log muito grande
-        ]);
-
         return $salasPaginadas;
     }
 
@@ -112,6 +103,7 @@ class SalaService
             'turno'   => $reserva->turma->turno,
             'unidade' => 'todas',
             'datas'   => $datas,
+            'lotacao' => $reserva->turma->lotacao
         ];
 
         return [

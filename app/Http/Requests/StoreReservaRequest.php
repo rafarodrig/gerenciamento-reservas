@@ -25,11 +25,11 @@ class StoreReservaRequest extends BaseRequest
         return [
             "turma" => "nullable|exists:turmas,id",
             "sala" => "required|exists:salas,id",
-            "responsavel_cadastro" => "required|string|max:255",
+
 
             // Se turma NÃO for enviada, esses campos são obrigatórios
             "nome" => "required_if:turma,null|string|max:255",
-            "curso" => "required_if:turma,null|string|max:255",
+            "curso" => "nullable|string|max:255",
             "turno" => "required_if:turma,null|string|max:255",
             "docente" => "required_if:turma,null|string|max:255",
             "reserva_tipo" => "required_if:turma,null|string|max:255",
@@ -42,13 +42,11 @@ class StoreReservaRequest extends BaseRequest
             'turma.exists' => 'A turma selecionada não foi encontrada.',
             'sala.required' => 'A sala é obrigatória.',
             'sala.exists' => 'A sala selecionada não foi encontrada.',
-            'responsavel_cadastro.required' => 'O responsável pelo cadastro é obrigatório.',
-            'responsavel_cadastro.max' => 'O nome do responsável não pode ultrapassar 255 caracteres.',
 
             'nome.required_if' => 'O nome da turma é obrigatório.',
             'nome.max' => 'O nome da turma não pode ultrapassar 255 caracteres.',
 
-            'curso.required_if' => 'O curso é obrigatório.',
+            // 'curso.required_if' => 'O curso é obrigatório.',
             'curso.max' => 'O nome do curso não pode ultrapassar 255 caracteres.',
 
             'turno.required_if' => 'O turno é obrigatório.',

@@ -10,7 +10,7 @@ export default function PrimaryButton({
     return (
         <Button
             type={type}
-            className={`d-flex border-0 align-items-center gap-2 ${className}`}
+            className={`btn-acao ${className}`}
             variant="primary"
             disabled={disabled}
             {...props}

@@ -13,13 +13,12 @@ export default function EditarButton({
         <OverlayTrigger overlay={<Tooltip>Editar</Tooltip>}>
             <Button
                 type={type}
-                size="sm"
                 className={`btn-acao ${!children ? 'square-button' : 'rectangle-button'} ${className}`}
                 variant="primary"
                 disabled={disabled}
                 {...props}
             >
-                <PenSquare size={18} />
+                <PenSquare size={20} />
                 {children}
             </Button>
         </OverlayTrigger>

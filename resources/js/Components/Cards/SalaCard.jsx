@@ -9,7 +9,7 @@ export default function SalaCard({ sala, className = "", badge, isEditing = fals
         <Card className={`container-style flex-grow-1 ${className}`}>
             <Card.Body className="d-flex justify-content-between">
                 <div className="text-truncate">
-                    <Card.Title className="d-flex align-items-center justify-content-between mb-2">
+                    <Card.Title className="d-flex align-items-center justify-content-between mb-3-">
                         <span
                             title={sala?.numero + " - " + sala?.tipo_sala.nome}
                             className="text-truncate me-2"

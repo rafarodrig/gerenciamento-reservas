@@ -30,4 +30,14 @@ class Reserva extends Model
     {
         return $this->belongsTo(Sala::class)->withTrashed();
     }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id');
+    }
+
+    public function getNomeUsuarioAttribute()
+    {
+        return $this->usuario?->name;
+    }
 }

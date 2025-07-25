@@ -7,6 +7,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Vite;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -28,5 +30,10 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
         Carbon::setLocale(app()->getLocale());
         // Vite::prefetch(concurrency: 3);
+        Inertia::share([
+            'auth' => fn() => [
+                'user' => Auth::user(),
+            ],
+        ]);
     }
 }

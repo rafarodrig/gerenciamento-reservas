@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Services\TurmaService;
 use App\Models\Reserva;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -24,18 +25,18 @@ class ReservaService
         try {
             $datas = $request->input('datas');
             $salaId = $request->input('sala');
-            $responsavel = $request->input('responsavel_cadastro');
+            $usuarioId = Auth::id();
 
             $turmaId = $request->filled('turma')
                 ? $request->input('turma')
                 : $this->turmaService->criarTurma($request->all())->id;
 
-            $reservas = collect($datas)->map(function ($data) use ($salaId, $turmaId, $responsavel) {
+            $reservas = collect($datas)->map(function ($data) use ($salaId, $turmaId, $usuarioId) {
                 return [
                     'data' => $data,
                     'sala_id' => $salaId,
                     'turma_id' => $turmaId,
-                    'responsavel_cadastro' => $responsavel,
+                    'usuario_id' => $usuarioId,
                 ];
             })->toArray();
 
@@ -53,32 +54,7 @@ class ReservaService
     public function obterReservasPaginadas(array $dados)
     {
 
-        $query = Reserva::with(['sala', 'turma']);
-
-        // Se a busca for por reservas inativas (deletadas)
-        if (!empty($dados["reserva_status"]) && $dados["reserva_status"] === "Inativa") {
-            $query = $query->onlyTrashed();
-        }
-
-        // Caso queira exibir tudo (ativas + deletadas):
-        // if (!empty($dados["reserva_status"]) && $dados["reserva_status"] === "todas") {
-        //     $query = $query->withTrashed();
-        // }
-
-        // Filtros por atributos de turma
-        $query->whereHas('turma', function (Builder $q) use ($dados) {
-            if (!empty($dados["docente"])) $q->where("docente", 'LIKE', "%{$dados["docente"]}%");
-            if (!empty($dados["reserva_tipo"])) $q->where("tipo", $dados["reserva_tipo"]);
-            if (!empty($dados["curso"])) $q->where("curso", 'LIKE', "%{$dados["curso"]}%");
-            if (!empty($dados["turma"])) $q->where("nome", 'LIKE', "%{$dados["turma"]}%");
-            if (!empty($dados["turno"])) $q->where("turno", $dados["turno"]);
-        });
-
-        // Filtros por atributos de sala
-        $query->whereHas('sala', function (Builder $q) use ($dados) {
-            if (!empty($dados["unidade"]) && $dados["unidade"] !== "todas") $q->where("unidade", $dados["unidade"]);
-            if (!empty($dados["sala"])) $q->where("numero", $dados["sala"]);
-        });
+        $query = $this->getQueryReservas($dados);
 
         // Clona a query original antes de modificá-la
         $queryClonada = clone $query;
@@ -115,6 +91,50 @@ class ReservaService
             "datas" => $datas,
             "reservas" => $reservas,
             "currentTab" => $data
+        ];
+    }
+    protected function getQueryReservas(array $dados)
+    {
+        $query = Reserva::with(['sala.TipoSala:id,nome', 'turma', 'usuario:name,id']);
+
+        // Se a busca for por reservas inativas (deletadas)
+        if (!empty($dados["reserva_status"]) && $dados["reserva_status"] === "Inativa") {
+            $query = $query->onlyTrashed();
+        }
+
+        // Caso queira exibir tudo (ativas + deletadas):
+        // if (!empty($dados["reserva_status"]) && $dados["reserva_status"] === "todas") {
+        //     $query = $query->withTrashed();
+        // }
+
+        // Filtros por atributos de turma
+        $query->whereHas('turma', function (Builder $q) use ($dados) {
+            if (!empty($dados["docente"])) $q->where("docente", 'LIKE', "%{$dados["docente"]}%");
+            if (!empty($dados["reserva_tipo"])) $q->where("tipo", $dados["reserva_tipo"]);
+            if (!empty($dados["curso"])) $q->where("curso", 'LIKE', "%{$dados["curso"]}%");
+            if (!empty($dados["turma"])) $q->where("nome", 'LIKE', "%{$dados["turma"]}%");
+            if (!empty($dados["turno"])) $q->where("turno", $dados["turno"]);
+        });
+
+        // Filtros por atributos de sala
+        $query->whereHas('sala', function (Builder $q) use ($dados) {
+            if (!empty($dados["unidade"]) && $dados["unidade"] !== "todas") $q->where("unidade", $dados["unidade"]);
+            if (!empty($dados["sala"])) $q->where("numero", $dados["sala"]);
+        });
+
+        return $query;
+    }
+
+    public function obterTabData(array $dados)
+    {
+
+        $query = $this->getQueryReservas($dados);
+
+        $query->where("data", '=', $dados["tabData"]);
+
+        return [
+            "currentTab" => $dados["tabData"],
+            "reservas" => $query->orderBy("data")->paginate(20),
         ];
     }
 

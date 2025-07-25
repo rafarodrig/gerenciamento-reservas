@@ -36,7 +36,6 @@ export default function ReservasTable({ data, onPageChange, deletarReserva, edit
     };
   }
 
-
   return (
     <Card className="my-4 border-0 rounded-4">
       <Card.Header className="d-flex border-0 align-items-center">
@@ -63,8 +62,8 @@ export default function ReservasTable({ data, onPageChange, deletarReserva, edit
             {reservas.map((reserva) => (
               <tr key={reserva.id}>
                 <td>
-                  <span title={`${reserva.sala.numero} - ${reserva.sala.tipo}`}>
-                    {`${reserva.sala.numero} - ${reserva.sala.tipo}`}
+                  <span title={`${reserva.sala.numero} - ${reserva.sala?.tipo_sala?.nome}`}>
+                    {`${reserva.sala.numero} - ${reserva.sala?.tipo_sala.nome}`}
                   </span>
                 </td>
                 {data.unidade === "todas" &&

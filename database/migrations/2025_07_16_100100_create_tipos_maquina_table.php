@@ -12,7 +12,7 @@ class CreateTiposMaquinaTable extends Migration
         Schema::create('tipos_maquina', function (Blueprint $table) {
             $table->id();
             $table->string('nome')->unique(); // Ex: Windows, Linux
-            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -1,17 +1,16 @@
 import { Head } from '@inertiajs/react';
-import React, { useState, useEffect, useRef } from 'react';
-import { Alert } from 'react-bootstrap';
-import Layout from '@/Layouts/Layout';
+import React, { useState, useEffect } from 'react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import SalasTable from '@/Components/Tables/SalasTable';
 import FormSalas from '@/Components/Forms/SalaForm';
 import ModalDeletarSala from '@/Components/Modals/DeletarSalaModal';
 import ModalEditarSala from '@/Components/Modals/EditarSalaModal';
 import ModalCadastrarSala from '@/Components/Modals/CadastrarSalaModal';
-import { CSSTransition } from 'react-transition-group';
 import TituloData from '@/Components/TituloData';
-import axios from 'axios';
 import GerenciarSalasForm from '@/Components/Forms/GerenciarSalasForm';
-
+import GerenciarTiposModal from '@/Components/Modals/GerenciarTiposModal';
+import AlertPop from '@/Components/Alerts/Alert';
+import { api } from '@/services/api';
 export default function GerenciarSalas() {
     const title = "Gerenciar Salas"
     const [salas, setSalas] = useState([]);
@@ -20,8 +19,8 @@ export default function GerenciarSalas() {
     const [paginationData, setPaginationData] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
+
     const [alert, setAlert] = useState('');
-    const alertDivRef = useRef(null);
 
     const [tiposSala, setTiposSala] = useState([]);
     const [tiposMaquina, setTiposMaquina] = useState([]);
@@ -33,6 +32,9 @@ export default function GerenciarSalas() {
     const [showDeletarModal, setShowDeletarModal] = useState(false);
     const [salaEditando, setSalaEditando] = useState(null);
     const [salaDeletando, setSalaDeletando] = useState(null);
+    const [showGereciarTiposModal, setShowGerenciarTiposModal] = useState(false);
+
+    const [errors, setErrors] = useState({})
 
     // Estados do formulário
     const [formData, setFormData] = useState({
@@ -55,17 +57,8 @@ export default function GerenciarSalas() {
             tipo_maquina_id: '',
             descricao: ''
         });
+        setErrors({});
     };
-
-    useEffect(() => {
-        if (alert.show) {
-            const timer = setTimeout(() => {
-                setAlert((prev) => ({ ...prev, show: false }));
-                // Trigger fade-out after 3 seconds
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [alert]);
 
     const fetchSalas = async (unidade = unidadeFiltro, page = 1) => {
         setLoading(true);
@@ -76,7 +69,7 @@ export default function GerenciarSalas() {
                 url += `&unidade=${unidade}`;
             }
 
-            const response = await axios.get(url, {
+            const response = await api.get(url, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -121,13 +114,13 @@ export default function GerenciarSalas() {
     };
 
     const fetchTiposSala = () => {
-        axios.get('/tipos-sala')
-            .then(res => { setTiposSala(res.data); console.log(res.data) })
+        api.get('/tipos-sala')
+            .then(res => { setTiposSala(res.data); })
             .catch(err => console.error('Erro ao buscar tipos de sala:', err));
     }
     const fetchTiposMaquina = () => {
-        axios.get('/tipos-maquina')
-            .then(res => { setTiposMaquina(res.data); console.log(res.data) })
+        api.get('/tipos-maquina')
+            .then(res => { setTiposMaquina(res.data); })
             .catch(err => console.error('Erro ao buscar tipos de máquina:', err));
     }
 
@@ -160,12 +153,13 @@ export default function GerenciarSalas() {
         setLoading(true);
 
         try {
-            const response = await axios.post('/salas', formData);
+            const response = await api.post('/salas', formData);
             setAlert({ show: true, type: "success", message: response.data.message });
             setShowCadastrarModal(false);
             resetForm();
             fetchSalas(unidadeFiltro, currentPage);
         } catch (err) {
+            setErrors(err.response?.data?.errors || {});
             setAlert({ show: true, type: "danger", message: 'Erro ao cadastrar sala: ' + (err.response?.data?.message || err.message) });
         } finally {
             setLoading(false);
@@ -196,9 +190,8 @@ export default function GerenciarSalas() {
 
         setLoading(true);
 
-        console.log(formData)
         try {
-            const response = await axios.put(`/salas/${salaEditando.id}`, formData);
+            const response = await api.put(`/salas/${salaEditando.id}`, formData);
 
             setAlert({ show: true, type: "success", message: response.data.message });
             setShowEditarModal(false);
@@ -206,6 +199,7 @@ export default function GerenciarSalas() {
             resetForm();
             fetchSalas(unidadeFiltro, currentPage);
         } catch (err) {
+            setErrors(err.response?.data?.errors || {});
             setAlert({ show: true, type: "danger", message: 'Erro ao atualizar sala: ' + (err.response?.data?.message || err.message) });
         } finally {
             setLoading(false);
@@ -225,7 +219,7 @@ export default function GerenciarSalas() {
         setLoading(true);
 
         try {
-            const response = await axios.delete(`/salas/${salaDeletando.id}`);
+            const response = await api.delete(`/salas/${salaDeletando.id}`);
 
             setAlert({ show: true, type: "success", message: response.data.message });
             setShowDeletarModal(false);
@@ -257,39 +251,26 @@ export default function GerenciarSalas() {
             setSalaEditando={setSalaEditando}
             handleSubmitCadastrar={handleSubmitCadastrar}
             handleSubmitEditar={handleSubmitEditar}
+            errors={errors}
+            setErrors={setErrors}
         />
     );
 
     return (
         <>
             <Head title={title} />
-            <Layout>
+            <AuthenticatedLayout >
                 <TituloData className='page-component' titulo={title} descricao={"Cadastre, edite e gerencie as salas do sistema"} />
 
+                <AlertPop alert={alert} setAlert={setAlert} />
                 {/* Alert message */}
-                <CSSTransition
-                    in={!!alert.show}
-                    timeout={400}
-                    classNames="fade-alert"
-                    nodeRef={alertDivRef}
-                    unmountOnExit
-                >
-                    <div ref={alertDivRef} className="alert-container">
-                        <Alert
-                            variant={alert?.type || "light"}
-                            dismissible
-                            onClose={() => setAlert((prev) => ({ ...prev, show: false }))}
-                        >
-                            {alert?.message}
-                        </Alert>
-                    </div>
-                </CSSTransition>
 
                 <div className='page-component'>
                     <GerenciarSalasForm
                         unidadeFiltro={unidadeFiltro}
                         handleUnidadeChange={handleUnidadeChange}
                         onCadastrar={handleCadastrar}
+                        onGerenciarTipos={setShowGerenciarTiposModal}
                     />
                 </div>
 
@@ -303,8 +284,6 @@ export default function GerenciarSalas() {
                                 </div>
                             </div>
                         )}
-
-
 
                         <SalasTable
                             salas={filteredSalas}
@@ -332,15 +311,28 @@ export default function GerenciarSalas() {
                 >{renderFormulario(true)}
                 </ModalEditarSala>
 
+
+                <GerenciarTiposModal
+                    tiposSala={tiposSala}
+                    fetchTiposSala={fetchTiposSala}
+                    fetchTiposMaquina={fetchTiposMaquina}
+                    tiposMaquina={tiposMaquina}
+                    show={showGereciarTiposModal}
+                    onHide={() => setShowGerenciarTiposModal(false)}
+                    setAlert={setAlert}
+
+                />
+
                 {/* Modal Confirmar Deletar */}
                 <ModalDeletarSala
                     loading={loading}
+
                     showDeletarModal={showDeletarModal}
                     confirmarDeletar={confirmarDeletar}
                     salaDeletando={salaDeletando}
                     setShowDeletarModal={setShowDeletarModal}
                 />
-            </Layout>
+            </AuthenticatedLayout>
         </>
     );
 }

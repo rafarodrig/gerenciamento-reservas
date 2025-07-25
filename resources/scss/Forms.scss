@@ -30,3 +30,73 @@
     align-items: center;
     margin: 0.5rem 0;
 }
+
+// Variáveis customizadas (se necessário, substitua com suas próprias cores ou use as do Bootstrap)
+$list-group-max-width: 460px;
+$list-group-margin-inline: 1.5rem;
+$list-group-border-radius: 0.5rem;
+$form-check-z-index: 2;
+
+// Mixin para foco e hover
+@mixin hover-focus-bg($color) {
+
+    &:hover,
+    &:focus {
+        background-color: $color;
+    }
+}
+
+.list-group {
+    width: 100%;
+}
+
+.form-check-input {
+    &.form-check-input-placeholder {
+        border-style: dashed;
+    }
+
+    &.form-check-input:checked+.form-checked-content {
+        opacity: 0.5;
+    }
+
+    &.form-check-input:checked+.list-group-item {
+        background-color: $body-bg;
+        border-color: $primary;
+        box-shadow: 0 0 0 2px $primary;
+    }
+
+    &[disabled]+.list-group-item {
+        pointer-events: none;
+        filter: none;
+        opacity: 0.5;
+    }
+}
+
+[contenteditable]:focus {
+    outline: 0;
+}
+
+.list-group-radio {
+    .list-group-item {
+        cursor: pointer;
+        border-radius: $list-group-border-radius;
+        @include hover-focus-bg($secondary-bg-subtle);
+    }
+
+    .form-check-input {
+        z-index: $form-check-z-index;
+        margin-top: -0.5em;
+
+        &:checked+.list-group-item {
+            background-color: $body-bg;
+            border-color: $primary;
+            box-shadow: 0 0 0 2px $primary;
+        }
+
+        &:disabled+.list-group-item {
+            pointer-events: none;
+            filter: none;
+            opacity: 0.5;
+        }
+    }
+}
