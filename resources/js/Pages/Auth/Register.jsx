@@ -120,7 +120,7 @@ export default function RegisterPage() {
                     </PrimaryButton>
                     <div className="text-center mt-3">
                         <span>Já tem uma conta? </span>
-                        <Link href="/login" className="text-primary text-decoration-none">
+                        <Link href={route('login')} className="text-primary text-decoration-none">
                             Faça login
                         </Link>
                     </div>

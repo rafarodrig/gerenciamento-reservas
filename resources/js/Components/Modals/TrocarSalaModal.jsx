@@ -1,4 +1,4 @@
-import { Modal, Form, Col, Row, Card, ListGroup, Container } from 'react-bootstrap';
+import { Modal, Form, Col, Row, Card, Container } from 'react-bootstrap';
 import TableSalasDisponiveisTroca from '../Tables/SalasDisponiveisTrocaTable';
 import { useState } from 'react';
 import FiltrosContainer from '../Filtros/FiltrosContainer';
@@ -9,20 +9,36 @@ import SalvarButton from '../Buttons/SalvarButton';
 import SalaCard from '../Cards/SalaCard';
 import PaginationControlls from '../Pagination/PaginationControlls';
 import { api } from '@/services/api';
+import { useAlert } from '@/contexts/AlertContext';
+import { useSimpleForm } from '@/hooks/useSimpleForm';
 
 export default function TrocarSalaModal({
   show,
-  onConfirm,
-  onCancel,
+  onClose,
   reserva,
-  setAlert,
 }) {
-  const [salaTroca, setSalaTroca] = useState(null);
+  const [salaNova, setSalaNova] = useState(null);
   const [paginationData, setPaginationData] = useState(null);
   const [editarRegistro, setEditarRegistro] = useState('atual');
   const [currentPage, setCurrentPage] = useState(1);
   const [datas, setDatas] = useState([])
 
+  const { showAlert } = useAlert();
+  const {
+    handleSubmit,
+    resetForm,
+  } = useSimpleForm({
+    initialValues: {
+      sala_nova: salaNova?.id || '',
+      opcao: editarRegistro
+    },
+    onSubmit: async (data) => {
+      const res = await api.put(`/reservas/${reserva?.id}`, data);
+      showAlert(res.data.message, 'success');
+      onClose();
+      resetForm();
+    },
+  });
 
   const handleChange = (e) => {
     setEditarRegistro(e.target.value);
@@ -30,30 +46,15 @@ export default function TrocarSalaModal({
   };
 
   const handleCancel = () => {
-    onCancel()
-    setSalaTroca(null)
+    onClose()
+    setSalaNova(null)
   }
 
-  const salaSelecionada = async (salaId) => {
-    try {
-      // (Opcional) Ative um loading visual aqui, se quiser
-      const res = await api.get(`/salas/${salaId}`);
-
-      if (res?.data) {
-        setSalaTroca(res.data); // Define a nova sala selecionada
-        setAlert({ show: true, type: "primary", message: `Sala ${res.data.numero} da unidade ${res.data.unidade} foi selecionada` })
-      } else {
-        console.warn('Sala não encontrada');
-      }
-    } catch (error) {
-      console.error('Erro ao buscar sala:', error);
-      // (Opcional) Defina um alerta/toast de erro para o usuário
-    } finally {
-      // (Opcional) Desative loading
-    }
+  const salaSelecionada = async (sala) => {
+    setSalaNova(sala); // Define a nova sala selecionada
+    showAlert(`Sala ${sala.numero} da unidade ${sala.unidade} foi selecionada`, 'success');
   };
 
-  // if (!salas) return null;
 
   return (
     <Modal show={show} onHide={handleCancel} size="xl" centered animation>
@@ -155,9 +156,9 @@ export default function TrocarSalaModal({
               {/* <Col> */}
               <div className="d-flex flex-fill flex-column w-100">
                 {/* <span className="mx-2 fw-semibold text-uppercase small text-muted">Nova Sala</span> */}
-                {salaTroca ? (
+                {salaNova ? (
 
-                  <SalaCard className='p-2 flex-fill' sala={salaTroca} badge={<span className='tw-bage tw-badge--blue-lg' >Sala Nova</span>} />
+                  <SalaCard className='p-2 flex-fill' sala={salaNova} badge={<span className='tw-bage tw-badge--blue-lg' >Sala Nova</span>} />
 
                 ) : (
                   <Card className=' flex-fill container-style ' >
@@ -210,7 +211,12 @@ export default function TrocarSalaModal({
       </Form>
       <Modal.Footer className="justify-content-end">
         <CancelarButton onClick={handleCancel} />
-        <SalvarButton isEditing={true} onClick={() => onConfirm(salaTroca.id)} disabled={!salaTroca}></SalvarButton>
+        <SalvarButton
+          isEditing={true}
+          onClick={() => handleSubmit(salaNova.id)}
+          disabled={!salaNova}>
+
+        </SalvarButton>
       </Modal.Footer>
     </Modal >
   );

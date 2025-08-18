@@ -1,0 +1,112 @@
+// @import 'react-calendar/dist/Calendar.css';
+
+
+.react-calendar {
+
+    @extend .container-style;
+    padding: 1rem;
+    background-color: $white;
+    border: 1px solid $gray-300;
+    width: fit-content;
+
+    &__viewContainer {
+        padding: 1rem;
+        border-radius: $border-radius-lg;
+        background-color: white;
+    }
+
+
+    &__navigation {
+        display: flex;
+        gap: .5rem;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+
+        button {
+            @extend .btn;
+            @extend .btn-primary;
+            @extend .btn-sm;
+        }
+    }
+
+    &__month-view {
+
+        abbr {
+            text-decoration: none;
+            color: $gray-600;
+        }
+
+        &__days,
+        &__weekdays {
+            display: grid !important;
+            grid-template-columns: repeat(7, 1fr) !important;
+            justify-content: center !important;
+            gap: .5rem;
+        }
+
+        &__days__day,
+        &__weekdays__weekday {
+            width: 5rem;
+            height: 2.5rem;
+        }
+
+        &__days__day--weekend {
+            background-color: mix($danger, $white, 10%) !important; // tom suave do vermelho
+
+            abbr {
+                color: $danger !important;
+            }
+        }
+
+        &__days__day--neighboringMonth {
+            abbr {
+                opacity: 0.4;
+            }
+
+            background-color: transparent;
+        }
+
+
+    }
+
+    &__tile {
+        border-radius: $border-radius-lg;
+        background-color: $light;
+        padding: 0;
+        border: none;
+
+        &--now {
+            background-color: $info;
+
+            abbr {
+                color: $white !important;
+            }
+        }
+
+        &--active {
+            background-color: $primary;
+
+            abbr {
+                color: $white !important;
+            }
+        }
+
+        &--reserved {
+            background-color: $primary;
+
+            abbr {
+                color: $white !important;
+            }
+        }
+
+        &:disabled {
+            background-color: $gray-200;
+            cursor: not-allowed;
+        }
+
+        &:hover:not(:disabled):not(.react-calendar__tile--now):not(.react-calendar__tile--active):not(.react-calendar__tile--reserved) {
+            background-color: $gray-300 !important;
+        }
+
+    }
+}

@@ -51,14 +51,13 @@ class ReservaService
         }
     }
 
-    public function obterReservasPaginadas(array $dados)
+    public function obterTabDatas(array $dados)
     {
 
         $query = $this->getQueryReservas($dados);
 
         // Clona a query original antes de modificá-la
         $queryClonada = clone $query;
-
 
         if (!empty($dados["data_inicio"])) {
             $queryClonada->where("data", '>=', $dados["data_inicio"]);
@@ -71,26 +70,8 @@ class ReservaService
         // Busca todas as datas disponíveis
         $datas = $queryClonada->select('data')->distinct()->orderBy("data")->pluck('data');
 
-        // Define a data padrão a ser usada na listagem principal
-
-        if (!empty($dados["tabData"]) && $datas->contains($dados["tabData"])) {
-            $data = $dados["tabData"];
-        } else {
-            $data = $datas->first() ?? $dados["data_inicio"];
-        }
-
-        if ($data) {
-            $query->where("data", '=', $data);
-        }
-        // Log::debug('Data selecionada para listagem:', ['data' => $data]);
-
-        // Lista paginada de reservas para a data selecionada
-        $reservas = $query->orderBy("data")->paginate(20);
-
         return [
             "datas" => $datas,
-            "reservas" => $reservas,
-            "currentTab" => $data
         ];
     }
     protected function getQueryReservas(array $dados)
@@ -125,7 +106,7 @@ class ReservaService
         return $query;
     }
 
-    public function obterTabData(array $dados)
+    public function obterReservasPaginadas(array $dados)
     {
 
         $query = $this->getQueryReservas($dados);
@@ -133,7 +114,6 @@ class ReservaService
         $query->where("data", '=', $dados["tabData"]);
 
         return [
-            "currentTab" => $dados["tabData"],
             "reservas" => $query->orderBy("data")->paginate(20),
         ];
     }

@@ -1,13 +1,21 @@
 import { Alert, Container } from "react-bootstrap";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 
-export default function TableAlert({ children }) {
+export default function TableAlert({
+    className = "",
+    children
+}) {
     return (
-        <Container className='container-style overflow-auto p-3'  >
-            <Alert variant="warning" className="d-flex align-items-center gap-2 shadow-sm m-0 ">
-                <ExclamationTriangleFill className="me-2 text-warning" size={20} />
-                <div><strong>{children}</strong></div>
+        <div className="w-100 h-100 d-flex">
+            <Alert variant="warning" className={`d-flex justify-content-center align-items-center gap-2 shadow-sm m-0 ${className}`}>
+                <ExclamationTriangleFill
+                    className="me-2 text-warning flex-shrink-0"
+                    size={20}
+                />
+                <div className="text-truncate">
+                    <strong>{children}</strong>
+                </div>
             </Alert>
-        </Container>
+        </div>
     )
 }

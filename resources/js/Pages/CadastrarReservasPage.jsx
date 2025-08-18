@@ -11,13 +11,17 @@ import { dataAtual } from '@/dates';
 import FiltrosContainer from '@/Components/Filtros/FiltrosContainer';
 import TituloData from '@/Components/TituloData';
 import { api } from '@/services/api';
+import { Button } from 'react-bootstrap';
+import CalendarioReservaModal from '@/Components/Modals/CalendarioReservaModal';
 
 export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
   const dataAtualISO = dataAtual("ISO")
   const title = "Cadastrar Reserva"
   const tabelaRef = useRef(null);
 
-  const [salasDisponiveis, setSalasDisponiveis] = useState(null);
+  const [showCalendarioModal, setShowCalendarioModal] = useState(false);
+
+  const [salasDisponiveis, setSalasDisponiveis] = useState([]);
   const [turmasDisponiveis, setTurmasDisponiveis] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,6 +29,8 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
   const [cadastrarReserva, setCadastrarReserva] = useState(null);
   const [reserva, setReserva] = useState(null);
   const [isDisabledBtnReservar, setIsDisabledBtnReservar] = useState(false);
+
+  const [showCadastrarReservaModal, setShowCadastrarReservaModal] = useState(false)
 
   const [formData, setFormData] = useState({
     data_inicio: dataAtualISO,
@@ -106,6 +112,14 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
     });
   };
 
+
+  const handleCadastrarReserva = (salaId) => {
+    const sala = salasDisponiveis.salas.data.find(s => s.id === salaId);
+    setCadastrarReserva(sala);
+    setShowCadastrarReservaModal(true);
+    console.log(sala)
+  }
+
   return (
     <>
       <Head title={title} />
@@ -128,6 +142,7 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
         {/* Filtros Aplicados */}
         <FiltrosContainer title='Filtros Aplicados' className={"filtros-aplicados page-component py-3"} >
           <FiltrosBadge formData={formData} objFiltros={filtrosBadge} onRemoverData={handleRemoverData} />
+          <Button onClick={() => setShowCalendarioModal(true)}>Ver Calendário</Button>
         </FiltrosContainer>
 
         {/* Tabela Salas Disponiveis */}
@@ -142,19 +157,26 @@ export default function CadastrarReserva({ numeros, maquinas_tipos, tipos }) {
             <TableSalasDisponiveis
               onPageChange={(page) => buscar(page, false)}
               data={salasDisponiveis}
-              onReservar={(id) => setCadastrarReserva(id)}
+              onReservar={handleCadastrarReserva}
               isDisabledBtnReservar={isDisabledBtnReservar}
             />
           </div>
         </CSSTransition>
 
+        <CalendarioReservaModal
+          show={showCalendarioModal}
+          onHide={() => setShowCalendarioModal(false)}
+          datasReserva={reserva?.datas || []}
+        />
+
         <CadastrarReservaContainer
           fetchTurmasDisponiveis={fetchTurmasDisponiveis}
           turmasDisponiveis={turmasDisponiveis}
-          salaId={cadastrarReserva}
+          sala={cadastrarReserva}
           reserva={reserva}
+          showCadastrarReservaModal={showCadastrarReservaModal}
+          setShowCadastrarReservaModal={setShowCadastrarReservaModal}
           onResult={(animation) => buscar(currentPage, animation)}
-          resetId={() => setCadastrarReserva(null)}
         />
       </AuthenticatedLayout>
     </>

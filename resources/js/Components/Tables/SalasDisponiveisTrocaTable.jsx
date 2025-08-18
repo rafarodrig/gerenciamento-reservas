@@ -52,6 +52,14 @@ export default function TableSalasDisponiveisTroca({
 
   const salas = data?.salas?.data ?? [];
 
+  const handleReservar = (salaId) => {
+    const sala = salas.find(s => s.id === salaId);
+    if (sala) {
+      onReservar(sala);
+    }
+  };
+
+
   return (
     <>
       <LoadingOverlay isVisible={isFetching} />
@@ -100,7 +108,7 @@ export default function TableSalasDisponiveisTroca({
                       <Button
                         variant="primary"
                         size="sm"
-                        onClick={() => onReservar(sala.id)}
+                        onClick={() => handleReservar(sala.id)}
                       >
                         Reservar
                       </Button>

@@ -25,6 +25,10 @@
     transition: all 400ms ease;
 }
 
+.tabela-reservas {
+    // min-height: 400px;
+}
+
 .tabela-reservas,
 .tabela-salas,
 .tabela-consulta,
@@ -32,7 +36,6 @@
     margin-bottom: 0;
     width: 100%;
     table-layout: auto;
-
 
     .card,
     .card-header,
@@ -58,6 +61,18 @@
 
 }
 
+
+
+@include media-breakpoint-down(sm) {
+
+    .tabela-reservas {
+        font-size: 0.75rem;
+
+        // .btn-acao {
+        //     width: ;
+        // }
+    }
+}
 
 .tabela-salas {
     overflow: hidden;

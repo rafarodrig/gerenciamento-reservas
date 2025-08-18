@@ -29,7 +29,7 @@ class AuthController extends Controller
             // Regenerar sessão por segurança
             $request->session()->regenerate();
 
-
+            // return redirect()->intended('/consultar-reservas')->with('success', 'Login realizado com sucesso.');
             return response()->json([
                 'message' => 'Login realizado com sucesso.',
                 'user' => Auth::user(),

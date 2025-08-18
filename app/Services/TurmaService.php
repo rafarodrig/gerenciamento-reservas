@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Turma;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class TurmaService
 {
     public static function turmasDisponiveisReserva(Request $request): array
@@ -96,16 +97,16 @@ class TurmaService
             'docente' => $dados['docente'],
             'lotacao' => $dados['lotacao'],
             'turno'   => $dados['turno'],
-            'tipo'    => $dados['reserva_tipo'],
+            'tipo'    => $dados['tipo'],
         ]);
     }
-        public function atualizarTurma(Turma $turma, $request)
+    public function atualizarTurma(Turma $turma, $request)
     {
         $turma->update([
-            "nome"=> $request->nome,
-            "curso"=> $request->curso,
-            "docente"=> $request->docente,
-            "lotacao"=> $request->lotacao
+            "nome" => $request->nome,
+            "curso" => $request->curso,
+            "docente" => $request->docente,
+            "lotacao" => $request->lotacao
         ]);
     }
 

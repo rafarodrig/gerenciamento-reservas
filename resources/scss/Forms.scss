@@ -24,6 +24,76 @@
     }
 }
 
+.react-select-container.is-invalid {
+
+    .react-select__control {
+        border-color: #dc3545 !important;
+
+        &--is-focused {
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+        }
+    }
+
+    .invalid-icon {
+        color: #dc3545;
+        position: absolute;
+        top: 50%;
+        right: 30px;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 4;
+    }
+
+}
+
+.react-select {
+
+    &__control {
+        text-align: left;
+        border-radius: $border-radius-lg !important;
+        padding: 0.75rem;
+        border: 1px solid $gray-400 !important;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+        min-height: 38px;
+
+        &--is-focused {
+            border-color: #86b7fe !important;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+        }
+
+    }
+
+    &__input-container {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    &__placeholder,
+    &__single-value {
+        margin: 0 !important;
+    }
+
+    &__value-container {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    &__indicator-separator {
+        display: none;
+    }
+
+    &__indicator {
+        padding: 0 !important;
+    }
+
+    &__menu {
+        @extend .container-style;
+        z-index: 9999;
+        text-align: left;
+    }
+}
+
+
 .unidade-radio-group {
     display: flex;
     gap: 1.5rem;

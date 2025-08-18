@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form, Col, Nav, Row } from 'react-bootstrap';
 import BuscarButton from '../Buttons/BuscarButton';
 import { dataAtual } from '@/dates';
+import SelectInput from '../Inputs/SelectInput';
 
 const DIAS_SEMANA = [
   ['Seg', '1'],
@@ -175,86 +176,98 @@ export default function CadastrarReservaForm({
           {/* Tipo de Reserva */}
           <Col md={3}>
             <Form.Label htmlFor="reserva_tipo">Tipo de Reserva</Form.Label>
-            <Form.Select
+            <SelectInput
               name="reserva_tipo"
               id="reserva_tipo"
               value={formData.reserva_tipo || ""}
-              onChange={(e) => { handleChange(e); }}
-            >
-              <option value="Avulsa">Avulsa</option>
-              <option value="Graduação">Graduação</option>
-              <option value="Pos-graduacao">Pós-graduação</option>
-              <option value="FIC">FIC</option>
-            </Form.Select>
+              onChange={handleChange}
+              options={
+                [
+                  { value: "Avulsa", label: "Avulsa" },
+                  { value: "Graduação", label: "Graduação" },
+                  { value: "Pos-graduacao", label: "Pós-graduação" },
+                  { value: "FIC", label: "FIC" },
+                ]
+              }
+            />
+
           </Col>
 
           {/* Turno */}
           <Col md={3}>
             <Form.Label htmlFor="turno">Turno</Form.Label>
-            <Form.Select
+            <SelectInput
               name="turno"
               id="turno"
               value={formData.turno || ""}
               onChange={handleChange}
-            >
-              <option value="Manhã">Manhã</option>
-              <option value="Tarde">Tarde</option>
-              <option value="Noite">Noite</option>
-            </Form.Select>
+              options={[
+                { value: "Manhã", label: "Manhã" },
+                { value: "Tarde", label: "Tarde" },
+                { value: "Noite", label: "Noite" },
+              ]}
+            />
+
           </Col>
 
           {/* Número da Sala */}
           <Col md={3}>
             <Form.Label htmlFor="numero">N.º da Sala</Form.Label>
-            <Form.Select
+            <SelectInput
               name="numero"
               id="numero"
+              isSearchable={true}
               value={formData.numero || ""}
               onChange={handleChange}
-            >
-              <option value="">Qualquer</option>
-              {numeros.map(n => (
-                <option key={n} value={n}>{n}</option>
-              ))}
-            </Form.Select>
+              options={[
+                { value: "", label: "Qualquer" },
+                ...numeros.map(n => ({ value: n, label: n })),
+              ]}
+            />
           </Col>
           {/* Unidade */}
           <Col md={3}>
             <Form.Label>Unidade</Form.Label>
-            <Form.Select
+            <SelectInput
               name="unidade"
               value={formData.unidade}
               onChange={handleChange}
-            >
-              <option value="todas">Todas</option>
-              <option value="1">Unidade 1</option>
-              <option value="2">Unidade 2</option>
-            </Form.Select>
+              options={
+                [
+                  { value: "todas", label: "Todas" },
+                  { value: "1", label: "Unidade 1" },
+                  { value: "2", label: "Unidade 2" },
+                ]
+              }
+            />
+
           </Col>
 
           <Col md={3}>
             <Form.Label htmlFor="tipo_sala_id">Tipo de Sala</Form.Label>
-            <Form.Select
-              name="tipo_sala_id"
+            <SelectInput
               id="tipo_sala_id"
+              name="tipo_sala_id"
               value={formData.tipo_sala_id || ""}
               onChange={handleChange}
-            >
-              <option value="">Qualquer</option>
-              {Object.entries(tipos).map(([id, nome]) => (
-                <option key={id} value={id}>{nome}</option>
-              ))}
-            </Form.Select>
+              options={[
+                { value: "", label: "Qualquer" },
+                ...Object.entries(tipos).map(([id, nome]) => ({
+                  value: id,
+                  label: nome,
+                })),
+              ]}
+            />
           </Col>
 
 
           {/* Lotação */}
           <Col md={3}>
-            <Form.Label htmlFor="lotacao">Lotação</Form.Label>
+            <Form.Label htmlFor="inp-lotacao">Lotação</Form.Label>
             <Form.Control
               type="number"
               name="lotacao"
-              id="lotacao"
+              id="inp-lotacao"
               placeholder="Qualquer"
               min={1}
               value={formData.lotacao || ""}
@@ -278,17 +291,21 @@ export default function CadastrarReservaForm({
 
           <Col md={3}>
             <Form.Label htmlFor="tipo_maquina_id">Tipo de Máquinas</Form.Label>
-            <Form.Select
-              name="tipo_maquina_id"
+            <SelectInput
               id="tipo_maquina_id"
+              name="tipo_maquina_id"
               value={formData.tipo_maquina_id || ""}
               onChange={handleChange}
-            >
-              <option value="">Qualquer</option>
-              {Object.entries(maquinasTipos).map(([id, nome]) => (
-                <option key={id} value={id}>{nome}</option>
-              ))}
-            </Form.Select>
+              options={[
+                { value: "", label: "Qualquer" },
+                ...Object.entries(maquinasTipos).map(([id, nome]) => ({
+                  value: id,
+                  label: nome,
+                })),
+              ]}
+
+              isSearchable={false} // 👈 desativa o campo de busca
+            />
           </Col>
 
 

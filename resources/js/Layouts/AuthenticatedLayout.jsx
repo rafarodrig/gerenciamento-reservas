@@ -5,16 +5,17 @@ import { CalendarCheck, ClipboardPlus, LayoutDashboard } from 'lucide-react';
 import { router, usePage } from '@inertiajs/react';
 import { logout } from '@/services/auth';
 import SenacLogo from '@/Components/SenacLogo';
+import AlertPop from '@/Components/Alerts/Alert';
 
 export default function AuthenticatedLayout({ children }) {
 
   const { auth } = usePage().props;
 
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className=" border" >
       {/* Header fixo no topo com Container interno */}
-      <header className=" sticky-top z-3">
-        <Container fluid="xxl" className="px-3">
+      <header className=" ">
+        <Container fluid className="">
           <NavBar expand="md" className="container-style my-2 p-2">
             {/* LOGO Senac no início */}
             <div className="mx-2 d-flex align-items-center">
@@ -62,14 +63,14 @@ export default function AuthenticatedLayout({ children }) {
       </header>
 
       {/* Conteúdo principal */}
-      <Container fluid="xxl" className="flex-grow-1 my-4 px-3">
+      <Container fluid >
         {children}
       </Container>
-
+      <AlertPop />
       {/* Rodapé */}
-      <footer className="text-center py-4 bg-light mt-auto border-top">
+      {/* <footer className="text-center py-4 bg-light mt-auto border-top">
         <small>&copy; {new Date().getFullYear()} Meu Sistema</small>
-      </footer>
+      </footer> */}
     </div>
   );
 }

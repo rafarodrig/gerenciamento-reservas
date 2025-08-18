@@ -95,7 +95,7 @@ export default function GerenciarTiposModal({
                                         {errorsSalaTipo?.nome}
                                     </Form.Control.Feedback>
                                 </Form.Group>
-                                <Button variant="primary" className="ms-2" onClick={adicionarTipoSala}>
+                                <Button variant="primary" className="ms-2 " onClick={adicionarTipoSala}>
                                     <CirclePlus />
                                 </Button>
                             </Form>

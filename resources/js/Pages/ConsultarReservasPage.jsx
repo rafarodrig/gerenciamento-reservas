@@ -1,36 +1,25 @@
 import { Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import ReservaForm from '@/Components/Forms/ConsultarReservasForm';
 import ModalEditarReserva from '@/Components/Modals/EditarReservaModalContainer';
 import ModalDeletarReserva from '@/Components/Modals/DeletarReservaModal';
 import { dataAtual } from '@/dates';
 import TabelaReservas from '@/Components/Tables/ReservasTable';
-import TabDatas from '@/Components/TabDatas';
-import { CSSTransition } from 'react-transition-group';
 import TituloData from '@/Components/TituloData';
-import AlertPop from '@/Components/Alerts/Alert';
-import { api } from '@/services/api';
+import { Col, Row } from 'react-bootstrap';
 
 export default function ConsultarReservas({ numeros }) {
 
   const title = "Consultar Reservas"
 
-  const tabelaRef = useRef(null);
-  const [reservasTabela, setReservasTabela] = useState([]);
-  const [isActive, setIsActive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentTab, setCurrentTab] = useState(null);
+
   const [editarReserva, setEditarReserva] = useState(null);
   const [deletarReserva, setDeletarReserva] = useState(null);
-  const [tabDados, setTabDados] = useState({
-    currentTab: null,
-    datas: []
-  })
-
-  const [alert, setAlert] = useState({ show: false, type: null, message: null })
 
   const [showEditarReservaModal, setShowEditarReservaModal] = useState(false);
-
 
   const [formData, setFormData] = useState({
     turma: "",
@@ -46,99 +35,66 @@ export default function ConsultarReservas({ numeros }) {
   });
 
   const handleResult = (msg) => {
-    setAlert(msg)
-    buscar(currentPage, true, tabDados.currentTab);
+
+    // buscar(currentPage, true, currentTab);
   }
 
-
-  const buscar = async (page, animation, tabData, customFormData = null) => {
-
-    const finalFormData = customFormData || formData;
-
-    if (animation) setIsActive(false);
-
-    api.get('/reservas', { params: { ...finalFormData, page, tabData } })
-      .then((res) => {
-        const dados = res.data
-        setReservasTabela(dados);
-        setTabDados((prev) => ({ ...prev, datas: dados.datas, currentTab: dados.currentTab }))
-        setCurrentPage(page);
-      })
-      .catch((err) => {
-        setAlert({ show: true, type: "danger", message: err.response?.data?.message })
-      })
-      .finally(() => {
-        setIsActive(true);
-      });
+  const handleEditarReserva = (reserva) => {
+    setEditarReserva(reserva);
+    setShowEditarReservaModal(true)
+    // abrir modal de edição aqui
   };
 
-  const fetchTab = (tabData) => {
-    api.get('/reservas/tabData', { params: { ...formData, tabData } })
-      .then((res) => {
-        const dados = res.data
-        setReservasTabela(dados);
-        setTabDados((prev) => ({ ...prev, currentTab: tabData }))
-        console.log(dados)
-      }).catch((err) => {
-        setAlert({ show: true, type: "danger", message: err.response?.data?.message })
-      });
-  }
-
-  const handleEditarReserva = (reservaId) => {
-    const reservas = reservasTabela?.reservas?.data;
-
-    const reserva = reservas.find(r => r.id === reservaId);
-    console.log(reserva)
-    if (reserva) {
-      setEditarReserva(reserva);
-      setShowEditarReservaModal(true)
-    }
+  const handleDeletarReserva = (reserva) => {
+    setDeletarReserva(reserva);
+    // abrir modal de confirmação aqui
   };
 
   return (
     <>
       <Head title={title} />
       <AuthenticatedLayout>
-        <TituloData className='page-component' titulo={title} descricao={"Edite, exclua e gerencie as reservas do sistema"} />
-        <ReservaForm
-          className='page-component'
-          formData={formData}
-          setFormData={(formData) => setFormData(formData)}
-          numeros={numeros}
-          onBuscar={() => buscar(null, true)}
-        />
-
-
-        <CSSTransition
-          in={isActive}
-          timeout={400}
-          classNames="fade-table"
-          nodeRef={tabelaRef}
-          unmountOnExit
-        >
-          <div ref={tabelaRef} className="tabela-reservas page-component" >
-            <TabDatas
-              datas={tabDados.datas}
-              currentTab={tabDados.currentTab}
-              setCurrentData={(data) => { fetchTab(data) }}
+        <Row className='g-4 border h-100' >
+          <Col xs={12} className=''>
+            <TituloData
+              className="page-component"
+              titulo={title}
+              descricao="Edite, exclua e gerencie as reservas do sistema"
             />
-            <TabelaReservas
-              onPageChange={(page) => buscar(page, false)}
-              data={reservasTabela}
-              editarReserva={handleEditarReserva}
-              deletarReserva={(id) => setDeletarReserva(id)}
+          </Col>
+          <Col md={12} xl={3} >
+            <ReservaForm
+              className="page-component"
+              formData={formData}
+              setFormData={setFormData}
+              numeros={numeros}
+              onBuscar={() => setCurrentPage(1)}
             />
-          </div>
-        </CSSTransition>
+          </Col>
+
+          <Col md={12} xl={9} >
+            <div className="tabela-reservas h-100 page-component">
+              <TabelaReservas
+                unidade={formData.unidade}
+                currentPage={currentPage}
+                currentTab={currentTab}
+                setCurrentTab={setCurrentTab}
+                formData={formData}
+                onEdit={handleEditarReserva}
+                onDelete={handleDeletarReserva}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+
+          </Col>
+        </Row>
 
         {/*Container Reserva*/}
         <ModalEditarReserva
           showEditarReservaModal={showEditarReservaModal}
           setShowEditarReservaModal={setShowEditarReservaModal}
           reserva={editarReserva}
-          onResetId={() => setEditarReserva(null)}
           onResult={handleResult}
-          setAlert={setAlert}
         />
 
         <ModalDeletarReserva
@@ -146,12 +102,8 @@ export default function ConsultarReservas({ numeros }) {
           onResetId={() => setDeletarReserva(null)}
           onResult={handleResult}
         />
-        {/* Alert Popup */}
-        <AlertPop
-          alert={alert} setAlert={setAlert}
-        />
 
-      </AuthenticatedLayout>
+      </AuthenticatedLayout >
     </>
   )
 }

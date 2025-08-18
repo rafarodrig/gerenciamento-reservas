@@ -1,38 +1,60 @@
 import { Col, Form, Row } from "react-bootstrap";
 import CancelarButton from "../Buttons/CancelarButton";
 import SalvarButton from "../Buttons/SalvarButton";
-import { CheckCircleIcon, PlusCircleIcon } from "lucide-react";
+import { useAlert } from "@/contexts/AlertContext";
+import { useSimpleForm } from "@/hooks/useSimpleForm";
+import { api } from "@/services/api";
+import SelectInput from "../Inputs/SelectInput";
 
 
 export default function FormSalas({
+    sala,
     isEditing,
-    formData,
-    setFormData,
-    setSalaEditando,
-    resetForm,
-    loading,
-    handleSubmitCadastrar,
-    handleSubmitEditar,
-    setShowEditarModal,
-    setShowCadastrarModal,
     tiposSala,
     tiposMaquina,
-    errors,
-    setErrors,
+    onClose,
+    onResult,
 }) {
 
-    // Manipulador para atualizar o estado do formulário
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-        // Limpa o erro do campo específico ao ser alterado
-        if (errors[name]) {
-            setErrors(prev => ({ ...prev, [name]: null }));
-        }
+    const { showAlert } = useAlert();
+    const {
+        formData,
+        loading,
+        errors,
+        handleChange,
+        handleSubmit,
+        resetForm,
+    } = useSimpleForm({
+        initialValues: {
+            numero: sala?.numero || '',
+            tipo_sala_id: sala?.tipo_sala_id || '',
+            unidade: sala?.unidade || '1',
+            lotacao: sala?.lotacao || '',
+            maquinas_qtd: sala?.maquinas_qtd || '',
+            tipo_maquina_id: sala?.tipo_maquina_id || '',
+            descricao: sala?.descricao || '',
+        },
+        onSubmit: async (data) => {
+            if (isEditing) {
+                const res = await api.put(`/salas/${sala?.id}`, data);
+                showAlert(res.data.message, 'success');
+            } else {
+                const res = await api.post(`/salas`, data);
+                showAlert(res.data.message, 'success');
+            }
+            onResult();
+            onClose();
+            resetForm();
+        },
+    });
+
+    const handleCancel = () => {
+        resetForm();
+        onClose?.();
     };
 
     return (
-        <Form onSubmit={isEditing ? handleSubmitEditar : handleSubmitCadastrar}>
+        <Form onSubmit={handleSubmit}>
             <div className="form-section container-style">
                 <div className="form-section-title">Informações Básicas</div>
                 <Row>
@@ -87,23 +109,24 @@ export default function FormSalas({
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>
+                            <Form.Label >
                                 Tipo <span className="text-danger">*</span>
                             </Form.Label>
-                            <Form.Select
+                            <SelectInput
+                                id="tipo_sala_id"
                                 name="tipo_sala_id"
                                 value={formData.tipo_sala_id}
                                 onChange={handleChange}
-                                required
-                                isInvalid={!!errors?.tipo_sala_id}
-                            >
-                                <option value="">Selecione</option>
-                                {tiposSala.map((tipo) => (
-                                    <option key={tipo.id} value={tipo.id}>
-                                        {tipo.nome}
-                                    </option>
-                                ))}
-                            </Form.Select>
+                                error={errors?.tipo_sala_id}
+                                options={[
+                                    { value: "", label: "Selecione" },
+                                    ...tiposSala.map(tipo => ({
+                                        value: tipo.id,
+                                        label: tipo.nome,
+                                    }))
+                                ]
+                                }
+                            />
                             <Form.Control.Feedback type="invalid">
                                 {errors?.tipo_sala_id}
                             </Form.Control.Feedback>
@@ -159,21 +182,20 @@ export default function FormSalas({
                     <Col md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="tipo_maquina_id">Tipo de Máquinas</Form.Label>
-                            <Form.Select
+                            <SelectInput
                                 id="tipo_maquina_id"
                                 name="tipo_maquina_id"
                                 value={formData.tipo_maquina_id}
                                 onChange={handleChange}
-                                isInvalid={!!errors?.tipo_maquina_id}
-                            >
-                                <option value="">Selecione</option>
-                                {tiposMaquina.map((tipo) => (
-                                    <option key={tipo.id} value={tipo.id}>
-                                        {tipo.nome}
-                                    </option>
-                                ))}
-                            </Form.Select>
-
+                                error={errors?.tipo_maquina_id}
+                                options={[
+                                    { value: "", label: "Selecione" },
+                                    ...tiposMaquina.map(tipo => ({
+                                        value: tipo.id,
+                                        label: tipo.nome,
+                                    }))
+                                ]}
+                            />
                             {errors?.tipo_maquina_id ? (
                                 <Form.Control.Feedback type="invalid">
                                     {errors.tipo_maquina_id}
@@ -217,19 +239,13 @@ export default function FormSalas({
             </div>
 
             <div className="d-flex justify-content-end gap-2 mt-4">
-                <CancelarButton
-                    onClick={() => {
-                        if (isEditing) {
-                            setShowEditarModal(false);
-                            setSalaEditando(null);
-                        } else {
-                            setShowCadastrarModal(false);
-                        }
-                        resetForm();
-                    }}
+                <CancelarButton onClick={handleCancel} disabled={loading} />
+                <SalvarButton
+                    type="submit"
                     disabled={loading}
-                ></CancelarButton>
-                <SalvarButton type="submit" isEditing={isEditing} loading={loading} disabled={loading} />
+                    isEditing={isEditing}
+                    loading={loading}
+                />
 
             </div>
         </Form>

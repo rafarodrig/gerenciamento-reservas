@@ -1,3 +1,4 @@
+import AlertPop from '@/Components/Alerts/Alert';
 import { Container } from 'react-bootstrap';
 
 export default function GuestLayout({ children }) {
@@ -8,7 +9,7 @@ export default function GuestLayout({ children }) {
             <Container fluid="xxl" className=" px-3">
                 {children}
             </Container>
-
+            <AlertPop />
         </div>
     );
 }

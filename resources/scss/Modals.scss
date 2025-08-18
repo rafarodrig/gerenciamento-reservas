@@ -6,13 +6,18 @@
 
 .modal-header,
 .modal-footer {
-    display: inline-flex;
     border: none;
 }
 
-.modal-header {
-    padding: 1.25rem;
+.modal-footer {
+    gap: .5rem;
+    flex-wrap: nowrap;
 }
+
+.modal-header {
+    // padding: 1.25rem;
+}
+
 
 .modal-title {
     display: inline-flex;

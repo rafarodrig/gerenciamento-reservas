@@ -23,7 +23,7 @@ class StoreReservaRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            "turma" => "nullable|exists:turmas,id",
+            "turma" => "required|exists:turmas,id",
             "sala" => "required|exists:salas,id",
 
 

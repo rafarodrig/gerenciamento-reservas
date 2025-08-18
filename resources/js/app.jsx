@@ -2,6 +2,7 @@ import './bootstrap';
 import '../scss/app.scss';
 
 import React from 'react';
+import { AlertProvider } from '@/contexts/AlertContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -23,7 +24,9 @@ createInertiaApp({
         root.render(
             <React.StrictMode>
                 <QueryClientProvider client={queryClient}>
-                    <App {...props} />
+                    <AlertProvider>
+                        <App {...props} />
+                    </AlertProvider>
                 </QueryClientProvider>
             </React.StrictMode>
         );

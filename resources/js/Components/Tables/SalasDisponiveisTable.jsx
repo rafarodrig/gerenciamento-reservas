@@ -6,6 +6,7 @@ import { DoorOpenIcon } from 'lucide-react';
 
 
 export default function SalasDisponiveisTable({ data, onReservar, onPageChange, isDisabledBtnReservar }) {
+
   if (!data) return null;
 
   const salas = data?.salas.data;
@@ -26,7 +27,6 @@ export default function SalasDisponiveisTable({ data, onReservar, onPageChange, 
     };
   }
 
-
   if (!salas || salas.length === 0) {
     return (
       <Alert variant="warning" className="d-flex align-items-center gap-2 shadow-sm border-1 my-3">
@@ -38,56 +38,51 @@ export default function SalasDisponiveisTable({ data, onReservar, onPageChange, 
 
   return (
     <>
-      <Card className="border-0">
-        <Card.Header className="border-0 d-flex align-items-center">
-          <DoorOpenIcon className="me-2 text-primary" />
-          <strong>Salas disponíveis</strong>
-        </Card.Header>
-        <Card.Body className="p-0">
-          <Table hover responsive className=" text-center align-middle ">
-            <thead className="table-light">
-              <tr>
-                <th>Sala</th>
-                <th>Tipo</th>
-                {data.unidade === "todas" && <th>Unidade</th>}
-                <th>Lotação</th>
-                <th>N.º Máquinas</th>
-                <th>Tipo de Máquinas</th>
-                <th >Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              {salas.map((sala) => (
-                <tr key={sala.id}>
-                  <td>{sala.numero}</td>
-                  <td>{sala.tipo_sala.nome}</td>
-                  {data.unidade === "todas" &&
-                    <td>
-                      Un.{sala.unidade}
-                    </td>
-                  }
-                  <td>{sala.lotacao}</td>
-                  <td>{sala.maquinas_qtd}</td>
-                  <td>{sala.tipo_maquina.nome}</td>
-                  <td>
-                    <div className='action-buttons'>
-                      <PrimaryButton
-                        className='btn-acao'
-                        size="sm"
-                        onClick={() => onReservar(sala.id)}
-                        disabled={isDisabledBtnReservar}
-                      >
-                        Reservar
-                      </PrimaryButton>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Card.Body>
-      </Card>
-
+      <div className="d-flex align-items-center mb-3">
+        <DoorOpenIcon className="me-2 text-primary" />
+        <strong>Salas disponíveis</strong>
+      </div>
+      <Table hover responsive className=" text-center align-middle ">
+        <thead className="table-light">
+          <tr>
+            <th>Sala</th>
+            <th>Tipo</th>
+            {data.unidade === "todas" && <th>Unidade</th>}
+            <th>Lotação</th>
+            <th>N.º Máquinas</th>
+            <th>Tipo de Máquinas</th>
+            <th >Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {salas.map((sala) => (
+            <tr key={sala.id}>
+              <td>{sala.numero}</td>
+              <td>{sala.tipo_sala.nome}</td>
+              {data.unidade === "todas" &&
+                <td>
+                  Un.{sala.unidade}
+                </td>
+              }
+              <td>{sala.lotacao}</td>
+              <td>{sala.maquinas_qtd}</td>
+              <td>{sala.tipo_maquina.nome}</td>
+              <td>
+                <div className='action-buttons'>
+                  <PrimaryButton
+                    className='btn-acao'
+                    size="sm"
+                    onClick={() => onReservar(sala.id)}
+                    disabled={isDisabledBtnReservar}
+                  >
+                    Reservar
+                  </PrimaryButton>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
       <PaginationControlls className={"d-flex justify-content-center mt-3"} paginationData={paginationData} handlePageChange={onPageChange} />
 
     </>

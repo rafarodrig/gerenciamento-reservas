@@ -5,6 +5,7 @@ export default function PrimaryButton({
     className = "",
     disabled,
     children,
+    loading,
     ...props
 }) {
     return (
@@ -15,7 +16,16 @@ export default function PrimaryButton({
             disabled={disabled}
             {...props}
         >
-            {children}
+            {loading ? (
+                <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                    Salvando...
+                </>
+            ) : (
+                <>
+                    {children}
+                </>
+            )}
         </Button>
     );
 }

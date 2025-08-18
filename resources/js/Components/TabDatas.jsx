@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import { converterData } from "@/dates";
 import styles from "../../scss/TabDatas.module.scss";
 
-export default function TabDatas({ datas, currentTab, setCurrentData }) {
+export default function TabDatas({ datas, currentTab, setCurrentTab }) {
     const scrollRef = useRef();
     const [showLeft, setShowLeft] = useState(false);
     const [showRight, setShowRight] = useState(false);
@@ -66,7 +66,7 @@ export default function TabDatas({ datas, currentTab, setCurrentData }) {
             <div className={styles.tabScrollArea} ref={scrollRef}>
                 <Tabs
                     activeKey={currentTab || datas[0]}
-                    onSelect={(k) => setCurrentData(k)}
+                    onSelect={(k) => setCurrentTab(k)}
                     className="flex-nowrap"
                     variant="pills"
                 >

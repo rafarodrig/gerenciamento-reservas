@@ -1,6 +1,7 @@
 import { Nav, Form, Row, Col } from 'react-bootstrap';
 import BuscarButton from '../Buttons/BuscarButton';
 import { useState } from 'react';
+import SelectInput from '../Inputs/SelectInput';
 
 export default function ConsultarReservaForm({
     className = "",
@@ -17,22 +18,22 @@ export default function ConsultarReservaForm({
             ...formData,
             [e.target.name]: e.target.value
         });
-        setIsActive(true);
+        // setIsActive(true);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         onBuscar();
-        setIsActive(false);
+        // setIsActive(false);
     };
 
     return (
         <>
-            <Nav>
+            <Nav className='h-100'>
                 <Form className={`filtros-consulta ${className}`} >
                     {/* FILTRO turma */}
                     <Row className="g-3">
-                        <Col md={6}>
+                        <Col sm={6} md={6} xl={12} xxl={6}>
                             <Form.Label >Turma</Form.Label>
                             <Form.Control
                                 type="text"
@@ -42,7 +43,7 @@ export default function ConsultarReservaForm({
                             />
                         </Col>
                         {/* Docente */}
-                        <Col md={6}>
+                        <Col sm={6} md={6} xl={12} xxl={6}>
                             <Form.Label >Docente</Form.Label>
                             <Form.Control
                                 type="text"
@@ -52,19 +53,8 @@ export default function ConsultarReservaForm({
                             />
                         </Col>
 
-                        {/* Curso */}
-                        <Col md={3}>
-                            <Form.Label >Curso</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="curso"
-                                value={formData.curso || ""}
-                                onChange={handleChange}
-                            />
-                        </Col>
-
                         {/* Data Início */}
-                        <Col md={3}>
+                        <Col sm={6} md={3} lg={3} xl={6}>
                             <Form.Label htmlFor="inp-consulta-data-inicio">De</Form.Label>
                             <Form.Control
                                 type="date"
@@ -76,7 +66,7 @@ export default function ConsultarReservaForm({
                         </Col>
 
                         {/* Data Fim */}
-                        <Col md={3}>
+                        <Col sm={6} md={3} lg={3} xl={6}>
                             <Form.Label htmlFor="inp-consulta-data-fim">Até</Form.Label>
                             <Form.Control
                                 type="date"
@@ -90,94 +80,116 @@ export default function ConsultarReservaForm({
                             </Form.Control.Feedback>
                         </Col>
 
-                        {/* Sala */}
-                        <Col md={3}>
-                            <Form.Label htmlFor="inp-consulta-sala">N.º da sala</Form.Label>
-                            <Form.Select
-                                id="inp-consulta-sala"
-                                name="sala"
-                                value={formData.sala}
-                                onChange={handleChange}
-                            >
-                                <option value="">Qualquer</option>
-                                {/* Dynamically inject room options here */}
-                                {numeros.map((numero) => <option key={numero} value={numero}>{numero}</option>)}
-                            </Form.Select>
-                        </Col>
 
                         {/* Turno */}
-                        <Col md={3}>
+                        <Col sm={6} md={3} lg={3} xl={6}>
                             <Form.Label htmlFor="inp-consulta-turno">Turno</Form.Label>
-                            <Form.Select
+                            <SelectInput
                                 id="inp-consulta-turno"
                                 name="turno"
                                 value={formData.turno}
                                 onChange={handleChange}
-                            >
-                                <option value="">Qualquer</option>
-                                <option value="Manhã">Manhã</option>
-                                <option value="Tarde">Tarde</option>
-                                <option value="Noite">Noite</option>
-                            </Form.Select>
+                                options={
+                                    [
+                                        { value: "", label: "Qualquer" },
+                                        { value: "Manhã", label: "Manhã" },
+                                        { value: "Tarde", label: "Tarde" },
+                                        { value: "Noite", label: "Noite" },
+                                    ]
+                                }
+                            />
                         </Col>
 
 
                         {/* Tipo de Reserva */}
-                        <Col md={3}>
-                            <Form.Label htmlFor="inp-consulta-reserva-tipo">
+                        <Col sm={6} md={3} lg={3} xl={6}>
+                            <Form.Label
+                                htmlFor="inp-consulta-reserva-tipo"
+                                className="text-truncate d-block"
+                                title="Tipo de reserva" // tooltip para ver o texto completo
+                            >
                                 Tipo de reserva
                             </Form.Label>
-                            <Form.Select
+                            <SelectInput
                                 id="inp-consulta-reserva-tipo"
                                 name="reserva_tipo"
-                                value={formData.reserva_tipo}
+                                value={formData.reserva_tipo || ""}
                                 onChange={handleChange}
-                            >
-                                <option value="">Qualquer</option>
-                                <option value="Avulsa">Avulsa</option>
-                                <option value="Graduação">Graduação</option>
-                                <option value="Pos-graducao">Pós-graduação</option>
-                                <option value="FIC">FIC</option>
-                            </Form.Select>
+                                options={
+                                    [
+                                        { value: "", label: "Qualquer" },
+                                        { value: "Avulsa", label: "Avulsa" },
+                                        { value: "Graduação", label: "Graduação" },
+                                        { value: "Pos-graduacao", label: "Pós-graduação" },
+                                        { value: "FIC", label: "FIC" },
+                                    ]
+                                }
+                            />
                         </Col>
-                        {/* Unidade */}
-                        <Col md={3}>
-                            <Form.Label htmlFor="inp-consulta-unidade">
-                                Unidade
-                            </Form.Label>
-                            <Form.Select
-                                id="inp-consulta-unidade"
-                                name="unidade"
-                                value={formData.unidade}
-                                onChange={handleChange}
-                            >
-                                <option value="todas">Todas</option>
-                                <option value="1">Unidade 1</option>
-                                <option value="2">Unidade 2</option>
-                            </Form.Select>
-                        </Col>
-
                         {/* Reserva Status */}
-                        <Col md={3}>
-                            <Form.Label htmlFor="inp-reserva-status">Reservas status</Form.Label>
-                            <Form.Select
+                        <Col sm={6} md={3} lg={3} xl={6}>
+                            <Form.Label
+                                htmlFor="inp-reserva-status"
+                                className="text-truncate d-block"
+                                title="Reservas status"
+                            >
+                                Reservas status
+                            </Form.Label>
+                            <SelectInput
                                 id="inp-reserva-status"
                                 name="reserva_status"
                                 value={formData.reserva_status}
                                 onChange={handleChange}
-                            >
-                                <option value="Ativa">Ativa</option>
-                                <option value="Inativa">Inativa</option>
-                            </Form.Select>
+                                options={[
+                                    { value: "", label: "Qualquer" },
+                                    { value: "Ativa", label: "Ativa" },
+                                    { value: "Inativa", label: "Inativa" },
+                                ]}
+                            />
+                        </Col>
+                        {/* Unidade */}
+                        <Col sm={6} md={3} lg={3} xl={6}>
+                            <Form.Label htmlFor="inp-consulta-unidade">
+                                Unidade
+                            </Form.Label>
+                            <SelectInput
+                                id="inp-consulta-unidade"
+                                name="unidade"
+                                value={formData.unidade}
+                                onChange={handleChange}
+                                options={
+                                    [
+                                        { value: "todas", label: "Todas" },
+                                        { value: "1", label: "Unidade 1" },
+                                        { value: "2", label: "Unidade 2" },
+                                    ]
+                                }
+                            />
+                        </Col>
+                        {/* Sala */}
+                        <Col sm={6} md={3} lg={3} xl={6}>
+                            <Form.Label htmlFor="inp-consulta-sala">N.º da sala</Form.Label>
+                            <SelectInput
+                                id="inp-consulta-sala"
+                                name="sala"
+                                value={formData.sala || ""}
+                                onChange={handleChange}
+                                options={[
+                                    { value: "", label: "Qualquer" },
+                                    ...numeros.map(n => ({ value: n, label: n })),
+                                ]}
+                                isSearchable={true}
+                            />
                         </Col>
 
+
                         {/* Botão Buscar */}
-                        <Col xs={12} className="d-flex align-items-center gap-2">
+                        {/* <Col xs={12} className="d-flex align-items-center gap-2">
                             <BuscarButton onClick={handleSubmit} isActive={isActive} />
-                        </Col>
+                        </Col> */}
                     </Row>
                 </Form>
-            </Nav>
+            </Nav >
         </>
     );
 };

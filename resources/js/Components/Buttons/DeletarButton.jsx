@@ -8,6 +8,7 @@ export default function DeletarButton({
     iconSize = 20,
     disabled,
     children,
+    loading,
     ...props
 }) {
     return (
@@ -19,8 +20,17 @@ export default function DeletarButton({
                 disabled={disabled}
                 {...props}
             >
-                <Trash2 size={iconSize} />
-                {children}
+                {loading ? (
+                    <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Deletando...
+                    </>
+                ) : (
+                    <>
+                        <Trash2 size={iconSize} />
+                        {children}
+                    </>
+                )}
             </Button>
         </OverlayTrigger>
     );

@@ -1,9 +1,20 @@
 import { PlusCircleIcon } from "lucide-react";
 import { Modal } from "react-bootstrap";
 
-export default function ModalCadastrarSala({ setShowCadastrarModal, showCadastrarModal, children }) {
+export default function ModalCadastrarSala({
+    show,
+    onClose,
+    children,
+    ...props
+}) {
     return (
-        <Modal show={showCadastrarModal} onHide={() => setShowCadastrarModal(false)} size="lg" centered>
+        <Modal
+            show={show}
+            onHide={onClose}
+            size="lg"
+            centered
+            {...props}
+        >
             <Modal.Header closeButton>
                 <Modal.Title>
                     <PlusCircleIcon className="me-2" />

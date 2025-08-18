@@ -1,9 +1,20 @@
 import { PlusCircleIcon } from "lucide-react";
 import { Modal } from "react-bootstrap";
 
-export default function CadastrarTurmaModal({ setShowCadastrarTurmaModal, showCadastrarTurmaModal, children }) {
+export default function CadastrarTurmaModal({
+    show,
+    onClose,
+    children,
+    ...props
+}) {
     return (
-        <Modal show={showCadastrarTurmaModal} onHide={() => setShowCadastrarTurmaModal(false)} size="lg" centered>
+        <Modal
+            show={show}
+            onHide={onClose}
+            size="lg"
+            centered
+            {...props}
+        >
             <Modal.Header closeButton>
                 <Modal.Title>
                     <PlusCircleIcon className="me-2" />

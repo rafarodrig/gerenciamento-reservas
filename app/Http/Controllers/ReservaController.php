@@ -30,14 +30,11 @@ class ReservaController extends Controller
 
             $reservas = $this->reservaService->obterReservasPaginadas($request->all());
 
+            // sleep(3);
+
             return response()->json(
                 [
                     "reservas" => $reservas["reservas"],
-                    "datas" => $reservas["datas"],
-                    "status" => $request->reserva_status,
-                    "unidade" => $request->unidade,
-                    "currentTab" => $reservas["currentTab"]
-
                 ]
             );
         } catch (\Exception $e) {
@@ -51,13 +48,11 @@ class ReservaController extends Controller
 
     public function tabData(Request $request)
     {
-        $dados = $this->reservaService->obterTabData($request->all());
+        $dados = $this->reservaService->obterTabDatas($request->all());
+        // sleep(3);
 
         return response()->json([
-            "reservas" => $dados["reservas"],
-            "status" => $request->reserva_status,
-            "unidade" => $request->unidade,
-            "currentTab" => $dados["currentTab"]
+            "datas" => $dados["datas"],
         ]);
     }
 

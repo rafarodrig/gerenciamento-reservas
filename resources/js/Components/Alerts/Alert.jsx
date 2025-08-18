@@ -1,24 +1,24 @@
 import { useEffect, useRef } from "react";
 import { Alert } from "react-bootstrap";
 import { CSSTransition } from "react-transition-group";
+import { useAlert } from "@/contexts/AlertContext"; // contexto que criamos
 
-
-
-export default function AlertPop({ alert, setAlert }) {
+export default function AlertPop() {
+    const { alert, clearAlert } = useAlert();
+    const alertDivRef = useRef(null);
 
     useEffect(() => {
-        if (alert.show) {
+        if (alert?.show) {
             const timer = setTimeout(() => {
-                setAlert((prev) => ({ ...prev, show: false })); // Trigger fade-out after 3 seconds
+                clearAlert();
             }, 3000);
             return () => clearTimeout(timer);
         }
     }, [alert]);
 
-    const alertDivRef = useRef(null);
     return (
         <CSSTransition
-            in={!!alert.show}
+            in={!!alert?.show}
             timeout={400}
             classNames="fade-alert"
             nodeRef={alertDivRef}
@@ -28,11 +28,11 @@ export default function AlertPop({ alert, setAlert }) {
                 <Alert
                     variant={alert?.type || "light"}
                     dismissible
-                    onClose={() => setAlert((prev) => ({ ...prev, show: false }))}
+                    onClose={clearAlert}
                 >
                     {alert?.message}
                 </Alert>
             </div>
         </CSSTransition>
     );
-};
+}

@@ -1,42 +1,31 @@
 // src/pages/Login.jsx
-import { useEffect, useState } from 'react';
 import { login } from '@/services/auth';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { Container, Form } from 'react-bootstrap';
 import PrimaryButton from '@/Components/Buttons/PrimaryButton';
 import GuestLayout from '@/Layouts/GuestLayout';
 import SenacLogo from '@/Components/SenacLogo';
-import AlertPop from '@/Components/Alerts/Alert';
-
+import { useSimpleForm } from '@/hooks/useSimpleForm';
+import { useAlert } from "@/contexts/AlertContext";
 
 export default function LoginPage() {
-    const [alert, setAlert] = useState({})
-    const [formData, setFormData] = useState({ email: '', password: '' });
-    const [errors, setErrors] = useState({});
+    const { showAlert } = useAlert();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-
-        // Limpa o erro do campo específico
-        if (errors[name]) {
-            setErrors(prev => ({ ...prev, [name]: null }));
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setErrors({});
-
-        try {
-            const data = await login(formData);
-            console.log('Login bem-sucedido', data);
-
-            router.visit('/consultar-reservas');
-        } catch (err) {
-            setErrors(err.response?.data?.errors || {});
-        }
-    };
+    const {
+        formData,
+        errors,
+        handleChange,
+        handleSubmit,
+    } = useSimpleForm({
+        initialValues: { email: '', password: '' },
+        onSubmit: async (data) => {
+            const res = await login(data);
+            showAlert(res.message, 'success');
+            setTimeout(() => {
+                router.visit('/consultar-reservas');
+            }, 600);
+        },
+    });
 
     return (
         <GuestLayout>
@@ -62,7 +51,7 @@ export default function LoginPage() {
                         />
                         <Form.Label htmlFor="login-email">Email</Form.Label>
                         <Form.Control.Feedback type="invalid">
-                            {errors?.email}
+                            {errors.email}
                         </Form.Control.Feedback>
                     </Form.Group>
 
@@ -85,16 +74,15 @@ export default function LoginPage() {
                     <PrimaryButton className="py-3 w-100" type="submit">
                         Fazer Login
                     </PrimaryButton>
+
                     <div className="text-center mt-4">
                         <span>Não tem uma conta? </span>
-                        <Link href="/register" className="text-primary text-decoration-none">
+                        <Link href={route('register')} className="text-primary text-decoration-none">
                             Registre-se
                         </Link>
                     </div>
                 </Form>
             </Container>
-
-            <AlertPop alert={alert} setAlert={setAlert} />
         </GuestLayout>
     );
 }

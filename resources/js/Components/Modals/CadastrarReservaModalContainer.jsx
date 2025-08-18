@@ -1,109 +1,52 @@
-import { useEffect, useState, useRef } from "react";
-import EditarTurmaModal from "./EditarTurmaModall";
+import { useState } from "react";
 import DeletarTurmaModal from "./DeletarTurmaModal";
 import CadastrarReservaModal from "./CadastrarReservaModal";
 import TurmaForm from "../Forms/TurmaForm";
 import CadastrarTurmaModal from "./CadastrarTurmaModal";
-import AlertPop from "../Alerts/Alert";
-import { api } from "@/services/api";
+import EditarModal from "./EditarModal";
+
 export default function CadastrarReservaContainer({
-  salaId,
+  sala,
   reserva,
   turmasDisponiveis,
   fetchTurmasDisponiveis,
-  resetId,
-  onResult
-
+  onResult,
+  setShowCadastrarReservaModal,
+  showCadastrarReservaModal,
 }) {
 
-  const [showEditarTurmaModal, setShowEditarTurmaModal] = useState(false);
-  const [editarTurma, setEditarTurma] = useState(false)
-
-
-  const [deletarTurma, setDeletarTurma] = useState(false)
-
   const [showCadastrarTurmaModal, setShowCadastrarTurmaModal] = useState(false);
+  const [showEditarTurmaModal, setShowEditarTurmaModal] = useState(false);
+  const [showDeletarTurmaModal, setShowDeletarTurmaModal] = useState(false);
+
+  const [editarTurma, setEditarTurma] = useState(false)
+  const [deletarTurma, setDeletarTurma] = useState(null)
+  const [turmaSelecionada, setTurmaSelecionada] = useState(null);
 
 
-  const [showCadastrarReservaModal, setShowCadastrarReservaModal] = useState(false)
-  const [formData, setFormData] = useState([]);
-  const [sala, setSala] = useState(null);
-  const [prevSala, setPrevSala] = useState(salaId);
-  const [turmaCadastrada, setTurmaCadastrada] = useState(null);
-  const [alert, setAlert] = useState('');
-
-  if (prevSala !== salaId) {
-    setPrevSala(salaId)
-    setFormData((prev) => ({
-      ...prev,
-      cadastro_turma: 'cadastrada',
-      nome: '',
-      docente: '',
-      curso: '',
-      lotacao: '',
-      turma: '',
-      datas: reserva.datas,
-      turno: reserva.turno,
-      reserva_tipo: reserva.reserva_tipo,
-      sala: salaId,
-    }));
+  const handleDeletarTurma = (turma) => {
+    setDeletarTurma(turma);
+    setShowDeletarTurmaModal(true);
   }
 
-  useEffect(() => {
-    if (salaId) {
-      api.get(`/salas/${salaId}`)
-        .then((res) => {
-          const sala = res.data
-          setSala(sala);
-          setShowCadastrarReservaModal(true);
-        });
-    }
-  }, [salaId]);
-
-  const fetchTurma = async (turma) => {
-    if (!turma) {
-      setTurmaCadastrada(null);
-      return;
-    }
-    try {
-      const res = await api.get(`/turmas/${turma}`);
-      setTurmaCadastrada(res.data);
-    } catch (error) {
-      console.error("Erro ao buscar turma cadastrada:", error);
-      setTurmaCadastrada(null);
-    }
-  };
-
-  useEffect(() => {
-    fetchTurma(formData.turma);
-  }, [formData.turma]);
-
-
-
-  const handleClose = () => {
-    if (editarTurma) {
-      setShowEditarTurmaModal(false);
-      setEditarTurma(null)
-    } else {
-      setShowCadastrarTurmaModal(false);
-    }
-    setShowCadastrarReservaModal(true);
-  }
-
-  const renderFormulario = (isEditing = false) => (
+  const renderFormTurma = (isEditing = false) => (
     <TurmaForm
       isEditing={isEditing}
       turma={editarTurma}
-      onCancel={handleClose}
-      onEdited={() => { fetchTurma(editarTurma?.id); setShowEditarTurmaModal(false); }}
-      onCreated={() => { fetchTurmasDisponiveis(); setShowEditarTurmaModal(false); }}
-      onResult={(msg) => { setAlert(msg); setShowCadastrarReservaModal(true); }}
+      onClose={() => {
+        if (editarTurma) {
+          setShowEditarTurmaModal(false);
+        } else {
+          setShowCadastrarTurmaModal(false);
+        }
+      }}
+      onEdited={() => { setTurmaSelecionada(editarTurma?.id) }}
+      onCreated={() => { fetchTurmasDisponiveis(); }}
     />
   );
 
   const handleEditarTurma = (turma) => {
-    setEditarTurma(turma);
-    setShowCadastrarReservaModal(false);
+    setEditarTurma(turma)
     setShowEditarTurmaModal(true)
   }
 
@@ -113,45 +56,49 @@ export default function CadastrarReservaContainer({
     <>
       <CadastrarReservaModal
         show={showCadastrarReservaModal}
-        turmaCadastrada={turmaCadastrada}
+        turmaSelecionada={turmaSelecionada}
+        setTurmaSelecionada={setTurmaSelecionada}
         sala={sala}
         reserva={reserva}
         turmas={turmasDisponiveis}
-        formData={formData}
-        setFormData={setFormData}
-        onResult={(msg) => { setAlert(msg); setShowCadastrarReservaModal(false); onResult(false); resetId(); }}
-        onCancel={() => { setShowCadastrarReservaModal(false); resetId(); }}
-        setCadastrarTurma={() => { setShowCadastrarReservaModal(false); setShowCadastrarTurmaModal(true) }}
-        setEditarTurma={(turma) => handleEditarTurma(turma)}
-        setDeletarTurma={(id) => { setShowCadastrarReservaModal(false); setDeletarTurma(id) }}
-        setAlert={setAlert}
+        onResult={() => { onResult(false); }}
+        onClose={() => { setShowCadastrarReservaModal(false); setTurmaSelecionada(null) }}
+        setCadastrarTurma={() => { setShowCadastrarTurmaModal(true) }}
+        setEditarTurma={handleEditarTurma}
+        setDeletarTurma={handleDeletarTurma}
       />
 
       <CadastrarTurmaModal
-        onClose={() => { setShowCadastrarTurmaModal(false); setShowCadastrarReservaModal(true) }}
-        showCadastrarTurmaModal={showCadastrarTurmaModal}
+        show={showCadastrarTurmaModal}
+        onShow={() => setShowCadastrarReservaModal(false)}
+        onExit={() => setShowCadastrarReservaModal(true)}
+        onClose={() => { setShowCadastrarTurmaModal(false) }}
       >
-        {renderFormulario()}
+        {renderFormTurma()}
       </CadastrarTurmaModal>
 
 
-      <EditarTurmaModal
-        onExited={() => setEditarTurma(null)}
-        onClose={() => { setShowEditarTurmaModal(false); setShowCadastrarReservaModal(true) }}
-        showEditarTurmaModal={showEditarTurmaModal}
+      <EditarModal
+        title="Editar Turma"
+        show={showEditarTurmaModal}
+        onShow={() => setShowCadastrarReservaModal(false)}
+        onExit={() => { setEditarTurma(null); setShowCadastrarReservaModal(true) }}
+        onClose={() => { setShowEditarTurmaModal(false); }}
       >
-        {renderFormulario(true)}
-      </EditarTurmaModal>
+        {renderFormTurma(true)}
+      </EditarModal>
 
 
       <DeletarTurmaModal
-        turmaId={deletarTurma}
-        onCancel={() => { setShowCadastrarReservaModal(true); }}
-        onResult={(msg) => { setAlert(msg); fetchTurmasDisponiveis(); setShowCadastrarReservaModal(true); setFormData((prev) => ({ ...prev, turma: "" })); }}
-        onExited={() => setDeletarTurma(null)}
+        turma={deletarTurma}
+        show={showDeletarTurmaModal}
+        onShow={() => setShowCadastrarReservaModal(false)}
+        onClose={() => { setShowCadastrarReservaModal(true); setShowDeletarTurmaModal(false); }}
+        onResult={() => { fetchTurmasDisponiveis(); setTurmaSelecionada(null) }}
+        onExited={() => { setDeletarTurma(null); }}
       />
 
-      <AlertPop alert={alert} setAlert={setAlert} />
+
     </>
   )
 
